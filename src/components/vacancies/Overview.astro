@@ -36,7 +36,7 @@ const type_options = types.map(type => ({ key: type.name, value: type.value }));
 <main class="w-3/4 mx-auto py-8" {...storyblokEditable(blok)}>
   <h1 class="text-4xl font-bold">Vacancies</h1>
   
-  <div class="grid grid-cols-2 gap-4">
+  <div class="grid grid-cols-2 gap-4 mt-2">
     <div>
       <span>Sort by programme:</span>
       <MultiSelectInput client:load placeholder="Select a programme to filter" options={options} atom_name="programme_filter" />

@@ -18,9 +18,9 @@ const partner = blok.partner[0].content;
       <div class="flex flex-col my-auto">
         <h1 class="font-semibold text-3xl">{blok.name}</h1>
         <h2 class="text-gray-500">
-          Vacature van
+          Vacature van{" "}
           <a class="text-blue-500 underline" href={`/carriere/partners/${blok.partner[0].slug}`}>
-            {partner.name}
+            {}{partner.name}
           </a>
         </h2>
         <ul class="flex flex-row gap-2 mt-4">
