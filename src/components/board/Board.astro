@@ -1,0 +1,58 @@
+---
+import { renderRichText, storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+import { useStoryblokApi } from '@storyblok/astro';
+
+const storyblokApi = useStoryblokApi();
+const current_board = await storyblokApi.getAll('cdn/stories', {
+  version: 'draft',
+  starts_with: 'vereniging/bestuur',
+  content_type: 'board',
+  sort_by: "content.board_number:desc:int",
+  per_page: 1
+});
+const is_last = current_board[0].content.board_number === blok.board_number;
+
+blok.board_number = Number(blok.board_number);
+---
+
+<main class="w-3/4 mx-auto" {...storyblokEditable(blok)}>
+  <div class="border border-neutral-200 shadow grid grid-cols-2 my-8 rounded-xl overflow-none">
+    <img class="w-full h-full object-cover rounded-xl rounded-r-none" src={blok.photo.filename} alt="Bestuursfoto">
+    <div>
+      <div class="text-white text-center p-2 rounded-tr-xl" style={`background: ${blok.colour}`}>
+        <h1 class="w-full font-bold text-3xl">Bestuur {blok.board_number}</h1>
+        <p class="text-lg">O.d.z. <i>"{blok.zinspreuk}"</i></p>
+      </div>
+      <div class="p-2 text-lg">
+        <h2 class="font-bold text-center mb-2">Bestuursleden</h2>
+        <div set:html={renderRichText(blok.board_members)}></div>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-row gap-4 text-lg mx-auto w-max">
+    {blok.board_number > 1
+      ? <a href={`/vereniging/bestuur/${blok.board_number - 1}`} class="cursor-pointer rounded px-2 py-1 text-white flex flex-row gap-2" style={`background: ${blok.colour}`}>
+          <i class="fa fas fa-chevron-left my-auto" />
+          Bestuur {blok.board_number - 1}
+        </a>
+      : undefined}
+    <a
+      href="/vereniging/bestuur"
+      class="cursor-pointer rounded px-2 py-1 text-white my-auto"
+      style={`background: ${blok.colour}`}
+    >
+      Terug naar overzicht
+    </a>
+    {!is_last
+      ? <a href={`/vereniging/bestuur/${blok.board_number + 1}`} class="cursor-pointer rounded px-2 py-1 text-white flex flex-row gap-2" style={`background: ${blok.colour}`}>
+          Bestuur {blok.board_number + 1}
+          <i class="fa fas fa-chevron-right my-auto" />
+        </a>
+      : undefined}
+  </div>
+</main>
+
+<style is:global>
+
+</style>

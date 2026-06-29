@@ -1,0 +1,42 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+
+import { useStoryblokApi } from '@storyblok/astro';
+
+const storyblokApi = useStoryblokApi();
+const boards = await storyblokApi.getAll('cdn/stories', {
+  version: 'draft',
+  starts_with: 'vereniging/bestuur',
+  content_type: 'board',
+  sort_by: "content.board_number:desc:int"
+});
+
+const current_board = boards.shift();
+---
+
+<main class="w-3/4 mx-auto py-8" {...storyblokEditable(blok)}>
+  <h2>Huidig bestuur</h2>
+  <a href={`/vereniging/bestuur/${current_board.content.board_number}`} class="block w-1/2 mx-auto rounded-xl overflow-hidden" {...storyblokEditable(current_board.content)}>
+    <img class="w-full" src={current_board.content.photo.filename} />
+    <div class="flex flex-col text-center p-2 text-white" style={`background: ${current_board.content.colour}`}>
+      <span class="font-bold text-2xl">Bestuur {current_board.content.board_number}</span>
+      <span>{current_board.content.year}</span>
+    </div>
+  </a>
+  <h2>Vorige besturen</h2>
+  <ol class="grid grid-cols-3 gap-8 mt-8">
+    {boards.map(board => (
+      <li class="rounded-xl overflow-hidden" {...storyblokEditable(board.content)}>
+        <a href={"/" + board.full_slug}>
+          <img class="w-full" src={board.content.photo.filename} />
+          <div class="flex flex-row justify-between text-center p-2 text-white" style={`background: ${board.content.colour}`}>
+            <span class="font-bold text-2xl my-auto">Bestuur {board.content.board_number}</span>
+            <span class="my-auto">{board.content.year}</span>
+          </div>
+        </a>
+      </li>
+      <li></li>
+    ))}
+  </ol>
+</main>

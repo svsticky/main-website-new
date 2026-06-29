@@ -1,0 +1,18 @@
+---
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import { storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+
+const styles = {
+  "grid-template-columns": blok.column_count,
+  "gap": `calc(${blok.gap_size || 0} * .25rem)`
+}
+---
+
+<div class="grid" style={styles} {...storyblokEditable(blok)}>
+	{
+		blok.columns?.map((nestedBlok) => {
+			return <StoryblokComponent blok={nestedBlok} />;
+		})
+	}
+</div>

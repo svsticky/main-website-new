@@ -1,0 +1,12 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+
+const styles = {
+  "border-radius": blok.rounded ? "50%" : undefined,
+  "width": blok.width ?? "auto",
+  "height": blok.height ?? "auto",
+}
+---
+
+<img class="m-auto" src={blok.body.filename} style={styles} {...storyblokEditable(blok)} />

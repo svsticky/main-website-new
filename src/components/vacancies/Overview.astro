@@ -1,0 +1,57 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+
+import { MultiSelectInput } from "./MultiSelectInput";
+import { Overview as Vacancies } from './Overview';
+
+import { useStoryblokApi } from '@storyblok/astro';
+
+const storyblokApi = useStoryblokApi();
+const vacancies = await storyblokApi.getAll('cdn/stories', {
+  version: 'draft',
+  starts_with: 'carriere/vacatures',
+  content_type: 'vacancy',
+  resolve_relations: 'vacancy.partner'
+});
+
+const { data: { datasource_entries: studies } } = await storyblokApi.get('cdn/datasource_entries', {
+  datasource: "vacancy-studies",
+  dimension: "type"
+});
+
+const options = [
+  { label: "Bachelor programmes", values: studies.filter(study => study.dimension_value === "bsc").map(study => ({ key: study.name, value: study.value })) },
+  { label: "Master programmes", values: studies.filter(study => study.dimension_value === "msc").map(study => ({ key: study.name, value: study.value })) }
+];
+
+const { data: { datasource_entries: types } } = await storyblokApi.get('cdn/datasource_entries', {
+  datasource: "vacancy-types",
+  dimension: "translation"
+});
+
+const type_options = types.map(type => ({ key: type.name, value: type.value }));
+---
+
+<main class="w-3/4 mx-auto py-8" {...storyblokEditable(blok)}>
+  <h1 class="text-4xl font-bold">Vacancies</h1>
+  
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <span>Sort by programme:</span>
+      <MultiSelectInput client:load placeholder="Select a programme to filter" options={options} atom_name="programme_filter" />
+    </div>
+    <div>
+      <label for="sort-type">Sort by vacancy type:</label>
+      <MultiSelectInput client:load placeholder="Select a type to filter" options={type_options} atom_name="type_filter" />
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <Vacancies client:only />
+  </div>
+</main>
+
+<script is:inline define:vars={{ vacancies }}>
+  window.vacancies = vacancies;
+</script>

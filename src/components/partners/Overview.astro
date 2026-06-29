@@ -1,0 +1,51 @@
+---
+import { renderRichText, storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+
+import { useStoryblokApi } from '@storyblok/astro';
+
+const storyblokApi = useStoryblokApi();
+const partners = await storyblokApi.getAll('cdn/stories', {
+  version: 'draft',
+  starts_with: 'carriere/partners',
+  content_type: 'partner',
+});
+
+const main_partners = partners.filter(partner => partner.content.is_main);
+const regular_partners = partners.filter(partner => !partner.content.is_main);
+---
+
+<main class="w-3/4 mx-auto py-8" {...storyblokEditable(blok)}>
+  <h1>Partners</h1>
+  {main_partners.length
+    ? <>
+        <h2>Main partners</h2>
+        <ul class="flex flex-col gap-4">
+          {main_partners.map(partner =>
+            <a href={`/carriere/partners/${partner.slug}`}>
+              <li class="flex flex-row gap-4 h-50 border border-neutral-200">
+                <div class="flex flex-col gap-2">
+                  <img class="w-auto h-full" src={partner.content.logo.filename} />
+                  <span class="mx-auto font-bold text-lg">{partner.content.name}</span>
+                </div>
+                <div set:html={renderRichText(partner.content.main_text)}></div>
+              </li>
+            </a>
+          )}
+        </ul>
+      </>
+    : undefined
+  }
+
+  {main_partners.length ? <h2>Regular partners</h2> : undefined}
+  <ul class="grid grid-cols-5 gap-4">
+    {regular_partners.map(partner =>
+      <a href={`/carriere/partners/${partner.slug}`}>
+        <li class="flex flex-col w-full h-full border border-neutral-200">
+          <img class="w-full h-auto" src={partner.content.logo.filename} />
+          <span class="mx-auto font-bold text-lg">{partner.content.name}</span>
+        </li>
+      </a>
+    )}
+  </ul>
+</main>

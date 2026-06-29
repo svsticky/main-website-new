@@ -1,0 +1,18 @@
+---
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import { renderRichText, storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+---
+
+<main class="w-3/4 mx-auto" {...storyblokEditable(blok)}>
+  <div class="flex flex-row">
+    <img class="h-50 w-50 rounded-full" src={blok.logo.filename} />
+    <h1>{blok.name}</h1>
+    <ul class="flex flex-row ml-auto">
+      {blok.buttons.map(button => <li><StoryblokComponent blok={button} /></li>)}
+    </ul>
+  </div>
+  <div class="rounded border border-neutral-200">
+    <div set:html={renderRichText(blok.body)}></div>
+  </div>
+</main>
