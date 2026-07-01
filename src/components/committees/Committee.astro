@@ -1,0 +1,28 @@
+---
+import { renderRichText, storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+
+const types = {
+  "wer": "Werkgroep",
+  "com": "Commissie",
+  "dis": "Dispuut"
+};
+---
+
+<main class="w-3/4 mx-auto py-8" {...storyblokEditable(blok)}>
+  <a href="/vereniging/commissies" class="text-[#e2621d] flex flex-row gap-2 group w-max">
+    <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+    Terug naar de commissies
+  </a>
+
+  <div class="rounded border border-neutral-200 overflow-hidden mt-4">
+    <div class="border-b border-neutral-300 w-full flex flex-row gap-4">
+      <img class="aspect-square h-30 w-auto" src={blok.logo.filename} alt="" />
+      <div class="flex flex-col my-auto gap-1">
+        <h1 class="font-bold text-3xl">{blok.name}</h1>
+        <span class="w-min border border-neutral-400 bg-neutral-200 px-2 py-1 text-xs rounded-full">{types[blok.type]}</span>
+      </div>
+    </div>
+    <div class="p-4" set:html={renderRichText(blok.body)}></div>
+  </div>
+</main>
