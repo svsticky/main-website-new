@@ -42,7 +42,9 @@ export default defineConfig({
       "partner": "components/partners/Partner",
       "partner-overview": "components/partners/Overview",
       "vacancy": "components/vacancies/Vacancy",
-      "vacancy-overview": "components/vacancies/Overview"
+      "vacancy-overview": "components/vacancies/Overview",
+      "committee": "components/committees/Committee",
+      "committee-overview": "components/committees/Overview"
     },
   }), react()],
   output: 'server',

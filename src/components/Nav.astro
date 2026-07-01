@@ -5,7 +5,7 @@ const menus = [
 		submenu: [
 			{ title: 'Activiteiten', to: '/vereniging/activiteiten' },
 			{ title: 'Bestuur', to: '/vereniging/bestuur' },
-			{ title: 'Commissies', to: '/vereniging/commissies' },
+			{ title: 'Commissies & Werkgroepen', to: '/vereniging/commissies' },
 			{ title: 'Contact', to: '/vereniging/contact' },
 		],
 	},
@@ -63,7 +63,7 @@ const menus = [
 					)}
 					{menu.submenu && (
 						<ul
-							class="absolute top-6 left-1/2 -translate-x-1/2 flex-col bg-white border border-[#999999] rounded text-center z-100 px-4"
+							class="absolute top-6 left-1/2 -translate-x-1/2 flex-col bg-white border border-[#999999] rounded text-center z-100 px-4 w-max"
 							style="display: none"
 						>
 							{menu.submenu.map((submenu) => (
