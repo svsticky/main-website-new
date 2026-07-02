@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import Nav from "../components/Nav.astro";
+import Nav from '../components/Nav.astro';
 ---
 
 <!doctype html>
@@ -9,13 +9,76 @@ import Nav from "../components/Nav.astro";
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>Storyblok & Astro</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+		/>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 	</head>
 	<body>
-    <Nav />
+		<Nav />
 		<slot />
 	</body>
+	<footer class="w-full bg-[#404040] flex justify-between items-center px-8 py-4">
+		<img
+			src="https://public.svsticky.nl/logos/hoofd_outline_wit.svg"
+			alt="Sticky Logo"
+      class="h-16"
+		/>
+
+		<div class="flex gap-8 text-white text-[2rem]">
+			<a
+				href="https://svsticky.nl/instagram"
+				target="_blank"
+				aria-label="Instagram"
+        class="transition hover:opacity-70"
+			>
+				<i class="fa-brands fa-instagram"></i>
+			</a>
+			<a
+				href="https://svsticky.nl/linkedin"
+				target="_blank"
+				aria-label="LinkedIn"
+        class="transition hover:opacity-70"
+			>
+				<i class="fa-brands fa-linkedin"></i>
+			</a>
+			<a href="https://svsticky.nl/github" class="transition hover:opacity-70" target="_blank" aria-label="GitHub">
+				<i class="fa-brands fa-github"></i>
+			</a>
+		</div>
+	</footer>
 </html>
+
+<!-- <style lang="scss">
+	footer {
+		background-color: #404040;
+		width: 100%;
+		margin-top: 3rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1rem 2rem;
+
+		img {
+			height: 4rem;
+		}
+
+		.footer-icons {
+			display: flex;
+			gap: 2rem;
+
+			a {
+				color: white;
+				font-size: 2rem;
+				transition: opacity 0.3s;
+
+				&:hover {
+					opacity: 0.7;
+				}
+			}
+		}
+	}
+</style> -->
