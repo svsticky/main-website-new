@@ -15,7 +15,7 @@ jobs:
   build:
     name: Build artifact
     runs-on: ubuntu-latest
-    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+    environment: 'staging' # ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
 
     defaults:
       run:
@@ -51,7 +51,7 @@ jobs:
     name: Notify server of new artifact
     needs: build
     runs-on: ubuntu-latest
-    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+    environment: 'staging' # ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
 
     steps:
       - name: Trigger deploy on server  # Triggers a webhook on our server, handled by Aas (svsticky/aas)

@@ -47,7 +47,6 @@ export default defineConfig({
       "committee-overview": "components/committees/Overview"
     },
   }), react()],
-  output: 'server',
   vite: {
     plugins: [mkcert(), tailwindcss()],
   },

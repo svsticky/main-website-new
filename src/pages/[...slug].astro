@@ -1,7 +1,15 @@
 ---
+import type { GetStaticPaths } from "astro";
 import { useStoryblokApi } from '@storyblok/astro';
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 import Layout from '../layouts/Layout.astro';
+
+export const getStaticPaths = (() => {
+  return [
+    { params: { slug: "" } },
+    { params: { slug: "/vereniging/commissies" } },
+  ];
+}) satisfies GetStaticPaths;
 
 const { slug } = Astro.params;
 
