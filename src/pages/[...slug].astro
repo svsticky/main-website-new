@@ -4,11 +4,20 @@ import { useStoryblokApi } from '@storyblok/astro';
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 import Layout from '../layouts/Layout.astro';
 
-export const getStaticPaths = (() => {
-  return [
-    { params: { slug: "" } },
-    { params: { slug: "/vereniging/commissies" } },
-  ];
+export const getStaticPaths = (async () => {
+  const storyblokApi = useStoryblokApi();
+
+  const response = await storyblokApi.getStories({ version: "draft" });
+  let stories = response.data.stories, remaining_count = response.total - stories.length, page = 1;
+  while (remaining_count > 0) {
+    const response = await storyblokApi.getStories({ version: "draft", page: ++page });
+    remaining_count -= response.data.stories.length;
+    stories = stories.concat(response.data.stories);
+  }
+
+  return stories.map(s => s.full_slug === "home"
+    ? ({ params: { slug: "/" }})
+    : ({ params: { slug: s.full_slug } }));
 }) satisfies GetStaticPaths;
 
 const { slug } = Astro.params;
