@@ -1,5 +1,6 @@
 ---
 import { storyblokEditable, useStoryblokApi } from "@storyblok/astro";
+import { Image } from "astro-preload/components";
 
 const { blok } = Astro.props;
 
@@ -52,7 +53,7 @@ const societies = stories.filter(story => story.content.type === "dis");
       {committees.map(committee =>
         <a href={`/vereniging/commissies/${committee.slug}`} class="grid border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition hover:text-[#fa6b20]">
           <li class="flex flex-col h-full">
-            <img class="w-full h-auto aspect-square object-contain border-neutral-300 border-b" src={committee.content.logo.filename} />
+            <Image class="w-full h-auto aspect-square object-contain border-neutral-300 border-b" url={committee.content.logo.filename} />
             <h3 class="font-semibold text-xl text-center py-4 hyphens-auto my-auto" lang="nl">{committee.content.name}</h3>
           </li>
         </a>
@@ -67,7 +68,7 @@ const societies = stories.filter(story => story.content.type === "dis");
       {groups.map(committee =>
         <a href={`/vereniging/commissies/${committee.slug}`} class="flex border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition hover:text-[#fa6b20]">
           <li class="flex flex-col w-full">
-            <img class="w-full h-auto aspect-square object-contain border-neutral-300 border-b" src={committee.content.logo.filename} />
+            <Image class="w-full h-auto aspect-square object-contain border-neutral-300 border-b" url={committee.content.logo.filename} />
             <h3 class="w-full font-semibold text-xl text-center py-4 hyphens-auto my-auto" lang="nl">{committee.content.name}</h3>
           </li>
         </a>
@@ -85,7 +86,7 @@ const societies = stories.filter(story => story.content.type === "dis");
       {societies.map(committee =>
         <a href={`/vereniging/commissies/${committee.slug}`} class="flex border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition hover:text-[#fa6b20]">
           <li class="flex flex-col w-full">
-            <img class="w-full h-auto aspect-square object-contain border-neutral-300 border-b" src={committee.content.logo.filename} />
+            <Image class="w-full h-auto aspect-square object-contain border-neutral-300 border-b" url={committee.content.logo.filename} />
             <h3 class="w-full font-semibold text-xl text-center py-4 hyphens-auto my-auto" lang="nl">{committee.content.name}</h3>
           </li>
         </a>

@@ -7,6 +7,8 @@ import tailwindcss from "@tailwindcss/vite";
 
 import react from "@astrojs/react";
 
+import preload from "astro-preload";
+
 const env = loadEnv(import.meta.env.MODE, process.cwd(), '');
 const {
   STORYBLOK_DELIVERY_API_TOKEN,
@@ -46,7 +48,7 @@ export default defineConfig({
       "committee": "components/committees/Committee",
       "committee-overview": "components/committees/Overview"
     },
-  }), react()],
+  }), react(), preload()],
   vite: {
     plugins: [mkcert(), tailwindcss()],
   },
