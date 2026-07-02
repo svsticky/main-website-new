@@ -1,0 +1,61 @@
+name: Build and deploy
+
+on:
+  workflow_dispatch: # For manual dispatch on GitHub, and webhooks
+
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }} # Does not distinguish PRs, for this workflow won't run on PR branches
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build artifact
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate a production build
+        run: npm run build
+        env:
+          STORYBLOK_DELIVERY_API_TOKEN: ${{ secrets.STORYBLOK_DELIVERY_API_TOKEN }}
+          STORYBLOK_REGION:             ${{ vars.STORYBLOK_REGION }}
+
+      # Astro will produce a build in `dist/`
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: website-build-static-files
+          path: ./dist/
+          retention-days: 45
+
+  deploy:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development'
+    name: Notify server of new artifact
+    needs: build
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+
+    steps:
+      - name: Trigger deploy on server  # Triggers a webhook on our server, handled by Aas (svsticky/aas)
+        uses: distributhor/workflow-webhook@v3
+        env:
+          webhook_url:    ${{ vars.AAS_URL }}
+          webhook_secret: ${{ secrets.AAS_PRE_SHARED_KEY }}
