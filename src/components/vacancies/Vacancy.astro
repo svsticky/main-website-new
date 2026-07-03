@@ -1,6 +1,7 @@
 ---
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 import { renderRichText, storyblokEditable } from '@storyblok/astro';
+import { Image } from "astro-preload/components";
 const { blok } = Astro.props;
 
 const partner = blok.partner[0].content;
@@ -14,7 +15,7 @@ const partner = blok.partner[0].content;
 
   <div class="rounded border border-neutral-200 overflow-hidden mt-4">
     <div class="flex flex-row gap-4 border-b border-neutral-200 pr-4">
-      <img class="h-30 w-auto" src={partner.logo.filename} />
+      <Image class="h-30 w-auto" url={partner.logo.filename} />
       <div class="flex flex-col my-auto">
         <h1 class="font-semibold text-3xl">{blok.name}</h1>
         <h2 class="text-gray-500">
