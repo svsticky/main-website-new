@@ -1,9 +1,9 @@
 ---
 import { storyblokEditable } from '@storyblok/astro';
+import { Image } from "astro-preload/components";
 const { blok } = Astro.props;
 
 import { MultiSelectInput } from "./MultiSelectInput";
-import { Overview as Vacancies } from './Overview';
 
 import { useStoryblokApi } from '@storyblok/astro';
 
@@ -19,7 +19,6 @@ const { data: { datasource_entries: studies } } = await storyblokApi.get('cdn/da
   datasource: "vacancy-studies",
   dimension: "type"
 });
-
 const options = [
   { label: "Bachelor programmes", values: studies.filter(study => study.dimension_value === "bsc").map(study => ({ key: study.name, value: study.value })) },
   { label: "Master programmes", values: studies.filter(study => study.dimension_value === "msc").map(study => ({ key: study.name, value: study.value })) }
@@ -29,7 +28,6 @@ const { data: { datasource_entries: types } } = await storyblokApi.get('cdn/data
   datasource: "vacancy-types",
   dimension: "translation"
 });
-
 const type_options = types.map(type => ({ key: type.name, value: type.value }));
 ---
 
@@ -48,10 +46,42 @@ const type_options = types.map(type => ({ key: type.name, value: type.value }));
   </div>
 
   <div class="mt-8">
-    <Vacancies client:only />
+    <ul class="grid grid-cols-4 gap-4" id="vacatures">
+      {vacancies.map(vacancy =>
+        <a href={`/carriere/vacatures/${vacancy.slug}`} data-types={vacancy.content.types} data-studies={vacancy.content.studies}>
+          <li class="flex flex-col w-full h-full border border-neutral-200">
+            <Image class="w-full h-auto" url={vacancy.content.partner[0].content.logo.filename} />
+            <span class="font-bold text-lg">{vacancy.content.name}</span>
+            <p>{vacancy.content.short_text}</p>
+          </li>
+        </a>
+      )}
+    </ul>
   </div>
 </main>
 
-<script is:inline define:vars={{ vacancies }}>
-  window.vacancies = vacancies;
+<script>
+  import { programme_filter, type_filter } from "./store";
+
+  const vacancy_container = document.getElementById("vacatures")!;
+  const vacancies = Array.from(vacancy_container.children) as HTMLElement[];
+
+  function passes_filter(vacancy: HTMLElement) {
+    const types = (vacancy.dataset["types"] ?? "").split(",");
+    const programmes = (vacancy.dataset["studies"] ?? "").split(",");
+    const active_programmes = programme_filter.get();
+    const active_types = type_filter.get();
+    return (!active_types.length || types.some(type => active_types.includes(type)))
+      && (!active_programmes.length || programmes.some(programme => active_programmes.includes(programme)));
+  }
+
+  function apply_filters() {
+    for (const vacancy of vacancies) {
+      vacancy.classList.add(passes_filter(vacancy) ? "block" : "hidden");
+      vacancy.classList.remove(passes_filter(vacancy) ? "hidden" : "block");
+    }
+  }
+
+  programme_filter.listen(() => { apply_filters(); });
+  type_filter.listen(() => { apply_filters(); });
 </script>
