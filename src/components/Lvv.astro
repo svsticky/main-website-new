@@ -1,0 +1,31 @@
+---
+import { renderRichText } from "@storyblok/astro";
+import { Image } from "astro-preload/components";
+
+const { blok } = Astro.props;
+const people = blok.people.toSorted((p1, p2) => p1.since - p2.since);
+---
+
+<main class="w-4/5 mx-auto flex flex-col my-12">
+  <h1 class="font-bold text-4xl mx-auto">Leden van Verdienste</h1>
+  <p class="mt-4 w-3/4 text-center mx-auto">Leden van Verdienste zijn (ex-)leden die bijzondere verdiensten hebben gedaan voor de vereniging. Tijdens een algemene ledenvergadering kunnen nieuwe leden van verdienste benoemd worden. Zij krijgen dan hun naam en verdiensten op deze pagina vereeuwigd.</p>
+  <div class="border-neutral-300 flex flex-row my-8">
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+    <img src="/exclamation.svg" class="w-7" />
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+  </div>
+  <ul class="grid grid-cols-3 gap-8">
+    {people.map(person => (
+      <li class="flex flex-col border border-neutral-300 rounded-xl">
+        <div class="p-4 border-b border-neutral-300 flex flex-row gap-2">
+          <Image url={person.photo.filename} class="w-24 h-24 my-auto rounded-full aspect-square" />
+          <div class="my-auto">
+            <h2 class="font-bold text-2xl">{person.name}</h2>
+            <span class="text-sm text-neutral-600">Lid van Verdienste sinds {person.since}</span>
+          </div>
+        </div>
+        <div class="p-4" set:html={renderRichText(person.body)}></div>
+      </li>
+    ))}
+  </ul>
+</main>
