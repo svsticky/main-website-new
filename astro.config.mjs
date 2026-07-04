@@ -46,7 +46,8 @@ export default defineConfig({
       "vacancy": "components/vacancies/Vacancy",
       "vacancy-overview": "components/vacancies/Overview",
       "committee": "components/committees/Committee",
-      "committee-overview": "components/committees/Overview"
+      "committee-overview": "components/committees/Overview",
+      "vcp-page": "components/Vcp"
     },
   }), react(), preload()],
   vite: {

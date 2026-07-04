@@ -25,7 +25,7 @@ const { slug } = Astro.params;
 const storyblokApi = useStoryblokApi();
 const { data } = await storyblokApi.get(`cdn/stories/${slug || 'home'}`, {
 	version: 'draft',
-  resolve_relations: 'vacancy.partner',
+  resolve_relations: ['vacancy.partner', 'vcp-page.people'],
 });
 
 const story = data.story;
