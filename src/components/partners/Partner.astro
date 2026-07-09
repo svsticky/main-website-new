@@ -2,6 +2,7 @@
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 import { renderRichText, storyblokEditable, useStoryblokApi } from '@storyblok/astro';
 import { Image } from "astro-preload/components";
+import RichText from '../basics/RichText.astro';
 const { blok, uuid } = Astro.props;
 
 const storyblok_api = useStoryblokApi();
@@ -16,8 +17,6 @@ const vacancies = await storyblok_api.getAll("cdn/stories", {
     }
   }
 })
-
-vacancies.push(...vacancies,...vacancies, ...vacancies, ...vacancies, ...vacancies, ...vacancies, ...vacancies, ...vacancies)
 ---
 
 <main class="w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
@@ -36,7 +35,8 @@ vacancies.push(...vacancies,...vacancies, ...vacancies, ...vacancies, ...vacanci
         {blok.buttons.map(button => <li><StoryblokComponent blok={button} /></li>)}
       </ul>
     </div>
-    <div class="p-4" set:html={renderRichText(blok.body)}></div>
+    <RichText class="p-4" content={blok.body} />
+    <div class="p-4 rich-text" set:html={renderRichText(blok.body)}></div>
   </div>
   
   {!!vacancies.length && <>
