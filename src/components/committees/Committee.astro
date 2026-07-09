@@ -11,10 +11,10 @@ const types = {
 };
 ---
 
-<main class="w-3/4 mx-auto py-8" {...storyblokEditable(blok)}>
+<main class="w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
   <a href="/vereniging/commissies" class="text-[#e2621d] flex flex-row gap-2 group w-max">
     <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-    Terug naar de commissies
+    <span class="group-hover:underline">Terug naar de commissies</span>
   </a>
 
   <div class="rounded border border-neutral-200 overflow-hidden mt-4">

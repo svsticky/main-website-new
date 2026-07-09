@@ -5,6 +5,7 @@ import { Image } from "astro-preload/components";
 const { blok } = Astro.props;
 
 const partner = blok.partner[0].content;
+console.log(blok, partner)
 ---
 
 <main class="w-3/4 mx-auto py-8" {...storyblokEditable(blok)}>

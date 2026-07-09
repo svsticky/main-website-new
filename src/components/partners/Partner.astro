@@ -1,20 +1,60 @@
 ---
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
-import { renderRichText, storyblokEditable } from '@storyblok/astro';
-const { blok } = Astro.props;
+import { renderRichText, storyblokEditable, useStoryblokApi } from '@storyblok/astro';
+import { Image } from "astro-preload/components";
+const { blok, uuid } = Astro.props;
+
+const storyblok_api = useStoryblokApi();
+
+const vacancies = await storyblok_api.getAll("cdn/stories", {
+  version: 'draft',
+  starts_with: 'carriere/vacatures',
+  content_type: 'vacancy',
+  filter_query: {
+    partner: {
+      any_in_array: uuid
+    }
+  }
+})
+
+vacancies.push(...vacancies,...vacancies, ...vacancies, ...vacancies, ...vacancies, ...vacancies, ...vacancies, ...vacancies)
 ---
 
-<main class="w-3/4 mx-auto" {...storyblokEditable(blok)}>
-  <div class="flex flex-row justify-between p-4">
-    <div class="flex flex-row">
-      <img class="h-50 w-50 rounded-full object-contain" src={blok.logo.filename} />
-      <h1 class="text-4xl font-bold my-auto">{blok.name}</h1>
+<main class="w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
+  <a href="/carriere/partners" class="text-[#e2621d] flex flex-row gap-2 group w-max">
+    <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+    <span class="group-hover:underline">Terug naar het partneroverzicht</span>
+  </a>
+
+  <div class="rounded-xl border border-neutral-200 overflow-hidden mt-4">
+    <div class="border-b border-neutral-300 w-full flex flex-row gap-4">
+      <Image class="aspect-square h-30 w-auto object-contain border-r border-neutral-300 p-2" url={blok.logo.filename} alt="" />
+      <div class="flex flex-col my-auto gap-1">
+        <h1 class="font-bold text-3xl">{blok.name}</h1>
+      </div>
+      <ul class="my-auto flex flex-row ml-auto pr-4">
+        {blok.buttons.map(button => <li><StoryblokComponent blok={button} /></li>)}
+      </ul>
     </div>
-    <ul class="my-auto flex flex-row ml-auto">
-      {blok.buttons.map(button => <li><StoryblokComponent blok={button} /></li>)}
+    <div class="p-4" set:html={renderRichText(blok.body)}></div>
+  </div>
+  
+  {!!vacancies.length && <>
+    <div class="border-neutral-300 flex flex-row my-8">
+      <div class="bg-neutral-300 h-px w-full my-auto"></div>
+      <img src="/exclamation.svg" class="w-7" />
+      <div class="bg-neutral-300 h-px w-full my-auto"></div>
+    </div>
+    <h2 class="text-2xl font-bold">Vacatures bij {blok.name}</h2>
+    <ul class="grid grid-cols-4 gap-4 py-4">
+      {vacancies.map(vacancy => (
+        <a href={"/" + vacancy.full_slug} class="group">
+          <li class="border border-neutral-300 rounded-xl group-hover:-translate-y-1 group-hover:shadow transition">
+            <h3 class="group-hover:text-[#fa6b20] font-semibold border-b border-neutral-300 px-4 py-2">{vacancy.name}</h3>
+            <p class="p-4">{vacancy.content.short_text}</p>
+          </li>
+        </a>
+      ))}
     </ul>
-  </div>
-  <div class="rounded border border-neutral-200">
-    <div set:html={renderRichText(blok.body)}></div>
-  </div>
+  </>}
 </main>
