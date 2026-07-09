@@ -5,10 +5,12 @@ const { blok } = Astro.props;
 ---
 
 <main class="w-3/4 mx-auto" {...storyblokEditable(blok)}>
-  <div class="flex flex-row">
-    <img class="h-50 w-50 rounded-full" src={blok.logo.filename} />
-    <h1>{blok.name}</h1>
-    <ul class="flex flex-row ml-auto">
+  <div class="flex flex-row justify-between p-4">
+    <div class="flex flex-row">
+      <img class="h-50 w-50 rounded-full object-contain" src={blok.logo.filename} />
+      <h1 class="text-4xl font-bold my-auto">{blok.name}</h1>
+    </div>
+    <ul class="my-auto flex flex-row ml-auto">
       {blok.buttons.map(button => <li><StoryblokComponent blok={button} /></li>)}
     </ul>
   </div>

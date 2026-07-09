@@ -6,9 +6,9 @@ const { blok } = Astro.props;
 const people = blok.people.toSorted((p1, p2) => p1.since - p2.since);
 ---
 
-<main class="w-4/5 mx-auto flex flex-col my-12">
-  <h1 class="font-bold text-4xl mx-auto">Leden van Verdienste</h1>
-  <p class="mt-4 w-3/4 text-center mx-auto">Leden van Verdienste zijn (ex-)leden die bijzondere verdiensten hebben gedaan voor de vereniging. Tijdens een algemene ledenvergadering kunnen nieuwe leden van verdienste benoemd worden. Zij krijgen dan hun naam en verdiensten op deze pagina vereeuwigd.</p>
+<main class="w-4/5 mx-auto flex flex-col mt-8 mb-16">
+  <h1 class="font-bold text-4xl mx-auto my-8">Leden van Verdienste</h1>
+  <p class="w-3/4 text-center mx-auto">Leden van Verdienste zijn (ex-)leden die bijzondere verdiensten hebben gedaan voor de vereniging. Tijdens een algemene ledenvergadering kunnen nieuwe leden van verdienste benoemd worden. Zij krijgen dan hun naam en verdiensten op deze pagina vereeuwigd.</p>
   <div class="border-neutral-300 flex flex-row my-8">
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
     <img src="/exclamation.svg" class="w-7" />
