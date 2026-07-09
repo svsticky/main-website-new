@@ -1,4 +1,4 @@
-import { Fragment, useState, type ChangeEvent } from "react";
+import { Fragment, useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useStore } from "@nanostores/react";
 import * as store from "./store";
 
@@ -48,10 +48,23 @@ export function MultiSelectInput({ placeholder, options, max_visible, atom_name 
     }
   };
 
+  const container_ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (event: MouseEvent) => {
+      if (!(event.target && container_ref.current?.contains(event.target as Node))) {
+        set_opened(false);
+      }
+    };
+
+    document.addEventListener("click", handler);
+    return () => { document.removeEventListener("click", handler) };
+  });
+
   return (
-    <div className="relative">
+    <div className="relative" ref={container_ref}>
       {/* Tags visible when collapsed */}
-      <ul className="flex flex-row gap-2 bg-neutral-100 border border-neutral-300 rounded-full px-2 py-1 h-9">
+      <ul onClick={() => set_opened(!opened)} className="flex flex-row gap-2 bg-neutral-100 border border-neutral-300 rounded-full px-4 py-1 h-9">
         {!selected_items.length &&
           <span className="text-sm text-neutral-500 my-auto">{placeholder}</span>}
 
@@ -70,7 +83,7 @@ export function MultiSelectInput({ placeholder, options, max_visible, atom_name 
           </li>
         )}
 
-        <button onClick={() => set_opened(!opened)} className="ml-auto cursor-pointer z-10">
+        <button className="ml-auto cursor-pointer z-10">
           <i className={`fas ${opened ? "fa-chevron-up" : "fa-chevron-down"}`}></i>
         </button>
       </ul>

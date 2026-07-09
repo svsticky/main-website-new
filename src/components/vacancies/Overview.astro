@@ -31,16 +31,25 @@ const { data: { datasource_entries: types } } = await storyblokApi.get('cdn/data
 const type_options = types.map(type => ({ key: type.name, value: type.value }));
 ---
 
-<main class="w-3/4 mx-auto py-8" {...storyblokEditable(blok)}>
-  <h1 class="text-4xl font-bold">Vacancies</h1>
+<main class="w-3/4 mx-auto py-12 flex flex-col min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
+  <h1 class="text-4xl font-bold mx-auto mb-8">Vacatures</h1>
+  <p class="w-3/4 mx-auto text-center">
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed pariatur nisi exercitationem quas reprehenderit neque rem blanditiis reiciendis nam rerum ipsam totam quidem, aspernatur necessitatibus fuga accusamus, est optio. Rerum!
+  </p>
+
+  <div class="border-neutral-300 flex flex-row my-8">
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+    <img src="/exclamation.svg" class="w-7" />
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+  </div>
   
-  <div class="grid grid-cols-2 gap-4 mt-2">
+  <div class="grid grid-cols-2 gap-4">
     <div>
-      <span>Sort by programme:</span>
+      <span class="text-sm text-neutral-600">Sort by programme:</span>
       <MultiSelectInput client:load placeholder="Select a programme to filter" options={options} atom_name="programme_filter" />
     </div>
     <div>
-      <label for="sort-type">Sort by vacancy type:</label>
+      <span class="text-sm text-neutral-600">Sort by vacancy type:</span>
       <MultiSelectInput client:load placeholder="Select a type to filter" options={type_options} atom_name="type_filter" />
     </div>
   </div>
@@ -48,11 +57,11 @@ const type_options = types.map(type => ({ key: type.name, value: type.value }));
   <div class="mt-8">
     <ul class="grid grid-cols-4 gap-4" id="vacatures">
       {vacancies.map(vacancy =>
-        <a href={`/carriere/vacatures/${vacancy.slug}`} data-types={vacancy.content.types} data-studies={vacancy.content.studies}>
-          <li class="flex flex-col w-full h-full border border-neutral-200">
-            <Image class="w-full h-auto" url={vacancy.content.partner[0].content.logo.filename} />
-            <span class="font-bold text-lg">{vacancy.content.name}</span>
-            <p>{vacancy.content.short_text}</p>
+        <a class="group" href={`/carriere/vacatures/${vacancy.slug}`} data-types={vacancy.content.types} data-studies={vacancy.content.studies}>
+          <li class="flex flex-col w-full h-full border border-neutral-300 rounded-xl group-hover:-translate-y-1 group-hover:shadow transition">
+            <Image class="w-full h-auto border-b border-neutral-300 object-contain aspect-square" url={vacancy.content.partner[0].content.logo.filename} />
+            <span class="font-bold text-lg mx-auto group-hover:text-[#fa6b20] my-2">{vacancy.content.name}</span>
+            <p class="mx-auto mb-2">{vacancy.content.short_text}</p>
           </li>
         </a>
       )}
