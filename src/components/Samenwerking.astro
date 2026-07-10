@@ -120,9 +120,9 @@ const displayed_partners = main_partners.concat(regular_partners);
   <h2 class="font-bold text-2xl">Bestaande partners</h2>
   <p>Deze bedrijven zijn al partner van Sticky.</p>
   <div class="overflow-x-hidden overflow-y-visible w-full py-4">
-    <ul class="overflow-y-visible" id="conveyor">
+    <ul class="overflow-y-visible" id="conveyor" style={{ "animation-duration": `${displayed_partners.length * 2}s` }}>
       {[...displayed_partners, ...displayed_partners].map(partner => (
-        <a href={partner.full_slug} class="hover:-translate-y-2 transition">
+        <a href={"/" + partner.full_slug} class="hover:-translate-y-2 transition">
           <li>
             <Image width={150} height={150} url={partner.content.logo.filename} class="object-contain" />
           </li>
@@ -224,7 +224,9 @@ const displayed_partners = main_partners.concat(regular_partners);
   display: flex;
   gap: 2rem;
   width: max-content;
-  animation: scroll 30s linear infinite;
+  animation-name: scroll;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
 #conveyor:hover {
@@ -240,38 +242,3 @@ const displayed_partners = main_partners.concat(regular_partners);
   to { transform: translateX(calc(-50% - 1rem)); }
 }
 </style>
-
-<!-- <main class="w-3/4 mx-auto py-8" {...storyblokEditable(blok)}>
-  <h1>Partners</h1>
-  {main_partners.length
-    ? <>
-        <h2>Main partners</h2>
-        <ul class="flex flex-col gap-4">
-          {main_partners.map(partner =>
-            <a href={`/carriere/partners/${partner.slug}`}>
-              <li class="flex flex-row gap-4 h-50 border border-neutral-200">
-                <div class="flex flex-col gap-2">
-                  <img class="w-auto h-full" src={partner.content.logo.filename} />
-                  <span class="mx-auto font-bold text-lg">{partner.content.name}</span>
-                </div>
-                <div set:html={renderRichText(partner.content.main_text)}></div>
-              </li>
-            </a>
-          )}
-        </ul>
-      </>
-    : undefined
-  }
-
-  {main_partners.length ? <h2>Regular partners</h2> : undefined}
-  <ul class="grid grid-cols-5 gap-4">
-    {regular_partners.map(partner =>
-      <a href={`/carriere/partners/${partner.slug}`}>
-        <li class="flex flex-col w-full h-full border border-neutral-200">
-          <img class="w-full h-auto" src={partner.content.logo.filename} />
-          <span class="mx-auto font-bold text-lg">{partner.content.name}</span>
-        </li>
-      </a>
-    )}
-  </ul>
-</main> -->
