@@ -1,5 +1,6 @@
 ---
-import { storyblokEditable } from '@storyblok/astro';
+import { storyblokEditable, renderRichText } from '@storyblok/astro';
+import { Image } from 'astro-preload/components';
 const { blok } = Astro.props;
 
 import { useStoryblokApi } from '@storyblok/astro';
@@ -12,31 +13,67 @@ const boards = await storyblokApi.getAll('cdn/stories', {
   sort_by: "content.board_number:desc:int"
 });
 
-const current_board = boards.shift();
+const current_board = boards[0];
 ---
 
-<main class="w-3/4 mx-auto py-8" {...storyblokEditable(blok)}>
-  <h2>Huidig bestuur</h2>
-  <a href={`/vereniging/bestuur/${current_board.content.board_number}`} class="block w-1/2 mx-auto rounded-xl overflow-hidden" {...storyblokEditable(current_board.content)}>
-    <img class="w-full" src={current_board.content.photo.filename} />
-    <div class="flex flex-col text-center p-2 text-white" style={`background: ${current_board.content.colour}`}>
-      <span class="font-bold text-2xl">Bestuur {current_board.content.board_number}</span>
-      <span>{current_board.content.year}</span>
-    </div>
-  </a>
-  <h2>Vorige besturen</h2>
-  <ol class="grid grid-cols-3 gap-8 mt-8">
-    {boards.map(board => (
-      <li class="rounded-xl overflow-hidden" {...storyblokEditable(board.content)}>
-        <a href={"/" + board.full_slug}>
-          <img class="w-full" src={board.content.photo.filename} />
-          <div class="flex flex-row justify-between text-center p-2 text-white" style={`background: ${board.content.colour}`}>
-            <span class="font-bold text-2xl my-auto">Bestuur {board.content.board_number}</span>
-            <span class="my-auto">{board.content.year}</span>
+<main class="w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)] flex flex-col" {...storyblokEditable(blok)}>
+  <h1 class="text-4xl font-bold mx-auto my-8">Bestuur</h1>
+  <p class="text-center w-3/4 mx-auto">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa nesciunt ex vero voluptatum possimus molestias! Obcaecati, nostrum beatae ut, commodi praesentium exercitationem esse natus provident quas nisi saepe tempore laborum!</p>
+
+  <div class="border-neutral-300 flex flex-row my-8">
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+    <img src="/exclamation.svg" class="w-7" />
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+  </div>
+
+  <div class="flex flex-row gap-12">
+    <ul id="board_links" class="w-full grid grid-cols-2 gap-4 h-min">
+      {boards.map(board => (
+        <li class="group cursor-pointer border-4 rounded-xl overflow-hidden relative" style={{ "border-color": board.content.colour }}>
+          <Image url={board.content.photo.filename} class="w-full h-full object-cover rounded aspect-video object-top" />
+          <div class="opacity-0 group-hover:opacity-100 grid absolute top-0 left-0 w-full h-full bg-[#0000007F] transition">
+            <span class="text-white font-bold m-auto text-2xl">Bestuur {board.content.board_number}</span>
           </div>
-        </a>
-      </li>
-      <li></li>
-    ))}
-  </ol>
+        </li>
+      ))}
+    </ul>
+
+    <div class="w-px bg-neutral-300 rounded h-[calc(100vh-2rem)] sticky top-4"></div>
+
+    <ul class="w-full" id="board_asides">
+      {boards.map((board, idx) => (
+        <li class={`${idx === 0 ? "flex" : "hidden"} sticky top-4 h-[calc(100vh-2rem)] rounded-xl border border-neutral-300 text-white flex flex-col py-4`} style={{ "background-color": board.content.colour }}>
+          <h2 class={`${!board.content.zinspreuk ? "mb-4" : ""} font-bold text-3xl mx-auto`}>Bestuur {board.content.board_number}</h2>
+          {!!board.content.zinspreuk &&
+            <span class="mx-auto mb-4">O.d.z. "<i>{board.content.zinspreuk}</i>"</span>}
+          <figure class="flex flex-col gap-1">
+            <Image url={board.content.photo.filename} class="w-full h-auto object-cover aspect-video object-top" />
+            <figcaption class="mx-auto text-sm">{board.content.photo.title}</figcaption>
+          </figure>
+          <div class="px-4 flex flex-row my-4">
+            <div class="bg-white h-px w-full my-auto rounded-full"></div>
+            <img src="/exclamation_white.svg" class="w-7" />
+            <div class="bg-white h-px w-full my-auto rounded-full"></div>
+          </div>
+          <div class="px-4 pb-4">
+            <h3 class="font-bold text-center text-2xl mb-4">Bestuursleden</h3>
+            <div class="text-center" set:html={renderRichText(board.content.board_members)}></div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
 </main>
+
+<script>
+  const board_links = Array.from(document.getElementById("board_links")!.children) as HTMLLIElement[];
+  const board_asides = Array.from(document.getElementById("board_asides")!.children) as HTMLLIElement[];
+  board_links.forEach((board_link, link_idx) => {
+    board_link.addEventListener("click", () => {
+      board_asides.forEach((aside, aside_idx) => {
+        aside.classList.remove(link_idx === aside_idx ? "hidden" : "flex");
+        aside.classList.add(link_idx === aside_idx ? "flex" : "hidden");
+      });
+    });
+  });
+</script>
