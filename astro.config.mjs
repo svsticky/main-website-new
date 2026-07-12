@@ -33,7 +33,6 @@ export default defineConfig({
       "rich-text": "components/basics/RichText",
       "image": "components/basics/Image",
       "hero": "components/Hero",
-      "contact-card": "components/ContactCard",
       "button": "components/basics/Button",
       "board": "components/board/Board",
       "board-overview": "components/board/Overview",
@@ -45,7 +44,8 @@ export default defineConfig({
       "committee-overview": "components/committees/Overview",
       "vcp-page": "components/Vcp",
       "lvv-page": "components/Lvv",
-      "samenwerking": "components/Samenwerking"
+      "samenwerking": "components/Samenwerking",
+      "contact-page": "components/Contact"
     },
   }), react(), preload()],
   vite: {

@@ -1,0 +1,66 @@
+---
+import { renderRichText, storyblokEditable } from '@storyblok/astro';
+import { Image } from 'astro-preload/components';
+const { blok } = Astro.props;
+---
+
+<main class="w-4/5 mx-auto flex flex-col mt-8 mb-16" {...storyblokEditable(blok)}>
+  <h1 class="font-bold text-4xl mx-auto my-8">Contact</h1>
+  <p class="w-3/4 text-center mx-auto">De contactpersonen voor de studievereniging zijn de bestuursleden. Je kan hun bereiken via email of telefoon met de gegevens hieronder. Overige gegevens voor facturering of post staan ook hieronder.</p>
+  <div class="border-neutral-300 flex flex-row my-8">
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+    <img src="/exclamation.svg" class="w-7" />
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+  </div>
+  <ul class="grid grid-cols-3 gap-8">
+    {blok.people.map(person => (
+      <li class="border border-neutral-300 rounded-xl flex flex-col gap-4" {...storyblokEditable(person.content)}>
+        <div class="flex flex-row w-full gap-2 border-b border-neutral-300 p-4">
+          <Image url={person.photo.filename} class="rounded-full w-24 h-24 object-cover m-auto" />
+          <div class="flex flex-col my-auto grow">
+            <h3 class="font-bold text-2xl">{person.name}</h3>
+            <p class="text-sm text-neutral-700">{person.title}</p>
+          </div>
+        </div>
+        
+        <div class="flex flex-col mb-4">
+          <p class="m-auto flex flex-row gap-2">
+            <i class="fa-phone-alt fas my-auto"></i>
+            {person.phone}
+          </p>
+          <p class="m-auto flex flex-row gap-2">
+            <i class="fa-envelope fas my-auto"></i>
+            {person.email}
+          </p>
+        </div>
+      </li>
+    ))}
+    <li class="border border-neutral-300 rounded-xl flex flex-col">
+      <div class="flex flex-row p-4 gap-4 border-b border-neutral-300">
+        <div class="flex bg-[#fa6c2051] h-8 w-8 rounded text-[#fa6b20]">
+          <i class="m-auto fas fa-building"></i>
+        </div>
+        <h2 class="font-bold text-lg my-auto">Bezoekadres</h2>
+      </div>
+      <div class="p-4" set:html={renderRichText(blok.visit_address)}></div>
+    </li>
+    <li class="border border-neutral-300 rounded-xl flex flex-col">
+      <div class="flex flex-row p-4 gap-4 border-b border-neutral-300">
+        <div class="flex bg-[#fa6c2051] h-8 w-8 rounded text-[#fa6b20]">
+          <i class="m-auto fas fa-envelope"></i>
+        </div>
+        <h2 class="font-bold text-lg my-auto">Postadres</h2>
+      </div>
+      <div class="p-4" set:html={renderRichText(blok.postal_address)}></div>
+    </li>
+    <li class="border border-neutral-300 rounded-xl flex flex-col">
+      <div class="flex flex-row p-4 gap-4 border-b border-neutral-300">
+        <div class="flex bg-[#fa6c2051] h-8 w-8 rounded text-[#fa6b20]">
+          <i class="m-auto fas fa-address-card"></i>
+        </div>
+        <h2 class="font-bold text-lg my-auto">Gegevens</h2>
+      </div>
+      <div class="p-4" set:html={renderRichText(blok.data)}></div>
+    </li>
+  </ul>
+</main>
