@@ -1,10 +1,30 @@
 ---
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
+import { useStoryblokApi } from '@storyblok/astro';
+
+function darken(hex: string, factor: number) {
+  const clean = hex.replace('#', '');
+  const channel = (offset: number) => Math.round(parseInt(clean.slice(offset, offset + 2), 16) * factor);
+  return '#' + [channel(0), channel(2), channel(4)]
+    .map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0'))
+    .join('');
+}
+
+const storyblokApi = useStoryblokApi();
+const current_board = await storyblokApi.getAll('cdn/stories', {
+  version: 'draft',
+  starts_with: 'vereniging/bestuur',
+  content_type: 'board',
+  sort_by: "content.board_number:desc:int",
+  per_page: 1,
+});
+const brand = current_board[0]?.content?.colour || '#fa6b20';
+const brandDark = darken(brand, 0.9);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" style={`--brand: ${brand}; --brand-dark: ${brandDark};`}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />

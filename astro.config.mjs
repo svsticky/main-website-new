@@ -40,12 +40,19 @@ export default defineConfig({
       "partner-overview": "components/partners/Overview",
       "vacancy": "components/vacancies/Vacancy",
       "vacancy-overview": "components/vacancies/Overview",
+      "activities": "components/activities/Activities",
       "committee": "components/committees/Committee",
       "committee-overview": "components/committees/Overview",
+      "society-overview": "components/societies/Overview",
+      "society": "components/societies/Society",
       "vcp-page": "components/Vcp",
       "lvv-page": "components/Lvv",
       "samenwerking": "components/Samenwerking",
-      "contact-page": "components/Contact"
+      "contact-page": "components/Contact",
+      "huisstijl-page": "components/Huisstijl",
+      "links-page": "components/Links",
+      "medezeggenschap-page": "components/Medezeggenschap",
+      "oer-page": "components/Oer"
     },
   }), react(), preload()],
   vite: {

@@ -14,83 +14,53 @@ const stories = await storyblokApi.getAll('cdn/stories', {
 
 const committees = stories.filter(story => story.content.type === "com");
 const groups = stories.filter(story => story.content.type === "wer");
-const societies = stories.filter(story => story.content.type === "dis");
 ---
 
-<main class="grid grid-cols-7 w-4/5 mx-auto mb-16 mt-8" {...storyblokEditable(blok)}>
-  <div class="col-span-5 col-start-2 mb-8 flex flex-col">
-    <h1 class="mx-auto text-4xl font-bold my-8">Commissies, werkgroepen & disputen</h1>
-    <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos natus sint ullam, commodi aperiam laborum nobis nostrum hic nisi inventore quibusdam vitae saepe deserunt, laudantium qui placeat. Illo, eum explicabo. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo ea aperiam doloribus quis cum ut at et illum nesciunt doloremque optio itaque, eum nihil, dolore voluptatum laboriosam, aliquid in nulla.</p>
-    <hr class="border-neutral-300 mt-8">
+<main class="w-3/4 mx-auto py-16 flex flex-col" {...storyblokEditable(blok)}>
+  <h1 class="text-4xl font-bold mx-auto mb-8">Commissies & werkgroepen</h1>
+  <p class="w-3/4 mx-auto text-center mb-8">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos natus sint ullam, commodi aperiam laborum nobis nostrum hic nisi inventore quibusdam vitae saepe deserunt, laudantium qui placeat.</p>
+
+  <h2 class="mx-auto text-2xl font-bold">Commissies</h2>
+  <p class="w-3/4 mx-auto text-center mb-8">Een commissie is een groepje leden, die samen activiteiten organiseren voor alle leden van de vereniging. Vanuit de vereniging is er budget voor leuke ideeen zoals paintballen, een barbecue of een heuse internationale reis!</p>
+
+  <div class="border-neutral-300 flex flex-row mb-8">
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+    <img src="/exclamation.svg" class="w-7" />
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
   </div>
 
-  <div></div>
+  <ul class="grid grid-cols-4 gap-4 mb-16">
+    {committees.map(committee =>
+      <a href={`/vereniging/commissies/${committee.slug}`} class="group relative block aspect-square border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
+        <li class="h-full">
+          <Image class="w-full h-full object-contain" url={committee.content.logo.filename} />
+          <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition">
+            <span class="text-white font-bold text-center px-2 hyphens-auto" lang="nl">{committee.content.name}</span>
+          </div>
+        </li>
+      </a>
+    )}
+  </ul>
 
-  <div class="flex flex-col gap-4 col-span-3">
-    <h2 class="mx-auto text-2xl font-bold">Commissies</h2>
-    <p class="text-center pb-4">Een commissie is een groepje leden, die samen activiteiten organiseren voor alle leden van de vereniging. Vanuit de vereniging is er budget voor leuke ideeen zoals paintballen, een barbecue of een heuse internationale reis!</p>
-    <div class="border-neutral-300 flex flex-row">
-      <div class="bg-neutral-300 h-px w-full my-auto"></div>
-      <img src="/exclamation.svg" class="w-7" />
-      <div class="bg-neutral-300 h-px w-full my-auto"></div>
-    </div>
+  <h2 class="mx-auto text-2xl font-bold">Werkgroepen</h2>
+  <p class="w-3/4 mx-auto text-center mb-8">Een werkgroep is net als een commissie, maar hoeft geen activiteiten te organiseren. Daarom dienen de meeste werkgroepen ter ondersteuning van de vereniging en hebben regelmatige gezellige werkmomenten.</p>
+
+  <div class="border-neutral-300 flex flex-row mb-8">
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+    <img src="/exclamation.svg" class="w-7" />
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
   </div>
 
-  <div></div>
-
-  <div class="flex flex-col gap-4 col-span-3">
-    <h2 class="mx-auto text-2xl font-bold">Werkgroepen</h2>
-    <p class="text-center pb-4">Een werkgroep is net als een commissie, maar hoeft geen activiteiten te organiseren. Daarom dienen de meeste werkgroepen ter ondersteuning van de vereniging en hebben regelmatige gezellige werkmomenten.</p>
-    <div class="border-neutral-300 flex flex-row">
-      <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-      <img src="/exclamation.svg" class="w-7" />
-      <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-    </div>
-  </div>
-
-  <div class="mt-8 col-span-3">
-    <ul class="grid grid-cols-3 gap-8">
-      {committees.map(committee =>
-        <a href={`/vereniging/commissies/${committee.slug}`} class="grid border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition hover:text-[#fa6b20]">
-          <li class="flex flex-col h-full">
-            <Image class="w-full h-auto aspect-square object-contain border-neutral-300 border-b" url={committee.content.logo.filename} />
-            <h3 class="font-semibold text-xl text-center py-4 hyphens-auto my-auto" lang="nl">{committee.content.name}</h3>
-          </li>
-        </a>
-      )}
-    </ul>
-  </div>
-
-  <div class="my-8 w-px mx-auto bg-neutral-300 rounded-full overflow-hidden"></div>
-
-  <div class="w-full col-span-3 mt-8 flex flex-col">
-    <ul class="grid grid-cols-3 gap-8">
-      {groups.map(committee =>
-        <a href={`/vereniging/commissies/${committee.slug}`} class="flex border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition hover:text-[#fa6b20]">
-          <li class="flex flex-col w-full">
-            <Image class="w-full h-auto aspect-square object-contain border-neutral-300 border-b" url={committee.content.logo.filename} />
-            <h3 class="w-full font-semibold text-xl text-center py-4 hyphens-auto my-auto" lang="nl">{committee.content.name}</h3>
-          </li>
-        </a>
-      )}
-    </ul>
-
-    <h2 class="mx-auto text-2xl font-bold mb-8 mt-24">Disputen</h2>
-    <p class="text-center mb-8">Een werkgroep is net als een commissie, maar hoeft geen activiteiten te organiseren. Daarom dienen de meeste werkgroepen ter ondersteuning van de vereniging en hebben regelmatige gezellige werkmomenten.</p>
-    <div class="border-neutral-300 flex flex-row">
-      <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-      <img src="/exclamation.svg" class="w-7" />
-      <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-    </div>
-    <ul class="grid grid-cols-3 gap-8 mt-8">
-      {societies.map(committee =>
-        <a href={`/vereniging/commissies/${committee.slug}`} class="flex border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition hover:text-[#fa6b20]">
-          <li class="flex flex-col w-full">
-            <Image class="w-full h-auto aspect-square object-contain border-neutral-300 border-b" url={committee.content.logo.filename} />
-            <h3 class="w-full font-semibold text-xl text-center py-4 hyphens-auto my-auto" lang="nl">{committee.content.name}</h3>
-          </li>
-        </a>
-      )}
-    </ul>
-  </div>
+  <ul class="grid grid-cols-4 gap-4">
+    {groups.map(group =>
+      <a href={`/vereniging/commissies/${group.slug}`} class="group relative block aspect-square border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
+        <li class="h-full">
+          <Image class="w-full h-full object-contain" url={group.content.logo.filename} />
+          <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition">
+            <span class="text-white font-bold text-center px-2 hyphens-auto" lang="nl">{group.content.name}</span>
+          </div>
+        </li>
+      </a>
+    )}
+  </ul>
 </main>

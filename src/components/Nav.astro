@@ -6,8 +6,10 @@ const menus = [
 			{ title: 'Activiteiten', to: '/vereniging/activiteiten' },
 			{ title: 'Bestuur', to: '/vereniging/bestuur' },
 			{ title: 'Commissies', to: '/vereniging/commissies' },
+			{ title: 'Disputen', to: '/vereniging/disputen' },
       { title: "Sociale veiligheid", to: "/vereniging/vcp" },
       { title: "Leden van Verdienste", to: "/vereniging/leden-van-verdienste" },
+			{ title: 'Huisstijl', to: '/vereniging/huisstijl' },
 			{ title: 'Contact', to: '/vereniging/contact' },
 		],
 	},
@@ -27,12 +29,13 @@ const menus = [
 			{ title: 'Vacatures', to: '/carriere/vacatures' },
 		],
 	},
+	{ title: 'Links', to: '/links' },
 	{ title: 'Koala', to: 'https://koala.svsticky.nl', type: 'button' },
 	{ title: 'Word lid', to: 'https://wordlid.svsticky.nl', type: 'button' },
 ];
 ---
 
-<nav class="px-6 flex h-16 justify-between bg-[#fa6b20]">
+<nav class="px-6 flex h-16 justify-between bg-[var(--brand)] shadow-md relative z-50">
   <a href="/" class="self-start py-2">
     <img
       class="h-12"
@@ -48,30 +51,29 @@ const menus = [
 						menu.type === 'button' ? (
 							<a
 								href={menu.to}
-								class="text-[#fa6b20] bg-white rounded-lg px-4 py-2"
+								class="text-[var(--brand)] bg-white rounded-lg px-4 py-2 inline-block hover:-translate-y-0.5 hover:shadow transition"
 							>
 								{menu.title}
 							</a>
 						) : (
-							<a href={menu.to} class="text-white">
+							<a href={menu.to} class="text-white hover:text-white/80 transition">
 								{menu.title}
 							</a>
 						)
 					) : (
-						<a data-menu class="text-white cursor-pointer select-none flex flex-row gap-1">
+						<a data-menu class="text-white hover:text-white/80 transition cursor-pointer select-none flex flex-row gap-1">
 							{menu.title}
 							<i class="fa-solid fa-caret-down transition-transform my-auto" />
 						</a>
 					)}
 					{menu.submenu && (
 						<ul
-							class="absolute top-6 left-1/2 -translate-x-1/2 flex-col bg-white border border-[#999999] rounded text-center z-100 px-4 w-max"
-							style="display: none"
+							class="absolute top-8 left-1/2 -translate-x-1/2 -translate-y-1 flex flex-col bg-white border border-neutral-200 shadow-lg rounded-xl text-center z-50 px-4 py-1 w-max opacity-0 pointer-events-none transition-all duration-200"
 						>
 							{menu.submenu.map((submenu) => (
-								<li class="py-2 not-last:border-b not-last:border-[#999999]">
+								<li class="not-last:border-b not-last:border-neutral-200">
 									<a
-										class="w-full hover:-translate-y-1 inline-block transition-transform"
+										class="w-full inline-block py-2 hover:text-[var(--brand)] transition"
 										href={submenu.to}
 									>
 										{submenu.title}
@@ -97,7 +99,7 @@ const menus = [
 		const icon = menu.querySelector('.fa-solid') as HTMLElement;
 		const submenu = menu.nextElementSibling as HTMLElement;
 
-		submenu.style.display = 'none';
+		submenu.classList.add('opacity-0', 'pointer-events-none', '-translate-y-1');
 		icon.style.rotate = '0deg';
 		icon.style.translate = '0';
 	}
@@ -110,14 +112,14 @@ const menus = [
 			close_menu(opened_submenu.querySelector('a[data-menu]')!);
 		opened_submenu = menu.parentElement;
 
-		submenu.style.display = 'flex';
+		submenu.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-1');
 		icon.style.rotate = '180deg';
 		icon.style.translate = '0 2px';
 	}
 
 	function toggle_menu(menu: HTMLElement) {
 		const submenu = menu.nextElementSibling as HTMLElement;
-		submenu.style.display === 'none' ? open_menu(menu) : close_menu(menu);
+		submenu.classList.contains('opacity-0') ? open_menu(menu) : close_menu(menu);
 	}
 
 	const menus = Array.from(

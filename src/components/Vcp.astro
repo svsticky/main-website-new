@@ -1,16 +1,16 @@
 ---
-import { renderRichText } from "@storyblok/astro";
 import { Image } from "astro-preload/components";
 import RichText from "./basics/RichText.astro";
 
 const { blok } = Astro.props;
 ---
 
-<main class="grid grid-cols-5 w-4/5 mx-auto gap-8 my-12">
+<main class="w-3/4 mx-auto py-12">
+  <h1 class="text-4xl font-bold text-center mb-8">Sociale veiligheid bij Sticky</h1>
+
+  <div class="grid grid-cols-5 gap-8">
   <div class="flex flex-col col-span-3">
     <div class="border border-neutral-300 rounded-xl p-4">
-      <h1 class="text-2xl font-bold mb-4">Sociale veiligheid bij Sticky</h1>
-      <!-- <div id="vcp-body" lang="nl" set:html={renderRichText(blok.body)}></div> -->
       <div lang="nl" id="vcp-body">
         <RichText content={blok.body} />
       </div>
@@ -28,19 +28,19 @@ const { blok } = Astro.props;
       <div class="flex flex-col gap-4 w-min grow">
         <p lang="nl" class="hyphens-auto text-center">Neem zelf contact op met een van onze vertrouwenscontactpersonen:</p>
         <ul class="flex flex-col gap-4 mx-auto">
-          {blok.people.map(person => (
-            <li class="grid grid-cols-[6rem_auto] gap-4">
-              <Image url={person.photo.filename} class="rounded-full w-full h-auto aspect-square my-auto border border-neutral-300" />
+          {blok.people.map((person: any) => (
+            <li class="grid grid-cols-[6rem_auto] gap-4 border border-neutral-200 rounded-xl p-4">
+              <Image url={person.photo.filename} class="rounded-full w-full h-auto aspect-square my-auto" />
               <div class="flex flex-col gap-2">
                 <span class="w-full font-bold text-lg">{person.name}</span>
-                <span class="flex flex-row gap-1 text-sm">
+                <a href={`mailto:${person.email}`} class="flex flex-row gap-1 text-sm hover:underline">
                   <i class="fas fa-envelope my-auto"></i>
                   {person.email}
-                </span>
-                <span class="flex flex-row gap-1 text-sm">
+                </a>
+                <a href={`tel:${person.phone}`} class="flex flex-row gap-1 text-sm hover:underline">
                   <i class="fas fa-phone my-auto"></i>
                   {person.phone}
-                </span>
+                </a>
               </div>
             </li>
           ))}
@@ -51,6 +51,7 @@ const { blok } = Astro.props;
 
   <div class="w-full col-span-2">
     <Image url={blok.poster.filename} class="w-full h-auto rounded-xl" />
+  </div>
   </div>
 </main>
 

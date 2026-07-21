@@ -20,7 +20,7 @@ const vacancies = await storyblok_api.getAll("cdn/stories", {
 ---
 
 <main class="w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
-  <a href="/carriere/partners" class="text-[#e2621d] flex flex-row gap-2 group w-max">
+  <a href="/carriere/partners" class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max">
     <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
     <span class="group-hover:underline">Terug naar het partneroverzicht</span>
   </a>
@@ -50,7 +50,7 @@ const vacancies = await storyblok_api.getAll("cdn/stories", {
       {vacancies.map(vacancy => (
         <a href={"/" + vacancy.full_slug} class="group">
           <li class="border border-neutral-300 rounded-xl group-hover:-translate-y-1 group-hover:shadow transition">
-            <h3 class="group-hover:text-[#fa6b20] font-semibold border-b border-neutral-300 px-4 py-2">{vacancy.name}</h3>
+            <h3 class="group-hover:text-[var(--brand)] font-semibold border-b border-neutral-300 px-4 py-2">{vacancy.name}</h3>
             <p class="p-4">{vacancy.content.short_text}</p>
           </li>
         </a>

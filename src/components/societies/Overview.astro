@@ -1,0 +1,44 @@
+---
+import { storyblokEditable, useStoryblokApi } from "@storyblok/astro";
+import { Image } from "astro-preload/components";
+
+const { blok } = Astro.props;
+
+const storyblokApi = useStoryblokApi();
+const societies = await storyblokApi.getAll('cdn/stories', {
+  version: 'draft',
+  starts_with: 'vereniging/disputen',
+  content_type: 'society',
+  sort_by: "name"
+});
+---
+
+<main class="w-3/4 mx-auto py-16 flex flex-col" {...storyblokEditable(blok)}>
+  <h1 class="text-4xl font-bold mx-auto mb-8">Disputen</h1>
+  <p class="w-3/4 mx-auto text-center mb-8">Een dispuut is een hechte groep leden die zich, naast het studeren, samen verder wil ontwikkelen en verbinden tijdens de studententijd.</p>
+
+  <div class="border-neutral-300 flex flex-row mb-8">
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+    <img src="/exclamation.svg" class="w-7" />
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+  </div>
+
+  <ul class="flex flex-col gap-6">
+    {societies.map(society => (
+      <li>
+        <a href={`/vereniging/disputen/${society.slug}`} class="group block">
+          <div
+            class="flex flex-row items-center gap-6 rounded-xl overflow-hidden text-white p-6 group-hover:-translate-y-1 group-hover:shadow transition"
+            style={{ background: society.content.colour }}
+          >
+            <Image class="w-1/4 shrink-0 aspect-square rounded-lg bg-white object-contain p-4" url={society.content.logo.filename} />
+            <div class="w-3/4">
+              <h3 class="font-bold text-xl">{society.content.name}</h3>
+              <p class="mt-1">{society.content.short_text}</p>
+            </div>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</main>

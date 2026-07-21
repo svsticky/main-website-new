@@ -60,7 +60,7 @@ const type_options = types.map(type => ({ key: type.name, value: type.value }));
         <a class="group" href={`/carriere/vacatures/${vacancy.slug}`} data-types={vacancy.content.types} data-studies={vacancy.content.studies}>
           <li class="flex flex-col w-full h-full border border-neutral-300 rounded-xl group-hover:-translate-y-1 group-hover:shadow transition">
             <Image class="w-full h-auto border-b border-neutral-300 object-contain aspect-square" url={vacancy.content.partner[0].content.logo.filename} />
-            <span class="font-bold text-lg mx-auto group-hover:text-[#fa6b20] my-2">{vacancy.content.name}</span>
+            <span class="font-bold text-lg mx-auto group-hover:text-[var(--brand)] my-2">{vacancy.content.name}</span>
             <p class="mx-auto mb-2">{vacancy.content.short_text}</p>
           </li>
         </a>

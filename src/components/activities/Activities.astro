@@ -1,0 +1,81 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+
+const KOALA_API = "https://koala.svsticky.nl/api/activities";
+const KOALA_ACTIVITY_URL = "https://koala.svsticky.nl/activities";
+---
+
+<main class="w-3/4 mx-auto py-16 flex flex-col" {...storyblokEditable(blok)}>
+  <h1 class="text-4xl font-bold mx-auto mb-8">Activiteiten</h1>
+
+  <ul class="grid grid-cols-4 gap-4" id="activities"></ul>
+  <p id="activities-empty" class="hidden text-center text-neutral-600 mt-8">Er zijn momenteel geen activiteiten gepland.</p>
+</main>
+
+<script is:inline define:vars={{ KOALA_API, KOALA_ACTIVITY_URL }}>
+  const date_formatter = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  function format_date(date) {
+    return date_formatter.format(new Date(date));
+  }
+
+  function build_card(activity) {
+    const link = document.createElement('a');
+    link.href = `${KOALA_ACTIVITY_URL}/${activity.id}`;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'group';
+
+    const card = document.createElement('li');
+    card.className = 'flex flex-col w-full h-full border border-neutral-300 rounded-xl overflow-hidden group-hover:-translate-y-1 group-hover:shadow transition';
+
+    const poster = document.createElement('img');
+    poster.src = activity.poster;
+    poster.alt = activity.name;
+    poster.className = 'w-full h-auto aspect-[210/297] object-cover';
+
+    const info = document.createElement('div');
+    info.className = 'p-4 flex flex-col gap-1';
+
+    const title = document.createElement('span');
+    title.className = 'font-bold text-lg group-hover:text-[var(--brand)] transition';
+    title.textContent = activity.name;
+
+    const date = document.createElement('span');
+    date.className = 'text-sm text-neutral-600';
+    date.textContent = format_date(activity.start_date);
+
+    info.append(title, date);
+    card.append(poster, info);
+    link.append(card);
+    return link;
+  }
+
+  async function load_activities() {
+    const container = document.getElementById('activities');
+    const empty_message = document.getElementById('activities-empty');
+    if (!container || !empty_message) return;
+
+    try {
+      const response = await fetch(KOALA_API);
+      const activities = await response.json();
+
+      const upcoming = activities
+        .filter((activity) => activity.poster)
+        .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime());
+
+      if (upcoming.length === 0) {
+        empty_message.classList.remove('hidden');
+        return;
+      }
+
+      container.append(...upcoming.map(build_card));
+    } catch {
+      empty_message.textContent = 'Activiteiten konden niet worden geladen.';
+      empty_message.classList.remove('hidden');
+    }
+  }
+
+  load_activities();
+</script>

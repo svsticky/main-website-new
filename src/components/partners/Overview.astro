@@ -53,10 +53,12 @@ const regular_partners = partners.filter(partner => !partner.content.is_main);
   {!!main_partners.length && <h2 class="mx-auto font-bold text-2xl">Reguliere partners</h2>}
   <ul class="grid grid-cols-6 gap-4">
     {regular_partners.map(partner =>
-      <a href={`/carriere/partners/${partner.slug}`}>
-        <li class="flex flex-col w-full h-full border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition hover:text-[#fa6b20]">
-          <img class="p-4 w-full h-auto aspect-square object-contain border-b border-neutral-300" src={partner.content.logo.filename} />
-          <span lang="nl" class="w-full text-center my-auto font-bold text-lg p-4 hyphens-auto">{partner.content.name}</span>
+      <a href={`/carriere/partners/${partner.slug}`} class="group relative block aspect-square border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
+        <li class="h-full">
+          <img class="w-full h-full object-contain p-4" src={partner.content.logo.filename} />
+          <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition">
+            <span class="text-white font-bold text-center px-2 hyphens-auto" lang="nl">{partner.content.name}</span>
+          </div>
         </li>
       </a>
     )}

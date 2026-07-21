@@ -7,13 +7,13 @@ const { blok } = Astro.props;
 ---
 
 <main class="w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
-  <a href="/vereniging/commissies" class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
+  <a href="/vereniging/disputen" class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
     <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-    <span class="group-hover:underline">Terug naar de commissies</span>
+    <span class="group-hover:underline">Terug naar de disputen</span>
   </a>
 
   <div class="rounded-xl border border-neutral-200 overflow-hidden">
-    <div class="flex items-center justify-center p-10">
+    <div class="flex items-center justify-center p-10" style={{ background: blok.colour }}>
       <Image class="w-48 h-48 shrink-0 object-contain" url={blok.logo.filename} alt="" />
     </div>
 
@@ -29,7 +29,7 @@ const { blok } = Astro.props;
 
     <div class="p-6">
       {!!blok.photos?.length &&
-        <div class="relative float-right w-64 ml-6 mb-4 aspect-square rounded-lg overflow-hidden border border-neutral-200" id="committee-carousel">
+        <div class="relative float-right w-64 ml-6 mb-4 aspect-square rounded-lg overflow-hidden border border-neutral-200" id="society-carousel">
           {blok.photos.map((photo: any, idx: number) => (
             <img
               src={photo.filename}
@@ -57,7 +57,7 @@ const { blok } = Astro.props;
 </main>
 
 <script>
-  const carousel = document.getElementById('committee-carousel');
+  const carousel = document.getElementById('society-carousel');
   if (carousel) {
     const items = Array.from(carousel.querySelectorAll<HTMLImageElement>('.carousel-item'));
     const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>('.carousel-dot'));

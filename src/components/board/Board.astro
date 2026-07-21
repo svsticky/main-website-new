@@ -1,5 +1,6 @@
 ---
 import { renderRichText, storyblokEditable } from '@storyblok/astro';
+import { Image } from 'astro-preload/components';
 const { blok } = Astro.props;
 import { useStoryblokApi } from '@storyblok/astro';
 
@@ -16,43 +17,55 @@ const is_last = current_board[0].content.board_number === blok.board_number;
 blok.board_number = Number(blok.board_number);
 ---
 
-<main class="w-3/4 mx-auto" {...storyblokEditable(blok)}>
-  <div class="border border-neutral-200 shadow grid grid-cols-2 my-8 rounded-xl overflow-none">
-    <img class="w-full h-full object-cover rounded-xl rounded-r-none" src={blok.photo.filename} alt="Bestuursfoto">
-    <div>
-      <div class="text-white text-center p-2 rounded-tr-xl" style={`background: ${blok.colour}`}>
-        <h1 class="w-full font-bold text-3xl">Bestuur {blok.board_number}</h1>
-        <p class="text-lg">O.d.z. <i>"{blok.zinspreuk}"</i></p>
-      </div>
-      <div class="p-2 text-lg">
-        <h2 class="font-bold text-center mb-2">Bestuursleden</h2>
-        <div set:html={renderRichText(blok.board_members)}></div>
+<main class="w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
+  <a href="/vereniging/bestuur" class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
+    <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+    <span class="group-hover:underline">Terug naar het overzicht</span>
+  </a>
+
+  <div class="bg-white shadow rounded-2xl p-8 mb-8 border border-neutral-100">
+    <div class="mb-6">
+      <h1 class="text-3xl font-extrabold" style={{ color: blok.colour }}>
+        {is_last ? "Huidig bestuur" : "Bestuur"} {blok.board_number}
+      </h1>
+      {!!blok.year && <p class="text-neutral-500">{blok.year}</p>}
+    </div>
+
+    <div class="grid grid-cols-2 gap-8 items-start">
+      <Image url={blok.photo.filename} class="w-full rounded-xl object-cover aspect-video" alt="Bestuursfoto" />
+
+      <div class="flex flex-col gap-6">
+        <div>
+          <h3 class="text-xl font-extrabold mb-1" style={{ color: blok.colour }}>O.d.z.</h3>
+          <p class="italic">"{blok.zinspreuk}"</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-extrabold mb-1" style={{ color: blok.colour }}>Bestuursleden</h3>
+          <div set:html={renderRichText(blok.board_members)}></div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="flex flex-row gap-4 text-lg mx-auto w-max">
-    {blok.board_number > 1
-      ? <a href={`/vereniging/bestuur/${blok.board_number - 1}`} class="cursor-pointer rounded px-2 py-1 text-white flex flex-row gap-2" style={`background: ${blok.colour}`}>
-          <i class="fa fas fa-chevron-left my-auto" />
-          Bestuur {blok.board_number - 1}
-        </a>
-      : undefined}
-    <a
-      href="/vereniging/bestuur"
-      class="cursor-pointer rounded px-2 py-1 text-white my-auto"
-      style={`background: ${blok.colour}`}
-    >
-      Terug naar overzicht
-    </a>
-    {!is_last
-      ? <a href={`/vereniging/bestuur/${blok.board_number + 1}`} class="cursor-pointer rounded px-2 py-1 text-white flex flex-row gap-2" style={`background: ${blok.colour}`}>
-          Bestuur {blok.board_number + 1}
-          <i class="fa fas fa-chevron-right my-auto" />
-        </a>
-      : undefined}
+
+    {!!blok.members?.length &&
+      <div class="mt-10 flex flex-col gap-6">
+        {blok.members.map((member: any, idx: number) => (
+          <a href={member.linkedin_url.cached_url} target="_blank" rel="noopener noreferrer" class="group block">
+            <div class={`flex ${idx % 2 === 0 ? "flex-row" : "flex-row-reverse"} items-center gap-6 rounded-xl border border-neutral-200 p-4`}>
+              <img
+                src={member.photo.filename}
+                alt={member.name}
+                class="w-32 h-32 shrink-0 rounded-full object-cover border-4 transition group-hover:-translate-y-1 group-hover:shadow-lg"
+                style={{ "border-color": blok.colour }}
+              />
+              <div class={idx % 2 === 0 ? "text-left" : "text-right"}>
+                <h4 class="font-extrabold text-lg" style={{ color: blok.colour }}>
+                  {member.name}{!!member.function && ` - ${member.function}`}
+                </h4>
+                <p class="mt-1 text-neutral-700">{member.bio}</p>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>}
   </div>
 </main>
-
-<style is:global>
-
-</style>

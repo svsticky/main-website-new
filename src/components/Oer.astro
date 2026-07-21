@@ -1,0 +1,48 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+import RichText from './basics/RichText.astro';
+
+const { blok } = Astro.props;
+
+const oer_summary_url = blok.oer_summary?.cached_url || blok.oer_summary?.url || blok.oer_summary?.filename;
+const oer_full_url = blok.oer_full?.cached_url || blok.oer_full?.url || blok.oer_full?.filename;
+---
+
+<main class="w-3/4 mx-auto py-16 flex flex-col" {...storyblokEditable(blok)}>
+  <h1 class="text-4xl font-bold mx-auto mb-8">OER</h1>
+
+  <div class="w-3/4 mx-auto mb-8">
+    <RichText content={blok.body_text} />
+  </div>
+
+  <div class="border-neutral-300 flex flex-row mb-8">
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+    <img src="/exclamation.svg" class="w-7" />
+    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-6">
+    {oer_summary_url &&
+      <a href={oer_summary_url} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 border border-neutral-200 rounded-xl p-6 hover:-translate-y-1 hover:shadow transition">
+        <div class="w-12 h-12 shrink-0 rounded-lg bg-[var(--brand)]/20 flex items-center justify-center text-[var(--brand)]">
+          <i class="fas fa-file-pdf text-xl"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">OER samenvatting</h3>
+          <p class="text-sm text-neutral-600">Download de PDF</p>
+        </div>
+      </a>
+    }
+    {oer_full_url &&
+      <a href={oer_full_url} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 border border-neutral-200 rounded-xl p-6 hover:-translate-y-1 hover:shadow transition">
+        <div class="w-12 h-12 shrink-0 rounded-lg bg-[var(--brand)]/20 flex items-center justify-center text-[var(--brand)]">
+          <i class="fas fa-file-pdf text-xl"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">Volledige OER</h3>
+          <p class="text-sm text-neutral-600">Download de PDF</p>
+        </div>
+      </a>
+    }
+  </div>
+</main>
