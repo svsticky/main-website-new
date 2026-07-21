@@ -52,7 +52,8 @@ export default defineConfig({
       "huisstijl-page": "components/Huisstijl",
       "links-page": "components/Links",
       "medezeggenschap-page": "components/Medezeggenschap",
-      "oer-page": "components/Oer"
+      "oer-page": "components/Oer",
+      "over-ons-page": "components/OverOns"
     },
   }), react(), preload()],
   vite: {

@@ -3,7 +3,7 @@ import { Image } from "astro-preload/components";
 import RichText from "./basics/RichText.astro";
 
 const { blok } = Astro.props;
-const people = blok.people.toSorted((p1, p2) => p1.since - p2.since);
+const people = blok.people.toSorted((p1: any, p2: any) => p1.since - p2.since);
 ---
 
 <main class="w-3/4 mx-auto flex flex-col py-8 mb-16">
