@@ -79,7 +79,7 @@ const specs = [
         <div class="grid grid-cols-3 gap-6">
           <div class="flex flex-col items-center gap-2">
             <div class="w-full aspect-square rounded-lg border border-neutral-200 bg-white flex items-center justify-center p-8">
-              <img src={logo.color.svg} class="max-w-full max-h-full" alt={`${logo.name} - kleur`} />
+              <img src={logo.color.svg} class="max-w-full max-h-full huisstijl-logo" alt={`${logo.name} - kleur`} />
             </div>
             <div class="flex gap-2">
               <a href={logo.color.png} download target="_blank" rel="noopener noreferrer" class="text-xs px-2 py-1 rounded border border-neutral-300 hover:bg-neutral-100 transition">PNG</a>
@@ -88,7 +88,7 @@ const specs = [
           </div>
           <div class="flex flex-col items-center gap-2">
             <div class="w-full aspect-square rounded-lg border border-neutral-200 bg-white flex items-center justify-center p-8">
-              <img src={logo.black.svg} class="max-w-full max-h-full" alt={`${logo.name} - zwart`} />
+              <img src={logo.black.svg} class="max-w-full max-h-full huisstijl-logo" alt={`${logo.name} - zwart`} />
             </div>
             <div class="flex gap-2">
               <a href={logo.black.png} download target="_blank" rel="noopener noreferrer" class="text-xs px-2 py-1 rounded border border-neutral-300 hover:bg-neutral-100 transition">PNG</a>
@@ -97,7 +97,7 @@ const specs = [
           </div>
           <div class="flex flex-col items-center gap-2">
             <div class="w-full aspect-square rounded-lg border border-neutral-200 bg-neutral-800 flex items-center justify-center p-8">
-              <img src={logo.white.svg} class="max-w-full max-h-full" alt={`${logo.name} - wit`} />
+              <img src={logo.white.svg} class="max-w-full max-h-full huisstijl-logo" alt={`${logo.name} - wit`} />
             </div>
             <div class="flex gap-2">
               <a href={logo.white.png} download target="_blank" rel="noopener noreferrer" class="text-xs px-2 py-1 rounded border border-neutral-300 hover:bg-neutral-100 transition">PNG</a>
@@ -151,3 +151,38 @@ const specs = [
     </div>
   </div>
 </main>
+
+<script>
+  let click_times: number[] = [];
+  const logos = document.querySelectorAll<HTMLImageElement>('.huisstijl-logo');
+
+  function trigger_spin() {
+    logos.forEach((img) => img.classList.add('huisstijl-spin'));
+  }
+
+  logos.forEach((img) => {
+    img.addEventListener('click', () => {
+      const now = Date.now();
+      click_times = click_times.filter((t) => now - t < 3000);
+      click_times.push(now);
+      if (click_times.length >= 10) {
+        click_times = [];
+        trigger_spin();
+      }
+    });
+
+    img.addEventListener('animationend', () => img.classList.remove('huisstijl-spin'));
+  });
+</script>
+
+<style is:global>
+  @keyframes huisstijl-spin {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(720deg) scale(1.15); }
+    100% { transform: rotate(1080deg) scale(1); }
+  }
+
+  .huisstijl-spin {
+    animation: huisstijl-spin 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+</style>

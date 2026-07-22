@@ -36,16 +36,28 @@ const brandDark = darken(brand, 0.9);
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
+		<script is:inline>
+			const nav_entry = performance.getEntriesByType('navigation')[0];
+			if (nav_entry && nav_entry.type === 'reload') {
+				sessionStorage.removeItem('sticky-easter-egg');
+			}
+			if (sessionStorage.getItem('sticky-easter-egg') === '1') {
+				document.documentElement.style.setProperty('--brand', '#fa6b20');
+				document.documentElement.style.setProperty('--brand-dark', '#e1601d');
+			}
+		</script>
 	</head>
 	<body>
+		<div id="snow-container" class="pointer-events-none fixed inset-0 z-40 overflow-hidden"></div>
 		<Nav />
 		<slot />
 	</body>
 	<footer class="w-full bg-[#404040] flex justify-between items-center px-8 py-4">
 		<img
+			id="footer-logo"
 			src="https://public.svsticky.nl/logos/hoofd_outline_wit.svg"
 			alt="Sticky Logo"
-      class="h-16"
+      class="h-16 cursor-pointer"
 		/>
 
 		<div class="flex gap-8 text-white text-[2rem]">
@@ -71,6 +83,144 @@ const brandDark = darken(brand, 0.9);
 		</div>
 	</footer>
 </html>
+
+<script is:inline define:vars={{ brand, brandDark }}>
+	const logo = document.getElementById('footer-logo');
+	const root = document.documentElement;
+
+	logo?.addEventListener('click', () => {
+		const active = sessionStorage.getItem('sticky-easter-egg') === '1';
+		const next = !active;
+
+		if (next) {
+			sessionStorage.setItem('sticky-easter-egg', '1');
+			root.style.setProperty('--brand', '#fa6b20');
+			root.style.setProperty('--brand-dark', '#e1601d');
+		} else {
+			sessionStorage.removeItem('sticky-easter-egg');
+			root.style.setProperty('--brand', brand);
+			root.style.setProperty('--brand-dark', brandDark);
+		}
+	});
+</script>
+
+<script is:inline>
+	function is_snow_season(date) {
+		const month = date.getMonth();
+		const day = date.getDate();
+		return (month === 11 && day >= 24) || (month === 0 && day <= 2);
+	}
+
+	function spawn_snowflake(container) {
+		const flake = document.createElement('span');
+		const left = Math.random() * 100;
+		const duration = 8 + Math.random() * 7;
+		const drift = (Math.random() - 0.5) * 8;
+		const size = 0.6 + Math.random() * 0.8;
+		const opacity = 0.4 + Math.random() * 0.5;
+
+		flake.textContent = '❄';
+		flake.style.position = 'absolute';
+		flake.style.top = '-2rem';
+		flake.style.left = `${left}%`;
+		flake.style.fontSize = `${size}rem`;
+		flake.style.color = 'white';
+		flake.style.textShadow = '0 0 4px rgba(0,0,0,0.15)';
+		flake.style.opacity = String(opacity);
+		flake.style.animation = `snow-fall ${duration}s linear forwards`;
+		flake.style.setProperty('--drift', `${drift}rem`);
+
+		container.appendChild(flake);
+		setTimeout(() => flake.remove(), duration * 1000);
+	}
+
+	if (is_snow_season(new Date())) {
+		const snow_container = document.getElementById('snow-container');
+		if (snow_container) setInterval(() => spawn_snowflake(snow_container), 400);
+	}
+</script>
+
+<script is:inline>
+	const exclamation_clicks = new WeakMap();
+
+	function spawn_exclamation_confetti(x, y) {
+		const container = document.createElement('div');
+		container.style.position = 'fixed';
+		container.style.left = `${x}px`;
+		container.style.top = `${y}px`;
+		container.style.width = '0';
+		container.style.height = '0';
+		container.style.pointerEvents = 'none';
+		container.style.zIndex = '9999';
+		document.body.appendChild(container);
+
+		const colours = ['#ffffff', '#fde047', '#f472b6', '#60a5fa', 'var(--brand)'];
+		for (let i = 0; i < 30; i++) {
+			const piece = document.createElement('span');
+			const angle = Math.random() * 360;
+			const distance = 40 + Math.random() * 60;
+			const dx = Math.cos((angle * Math.PI) / 180) * distance;
+			const dy = Math.sin((angle * Math.PI) / 180) * distance - 20;
+			const duration = 0.8 + Math.random() * 0.6;
+			const size = 5 + Math.random() * 5;
+			const rotation = Math.random() * 360;
+
+			piece.style.position = 'absolute';
+			piece.style.left = '0';
+			piece.style.top = '0';
+			piece.style.width = `${size}px`;
+			piece.style.height = `${size * 1.6}px`;
+			piece.style.background = colours[Math.floor(Math.random() * colours.length)];
+			piece.style.borderRadius = '1px';
+			piece.style.setProperty('--dx', `${dx}px`);
+			piece.style.setProperty('--dy', `${dy}px`);
+			piece.style.setProperty('--rotation', `${rotation}deg`);
+			piece.style.animation = `exclamation-confetti-burst ${duration}s ease-out forwards`;
+
+			container.appendChild(piece);
+		}
+
+		setTimeout(() => container.remove(), 1600);
+	}
+
+	document.addEventListener('click', (e) => {
+		const target = e.target;
+		if (!(target instanceof HTMLImageElement) || target.getAttribute('src') !== '/exclamation.svg') return;
+
+		const now = Date.now();
+		const state = exclamation_clicks.get(target) || { count: 0, last: 0 };
+		const count = now - state.last < 600 ? state.count + 1 : 1;
+		exclamation_clicks.set(target, { count, last: now });
+
+		if (count >= 3) {
+			exclamation_clicks.set(target, { count: 0, last: 0 });
+			const rect = target.getBoundingClientRect();
+			spawn_exclamation_confetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+		}
+	});
+</script>
+
+<style is:global>
+	@keyframes snow-fall {
+		0% {
+			transform: translate(0, 0);
+		}
+		100% {
+			transform: translate(var(--drift), 100vh);
+		}
+	}
+
+	@keyframes exclamation-confetti-burst {
+		0% {
+			transform: translate(0, 0) rotate(0deg);
+			opacity: 1;
+		}
+		100% {
+			transform: translate(var(--dx), var(--dy)) rotate(var(--rotation));
+			opacity: 0;
+		}
+	}
+</style>
 
 <!-- <style lang="scss">
 	footer {

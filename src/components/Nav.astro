@@ -36,7 +36,8 @@ const menus = [
 ---
 
 <nav class="px-6 flex h-16 justify-between bg-[var(--brand)] shadow-md relative z-50">
-  <a href="/" class="self-start py-2">
+  <div id="dies-confetti" class="pointer-events-none absolute top-full left-0 w-full h-0 overflow-visible"></div>
+  <a href="/" class="self-start py-2 relative">
     <img
       class="h-12"
       src="https://public.svsticky.nl/logos/logo_compact_outline_wit.svg"
@@ -136,4 +137,57 @@ const menus = [
 		if (opened_submenu && !opened_submenu.contains(target))
 			close_menu(opened_submenu.querySelector('a[data-menu]')!);
 	});
+
+	const DIES_COLOURS = ['#ffffff', '#fde047', '#f472b6', '#60a5fa', '#fa6b20'];
+
+	function is_dies_week(date: Date) {
+		return date.getMonth() === 4 && date.getDate() >= 15 && date.getDate() <= 21;
+	}
+
+	function launch_dies_confetti() {
+		const container = document.getElementById('dies-confetti');
+		if (!container) return;
+
+		for (let i = 0; i < 130; i++) {
+			const piece = document.createElement('span');
+			const colour = DIES_COLOURS[Math.floor(Math.random() * DIES_COLOURS.length)];
+			const left = Math.random() * 100;
+			const delay = Math.random() * 0.6;
+			const duration = 1.6 + Math.random() * 1.2;
+			const rotation = 360 + Math.random() * 360;
+			const drift = (Math.random() - 0.5) * 4;
+			const size = 5 + Math.random() * 5;
+
+			piece.style.position = 'absolute';
+			piece.style.top = '0';
+			piece.style.left = `${left}%`;
+			piece.style.width = `${size}px`;
+			piece.style.height = `${size * 1.6}px`;
+			piece.style.background = colour;
+			piece.style.borderRadius = '1px';
+			piece.style.opacity = '0';
+			piece.style.animation = `dies-confetti-fall ${duration}s ease-in ${delay}s forwards`;
+			piece.style.setProperty('--rotation', `${rotation}deg`);
+			piece.style.setProperty('--drift', `${drift}rem`);
+
+			container.appendChild(piece);
+		}
+
+		setTimeout(() => container.replaceChildren(), 3200);
+	}
+
+	if (is_dies_week(new Date())) launch_dies_confetti();
 </script>
+
+<style is:global>
+	@keyframes dies-confetti-fall {
+		0% {
+			opacity: 1;
+			transform: translate(0, 0) rotate(0deg);
+		}
+		100% {
+			opacity: 0;
+			transform: translate(var(--drift), 4.5rem) rotate(var(--rotation));
+		}
+	}
+</style>
