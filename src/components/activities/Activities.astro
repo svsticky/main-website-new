@@ -6,8 +6,8 @@ const KOALA_API = "https://koala.svsticky.nl/api/activities";
 const KOALA_ACTIVITY_URL = "https://koala.svsticky.nl/activities";
 ---
 
-<main class="w-3/4 mx-auto py-16 flex flex-col" {...storyblokEditable(blok)}>
-  <h1 class="text-4xl font-bold mx-auto mb-8">Activiteiten</h1>
+<main class="w-[92%] sm:w-3/4 mx-auto py-16 flex flex-col" {...storyblokEditable(blok)}>
+  <h1 class="text-4xl font-bold text-center mb-8">Activiteiten</h1>
 
   <div class="border-neutral-300 flex flex-row mb-8">
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
@@ -15,7 +15,7 @@ const KOALA_ACTIVITY_URL = "https://koala.svsticky.nl/activities";
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
   </div>
 
-  <ul class="grid grid-cols-4 gap-4" id="activities"></ul>
+  <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" id="activities"></ul>
   <p id="activities-empty" class="hidden text-center text-neutral-600 mt-8">Er zijn momenteel geen activiteiten gepland.</p>
 </main>
 

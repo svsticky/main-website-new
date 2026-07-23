@@ -5,15 +5,15 @@ import RichText from './basics/RichText.astro';
 const { blok } = Astro.props;
 ---
 
-<main class="w-3/4 mx-auto flex flex-col py-8 mb-16" {...storyblokEditable(blok)}>
-  <h1 class="font-bold text-4xl mx-auto my-8">Contact</h1>
-  <p class="w-3/4 text-center mx-auto">De contactpersonen voor de studievereniging zijn de bestuursleden. Je kan hun bereiken via email of telefoon met de gegevens hieronder. Overige gegevens voor facturering of post staan ook hieronder.</p>
-  <div class="border-neutral-300 flex flex-row my-8">
+<main class="w-[92%] sm:w-3/4 mx-auto flex flex-col py-8 mb-16" {...storyblokEditable(blok)}>
+  <h1 class="font-bold text-4xl text-center my-8">Contact</h1>
+  <p class="w-full sm:w-3/4 text-center mx-auto">De contactpersonen voor de studievereniging zijn de bestuursleden. Je kan hun bereiken via email of telefoon met de gegevens hieronder. Overige gegevens voor facturering of post staan ook hieronder.</p>
+  <div class="border-neutral-300 flex flex-row mb-8">
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
     <img src="/exclamation.svg" class="w-7" />
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
   </div>
-  <ul class="grid grid-cols-3 gap-8">
+  <ul class="grid grid-cols-1 sm:grid-cols-3 gap-8">
     {blok.people.map((person: any) => (
       <li class="border border-neutral-200 rounded-xl flex flex-col gap-4" {...storyblokEditable(person.content)}>
         <div class="flex flex-row w-full gap-2 border-b border-neutral-200 p-4">

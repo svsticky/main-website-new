@@ -53,20 +53,20 @@ const brandDark = darken(brand, 0.9);
 		<div class="flex-1">
 			<slot />
 		</div>
-		<footer class="w-full bg-[#404040] flex justify-between items-center px-8 py-4">
+		<footer class="w-full bg-[#404040] flex flex-row justify-between items-center px-4 sm:px-6 md:px-8 py-4 gap-2">
 			<img
 				id="footer-logo"
 				src="https://public.svsticky.nl/logos/hoofd_outline_wit.svg"
 				alt="Sticky Logo"
-	      class="h-16 cursor-pointer"
+	      class="h-10 sm:h-12 md:h-16 cursor-pointer"
 			/>
 
-			<div class="flex items-center gap-8">
-				<a href="/vereniging/contact" class="text-white font-semibold transition hover:opacity-70">
+			<div class="flex items-center gap-4 sm:gap-6 md:gap-8">
+				<a href="/vereniging/contact" class="text-white font-semibold text-sm sm:text-base transition hover:opacity-70">
 					Contact
 				</a>
 
-				<div class="flex gap-8 text-white text-[2rem]">
+				<div class="flex gap-4 sm:gap-6 md:gap-8 text-white text-xl sm:text-[1.75rem] md:text-[2rem]">
 					<a
 						href="https://svsticky.nl/instagram"
 						target="_blank"

@@ -1,5 +1,5 @@
 ---
-import { renderRichText, storyblokEditable } from '@storyblok/astro';
+import { storyblokEditable } from '@storyblok/astro';
 const { blok } = Astro.props;
 
 import { useStoryblokApi } from '@storyblok/astro';
@@ -17,22 +17,22 @@ const regular_partners = partners.filter(partner => !partner.content.is_main);
 const displayed_partners = main_partners.concat(regular_partners);
 ---
 
-<main class="w-4/5 mx-auto flex flex-col mt-8 mb-16" {...storyblokEditable(blok)}>
-  <h1 class="font-bold text-4xl mx-auto my-8">Samenwerking met Sticky</h1>
-  <p class="text-center w-3/4 mx-auto">Studievereniging Sticky heeft als een van de primaire doelen om studenten te helpen met het orienteren op de arbeidsmarkt zowel tijdens hun studie als wanneer ze afstuderen. Daarom gaan wij graag de samenwerking aan met zowel lokale bedrijven als andere IT-gerelateerde bedrijven in Nederland.</p>
+<main class="w-[92%] sm:w-4/5 mx-auto flex flex-col mt-8 mb-16" {...storyblokEditable(blok)}>
+  <h1 class="font-bold text-4xl text-center my-8">Samenwerking met Sticky</h1>
+  <p class="text-center w-full sm:w-3/4 mx-auto">Studievereniging Sticky heeft als een van de primaire doelen om studenten te helpen met het orienteren op de arbeidsmarkt zowel tijdens hun studie als wanneer ze afstuderen. Daarom gaan wij graag de samenwerking aan met zowel lokale bedrijven als andere IT-gerelateerde bedrijven in Nederland.</p>
 
-  <div class="border-neutral-300 flex flex-row my-8">
+  <div class="border-neutral-300 flex flex-row mb-8">
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
     <img src="/exclamation.svg" class="w-7" />
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
   </div>
 
-  <div class="grid grid-cols-2 gap-8 mb-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-4">
     <div class="flex flex-col pt-8">
-      <h2 class="mx-auto font-bold text-2xl mb-4">Waarom partner worden?</h2>
+      <h2 class="font-bold text-2xl text-center mb-4">Waarom partner worden?</h2>
       <p class="mb-8">Wilt u in contact komen met honderden gemotiveerde studenten van de opleidingen Informatica, Informatiekunde en Game Technology aan de Universiteit Utrecht? Studievereniging Sticky is met meer dan 2500 leden het centrale platform voor connectie tussen studenten en het bedrijfsleven.</p>
 
-      <div class="grid grid-cols-2 gap-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
         <div class="grid grid-cols-[2rem_auto] gap-2">
           <div class="flex basis-0 bg-[var(--brand)]/20 h-8 rounded text-[var(--brand)] mt-1">
             <i class="m-auto fas fa-bullhorn"></i>
@@ -72,7 +72,7 @@ const displayed_partners = main_partners.concat(regular_partners);
       </div>
     </div>
     <div class="border border-neutral-300 rounded-xl p-8 flex flex-col gap-4">
-      <h2 class="mx-auto font-bold text-2xl">Neem contact op</h2>
+      <h2 class="font-bold text-2xl text-center">Neem contact op</h2>
       <p class="text-sm">Vul onderstaand formulier in en onze Extern-commissie neemt zo snel mogelijk contact met u op om de mogelijkheden te bespreken.</p>
       <form action="/api/mail" method="post" class="flex flex-col gap-4">
         <div class="flex flex-col gap-1">
@@ -85,9 +85,9 @@ const displayed_partners = main_partners.concat(regular_partners);
           <input class="border border-neutral-300 rounded-xl px-2 py-1" type="text" required name="name" id="name">
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="flex flex-col gap-1">
-            <label class="text-sm" for="email">Emailadres <span class="text-red-500">*</span></label> 
+            <label class="text-sm" for="email">Emailadres <span class="text-red-500">*</span></label>
             <input class="border border-neutral-300 rounded-xl px-2 py-1" type="email" required name="email" id="email">
           </div>
           <div class="flex flex-col gap-1">
@@ -111,7 +111,7 @@ const displayed_partners = main_partners.concat(regular_partners);
     </div>
   </div>
 
-  <div class="border-neutral-300 flex flex-row my-8">
+  <div class="border-neutral-300 flex flex-row mb-8">
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
     <img src="/exclamation.svg" class="w-7" />
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
@@ -131,7 +131,7 @@ const displayed_partners = main_partners.concat(regular_partners);
     </ul>
   </div>
 
-  <div class="border-neutral-300 flex flex-row my-8">
+  <div class="border-neutral-300 flex flex-row mb-8">
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
     <img src="/exclamation.svg" class="w-7" />
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
@@ -139,7 +139,7 @@ const displayed_partners = main_partners.concat(regular_partners);
 
   <h2 class="font-bold text-2xl mb-4">Promotiemogelijkheden</h2>
   <div class="flex flex-col gap-4">
-    <ul class="grid grid-cols-4 gap-4">
+    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <li class="border border-neutral-300 rounded-xl">
         <div class="flex flex-row gap-2 border-b border-neutral-300 p-4">
           <div class="flex bg-[var(--brand)]/20 h-8 w-8 rounded text-[var(--brand)]">
@@ -187,9 +187,9 @@ const displayed_partners = main_partners.concat(regular_partners);
         </div>
         <h3 class="my-auto font-semibold">Sponsoractiviteiten</h3>
       </div>
-      <div class="p-4 flex flex-row gap-4">
+      <div class="p-4 flex flex-col sm:flex-row gap-4">
         <p>Organiseer een van onze succesvolle activiteiten om direct met studenten in contact te komen. Wij verzorgen de logistiek en promotie, u zorgt voor de inhoud.</p>
-        <ul class="grid grid-cols-3 gap-4">
+        <ul class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <li class="border border-neutral-300 rounded-xl overflow-hidden">
             <img src="/lunch.jpeg" class="w-full h-25 object-cover" />
             <div class="p-4">

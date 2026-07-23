@@ -16,10 +16,10 @@ const main_partners = partners.filter(partner => partner.content.is_main);
 const regular_partners = partners.filter(partner => !partner.content.is_main);
 ---
 
-<main class="w-3/4 mx-auto py-16 flex flex-col gap-8" {...storyblokEditable(blok)}>
-  <h1 class="text-4xl font-bold mx-auto">Onze partners</h1>
+<main class="w-[92%] sm:w-3/4 mx-auto py-16 flex flex-col gap-8" {...storyblokEditable(blok)}>
+  <h1 class="text-4xl font-bold text-center">Onze partners</h1>
 
-  <p class="mx-auto w-3/4 text-center">Studievereniging Sticky heeft als een van de primaire doelen om studenten te helpen met het orienteren op de arbeidsmarkt zowel tijdens hun studie als wanneer ze afstuderen. Daarom gaan wij graag de samenwerking aan met zowel lokale bedrijven als andere IT-gerelateerde bedrijven in Nederland. Klik op een van de bedrijven om te zijn wat ze te bieden te hebben voor jou!</p>
+  <p class="mx-auto w-full sm:w-3/4 text-center">Studievereniging Sticky heeft als een van de primaire doelen om studenten te helpen met het orienteren op de arbeidsmarkt zowel tijdens hun studie als wanneer ze afstuderen. Daarom gaan wij graag de samenwerking aan met zowel lokale bedrijven als andere IT-gerelateerde bedrijven in Nederland. Klik op een van de bedrijven om te zijn wat ze te bieden te hebben voor jou!</p>
 
   <div class="border-neutral-300 flex flex-row">
     <div class="bg-neutral-300 h-px w-full my-auto"></div>
@@ -28,13 +28,13 @@ const regular_partners = partners.filter(partner => !partner.content.is_main);
   </div>
 
   {!!main_partners.length && <>
-    <h2 class="mx-auto font-bold text-2xl">{main_partners.length > 1 ? "Hoofdpartners" : "Hoofdpartner"}</h2>
+    <h2 class="font-bold text-2xl text-center">{main_partners.length > 1 ? "Hoofdpartners" : "Hoofdpartner"}</h2>
     <ul class="flex flex-col gap-4">
       {main_partners.map((partner: any) =>
         <a href={`/carriere/partners/${partner.slug}`}>
-          <li class="flex flex-row border border-neutral-300 rounded-xl overflow-hidden">
-            <img class="w-1/6 h-full my-auto aspect-square object-contain" src={partner.content.logo.filename} />
-            <div class="flex flex-col gap-4 p-4 border-l border-neutral-300">
+          <li class="flex flex-col sm:flex-row border border-neutral-300 rounded-xl overflow-hidden">
+            <img class="w-full sm:w-1/6 h-32 sm:h-auto aspect-square object-contain" src={partner.content.logo.filename} />
+            <div class="flex flex-col gap-4 p-4 border-t sm:border-t-0 sm:border-l border-neutral-300">
               <h3 class="font-bold text-xl">{partner.content.name}</h3>
               <div set:html={renderRichText(partner.content.main_text)}></div>
             </div>
@@ -50,8 +50,8 @@ const regular_partners = partners.filter(partner => !partner.content.is_main);
     </div>
   </>}
 
-  {!!main_partners.length && <h2 class="mx-auto font-bold text-2xl">Reguliere partners</h2>}
-  <ul class="grid grid-cols-6 gap-4">
+  {!!main_partners.length && <h2 class="font-bold text-2xl text-center">Reguliere partners</h2>}
+  <ul class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
     {regular_partners.map((partner: any) =>
       <li>
         <a href={`/carriere/partners/${partner.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-[var(--brand)] transition">

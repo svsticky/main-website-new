@@ -16,10 +16,10 @@ const timeline = (blok.timeline || [])
   .toSorted((a: any, b: any) => a.parsed_date.getTime() - b.parsed_date.getTime());
 ---
 
-<main class="w-3/4 mx-auto py-16 flex flex-col" {...storyblokEditable(blok)}>
-  <h1 class="text-4xl font-bold mx-auto mb-8">Over Ons</h1>
+<main class="w-[92%] sm:w-3/4 mx-auto py-16 flex flex-col" {...storyblokEditable(blok)}>
+  <h1 class="text-4xl font-bold text-center mb-8">Over Ons</h1>
 
-  <div class="w-3/4 mx-auto mb-8">
+  <div class="w-full sm:w-3/4 mx-auto mb-8">
     <RichText content={blok.body_text} />
   </div>
 
@@ -29,14 +29,14 @@ const timeline = (blok.timeline || [])
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
   </div>
 
-  <h2 class="mx-auto text-2xl font-bold mb-12">Onze geschiedenis</h2>
+  <h2 class="text-2xl font-bold text-center mb-12">Onze geschiedenis</h2>
 
   <ul class="relative flex flex-col gap-10">
-    <div class="absolute left-1/2 -translate-x-1/2 top-2 bottom-2 w-0.5 bg-[var(--brand)]/30"></div>
+    <div class="absolute left-10 md:left-1/2 -translate-x-1/2 top-2 bottom-2 w-0.5 bg-[var(--brand)]/30"></div>
 
     {timeline.map((item: any, idx: number) => (
       <li class="relative flex">
-        <div class={`w-[45%] ${idx % 2 === 0 ? "mr-auto text-right" : "ml-auto text-left"}`}>
+        <div class={`pl-20 pr-4 md:pl-0 md:pr-0 w-full text-left md:w-[45%] ${idx % 2 === 0 ? "md:mr-auto md:text-right" : "md:ml-auto md:text-left"}`}>
           <div class={`inline-block text-left border rounded-xl p-4 ${item.is_lustrum ? "border-[var(--brand)] bg-[var(--brand)]/10" : "border-neutral-200"}`}>
             {!!item.is_lustrum && <span class="block text-xs font-bold text-[var(--brand)] mb-1">LUSTRUM</span>}
             <span class="block text-xs text-neutral-500 mb-1">{date_formatter.format(item.parsed_date)}</span>
@@ -46,7 +46,7 @@ const timeline = (blok.timeline || [])
           </div>
         </div>
 
-        <div class="absolute left-1/2 -translate-x-1/2 top-4 z-10">
+        <div class="absolute left-10 md:left-1/2 -translate-x-1/2 top-4 z-10">
           <div class={`rounded-full flex items-center justify-center font-bold text-sm ${item.is_lustrum ? "w-16 h-16 bg-[var(--brand)] text-white" : "w-12 h-12 bg-white border-2 border-[var(--brand)] text-[var(--brand)]"}`}>
             {item.parsed_date.getFullYear()}
           </div>

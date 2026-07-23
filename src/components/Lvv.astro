@@ -6,19 +6,19 @@ const { blok } = Astro.props;
 const people = blok.people.toSorted((p1: any, p2: any) => p1.since - p2.since);
 ---
 
-<main class="w-3/4 mx-auto flex flex-col py-8 mb-16">
-  <h1 class="font-bold text-4xl mx-auto my-8">Leden van Verdienste</h1>
-  <p class="w-3/4 text-center mx-auto">Leden van Verdienste zijn (ex-)leden die bijzondere verdiensten hebben gedaan voor de vereniging. Tijdens een algemene ledenvergadering kunnen nieuwe leden van verdienste benoemd worden. Zij krijgen dan hun naam en verdiensten op deze pagina vereeuwigd.</p>
-  <div class="border-neutral-300 flex flex-row my-8">
+<main class="w-[92%] sm:w-3/4 mx-auto flex flex-col py-8 mb-16">
+  <h1 class="font-bold text-4xl text-center my-8">Leden van Verdienste</h1>
+  <p class="w-full sm:w-3/4 text-center mx-auto">Leden van Verdienste zijn (ex-)leden die bijzondere verdiensten hebben gedaan voor de vereniging. Tijdens een algemene ledenvergadering kunnen nieuwe leden van verdienste benoemd worden. Zij krijgen dan hun naam en verdiensten op deze pagina vereeuwigd.</p>
+  <div class="border-neutral-300 flex flex-row mb-8">
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
     <img src="/exclamation.svg" class="w-7" />
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
   </div>
   <ul class="flex flex-col gap-6">
     {people.map((person: any, idx: number) => (
-      <li class={`flex ${idx % 2 === 0 ? "flex-row" : "flex-row-reverse"} items-center gap-6 rounded-xl border border-neutral-200 p-4`}>
+      <li class={`flex flex-col ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-6 rounded-xl border border-neutral-200 p-4`}>
         <Image url={person.photo.filename} class="w-32 h-32 shrink-0 rounded-full object-cover border-4 border-amber-400" />
-        <div class={idx % 2 === 0 ? "text-left" : "text-right"}>
+        <div class={`text-center ${idx % 2 === 0 ? "md:text-left" : "md:text-right"}`}>
           <h2 class="font-extrabold text-lg">{person.name}</h2>
           <span class="text-sm text-neutral-600">Lid van Verdienste sinds {person.since}</span>
           <RichText class="mt-2" content={person.body} />

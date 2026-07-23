@@ -2,11 +2,12 @@
 import { storyblokEditable } from '@storyblok/astro';
 import { Image } from "astro-preload/components";
 import RichText from '../basics/RichText.astro';
+import PhotoCarousel from '../basics/PhotoCarousel.astro';
 
 const { blok } = Astro.props;
 ---
 
-<main class="w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
+<main class="w-[92%] sm:w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
   <a href="/vereniging/commissies" class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
     <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
     <span class="group-hover:underline">Terug naar de commissies</span>
@@ -27,54 +28,10 @@ const { blok } = Astro.props;
       <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
     </div>
 
-    <div class="p-6">
-      {!!blok.photos?.length &&
-        <div class="relative float-right w-64 ml-6 mb-4 aspect-square rounded-lg overflow-hidden border border-neutral-200" id="committee-carousel">
-          {blok.photos.map((photo: any, idx: number) => (
-            <img
-              src={photo.filename}
-              alt={photo.alt || blok.name}
-              class={`carousel-item absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${idx === 0 ? "opacity-100" : "opacity-0"}`}
-            />
-          ))}
-          {blok.photos.length > 1 &&
-            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
-              {blok.photos.map((_: any, idx: number) => (
-                <button
-                  class={`carousel-dot w-2 h-2 rounded-full transition ${idx === 0 ? "bg-white" : "bg-white/50"}`}
-                  data-index={idx}
-                  aria-label={`Foto ${idx + 1}`}
-                />
-              ))}
-            </div>
-          }
-        </div>
-      }
+    <div class="p-6 flex flex-col sm:block">
+      <PhotoCarousel class="order-2 sm:order-none" photos={blok.photos} name={blok.name} />
 
-      <RichText content={blok.body} />
+      <RichText class="order-1 sm:order-none" content={blok.body} />
     </div>
   </div>
 </main>
-
-<script>
-  const carousel = document.getElementById('committee-carousel');
-  if (carousel) {
-    const items = Array.from(carousel.querySelectorAll<HTMLImageElement>('.carousel-item'));
-    const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>('.carousel-dot'));
-    let current = 0;
-
-    function show(index: number) {
-      items[current].classList.replace('opacity-100', 'opacity-0');
-      dots[current]?.classList.replace('bg-white', 'bg-white/50');
-      current = index;
-      items[current].classList.replace('opacity-0', 'opacity-100');
-      dots[current]?.classList.replace('bg-white/50', 'bg-white');
-    }
-
-    dots.forEach((dot, idx) => dot.addEventListener('click', () => show(idx)));
-
-    if (items.length > 1) {
-      setInterval(() => show((current + 1) % items.length), 4000);
-    }
-  }
-</script>

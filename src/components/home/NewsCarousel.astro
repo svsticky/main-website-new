@@ -1,5 +1,5 @@
 ---
-import { storyblokEditable, useStoryblokApi } from '@storyblok/astro';
+import { renderRichText, storyblokEditable, useStoryblokApi } from '@storyblok/astro';
 const { blok } = Astro.props;
 
 const storyblokApi = useStoryblokApi();
@@ -8,12 +8,18 @@ const news_items = await storyblokApi.getAll('cdn/stories', {
   starts_with: 'nieuws',
   content_type: 'news-item',
   sort_by: 'content.date:desc',
-  per_page: 8,
+  per_page: 5,
 });
 
 const date_formatter = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
 function format_date(date: string) {
   return date_formatter.format(new Date(date.replace(' ', 'T')));
+}
+
+function get_excerpt(richtext: any, max_length = 90) {
+  const text = renderRichText(richtext || {}).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  if (text.length <= max_length) return text;
+  return text.slice(0, max_length).replace(/\s+\S*$/, '') + '...';
 }
 ---
 
@@ -32,9 +38,11 @@ function format_date(date: string) {
       <ul id="news-carousel-track" class="flex gap-6 overflow-x-auto scroll-smooth pt-2 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {news_items.map((item: any) => (
           <li class="shrink-0 w-72">
-            <a href={`/nieuws/${item.slug}`} class="group block h-full border border-neutral-200 rounded-xl p-6 hover:-translate-y-1 hover:shadow transition">
+            <a href={`/nieuws/${item.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl p-6 hover:-translate-y-1 hover:shadow transition">
               <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">{item.content.title}</h3>
               <span class="text-xs text-neutral-500">{format_date(item.content.date)}</span>
+              <p class="text-sm text-neutral-600 mt-2">{get_excerpt(item.content.content)}</p>
+              <span class="text-sm font-semibold text-[var(--brand)] mt-2">Lees verder</span>
             </a>
           </li>
         ))}
@@ -43,6 +51,8 @@ function format_date(date: string) {
   ) : (
     <p class="text-neutral-600">Er is momenteel geen nieuws.</p>
   )}
+
+  <a href="/nieuws" class="inline-block mt-4 text-[var(--brand)] font-semibold hover:underline">Lees hier meer nieuws</a>
 </section>
 
 <script>

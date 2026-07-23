@@ -4,15 +4,27 @@ import { storyblokEditable } from '@storyblok/astro';
 const { blok } = Astro.props;
 
 const styles = {
-  "grid-template-columns": blok.column_count,
+  "--grid-cols": blok.column_count,
   "gap": `calc(${blok.gap_size || 0} * .25rem)`
 }
 ---
 
-<div class="grid" style={styles} {...storyblokEditable(blok)}>
+<div class="grid storyblok-grid" style={styles} {...storyblokEditable(blok)}>
 	{
-		blok.columns?.map((nestedBlok) => {
+		blok.columns?.map((nestedBlok: any) => {
 			return <StoryblokComponent blok={nestedBlok} />;
 		})
 	}
 </div>
+
+<style>
+  .storyblok-grid {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .storyblok-grid {
+      grid-template-columns: var(--grid-cols);
+    }
+  }
+</style>

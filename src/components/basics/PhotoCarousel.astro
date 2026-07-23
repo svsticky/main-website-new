@@ -1,0 +1,48 @@
+---
+const { photos, name, class: className = "" } = Astro.props;
+---
+
+{!!photos?.length &&
+  <div class={`relative w-full sm:float-right sm:w-64 sm:ml-6 mb-4 aspect-square rounded-lg overflow-hidden border border-neutral-200 ${className}`} data-photo-carousel>
+    {photos.map((photo: any, idx: number) => (
+      <img
+        src={photo.filename}
+        alt={photo.alt || name}
+        class={`carousel-item absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${idx === 0 ? "opacity-100" : "opacity-0"}`}
+      />
+    ))}
+    {photos.length > 1 &&
+      <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
+        {photos.map((_: any, idx: number) => (
+          <button
+            class={`carousel-dot w-2 h-2 rounded-full transition ${idx === 0 ? "bg-white" : "bg-white/50"}`}
+            data-index={idx}
+            aria-label={`Foto ${idx + 1}`}
+          />
+        ))}
+      </div>
+    }
+  </div>
+}
+
+<script>
+  for (const carousel of document.querySelectorAll('[data-photo-carousel]')) {
+    const items = Array.from(carousel.querySelectorAll<HTMLImageElement>('.carousel-item'));
+    const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>('.carousel-dot'));
+    let current = 0;
+
+    function show(index: number) {
+      items[current].classList.replace('opacity-100', 'opacity-0');
+      dots[current]?.classList.replace('bg-white', 'bg-white/50');
+      current = index;
+      items[current].classList.replace('opacity-0', 'opacity-100');
+      dots[current]?.classList.replace('bg-white/50', 'bg-white');
+    }
+
+    dots.forEach((dot, idx) => dot.addEventListener('click', () => show(idx)));
+
+    if (items.length > 1) {
+      setInterval(() => show((current + 1) % items.length), 4000);
+    }
+  }
+</script>

@@ -40,17 +40,17 @@ const buttons = [
 ];
 ---
 
-<nav class="px-6 flex items-center h-16 justify-between bg-[var(--brand)] shadow-md relative z-50">
+<nav class="px-4 md:px-6 flex items-center h-16 justify-between bg-[var(--brand)] shadow-md relative z-50">
   <div id="dies-confetti" class="pointer-events-none absolute top-full left-0 w-full h-0 overflow-visible"></div>
   <div class="flex items-center gap-10">
     <a href="/" class="py-2 relative">
       <img
-        class="h-12"
+        class="h-10 md:h-12"
         src="https://public.svsticky.nl/logos/logo_compact_outline_wit.svg"
         alt="Logo SV Sticky"
       />
     </a>
-    <ul class="h-full flex flex-row items-center gap-8">
+    <ul class="hidden lg:flex h-full flex-row items-center gap-8">
       {
         menus.map((menu) => (
           <li class="my-auto relative">
@@ -90,21 +90,76 @@ const buttons = [
     </ul>
   </div>
 
-  <ul class="h-full flex flex-row items-center gap-4">
+  <div class="flex items-center gap-4">
+    <ul class="hidden lg:flex h-full flex-row items-center gap-4">
+      {
+        buttons.map((button) => (
+          <li class="my-auto">
+            <a
+              href={button.to}
+              class="text-[var(--brand)] bg-white rounded-lg px-4 py-2 inline-block hover:-translate-y-0.5 hover:shadow transition"
+            >
+              {button.title}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <button id="mobile-menu-toggle" type="button" class="lg:hidden text-white text-2xl w-8 h-8 flex items-center justify-center" aria-label="Menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+</nav>
+
+<div id="mobile-menu" class="hidden lg:hidden fixed inset-x-0 top-16 bg-white z-40 max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain shadow-lg">
+  <ul class="flex flex-col divide-y divide-neutral-200 border-b border-neutral-200">
     {
-      buttons.map((button) => (
-        <li class="my-auto">
-          <a
-            href={button.to}
-            class="text-[var(--brand)] bg-white rounded-lg px-4 py-2 inline-block hover:-translate-y-0.5 hover:shadow transition"
-          >
-            {button.title}
-          </a>
+      menus.map((menu) => (
+        <li>
+          {menu.to ? (
+            <a href={menu.to} class="block px-6 py-4 font-semibold text-neutral-800">
+              {menu.title}
+            </a>
+          ) : (
+            <div>
+              <button type="button" data-mobile-menu class="w-full flex justify-between items-center px-6 py-4 font-semibold text-neutral-800">
+                {menu.title}
+                <i class="fa-solid fa-caret-down transition-transform" />
+              </button>
+              <ul class="hidden flex-col bg-neutral-50">
+                {menu.submenu?.map((submenu) => (
+                  <li class="not-last:border-b not-last:border-neutral-200">
+                    <a href={submenu.to} class="block px-10 py-3 text-neutral-600">
+                      {submenu.title}
+                      {" "}
+                      {submenu.to.startsWith('http') && (
+                        <i class="text-xs fa-solid fa-arrow-up-right-from-square" />
+                      )}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </li>
       ))
     }
   </ul>
-</nav>
+
+  <div class="flex flex-col gap-3 p-6">
+    {
+      buttons.map((button) => (
+        <a
+          href={button.to}
+          class="text-center text-[var(--brand)] bg-neutral-100 border border-[var(--brand)] rounded-lg px-4 py-3 font-semibold"
+        >
+          {button.title}
+        </a>
+      ))
+    }
+  </div>
+</div>
 
 <script>
 	let opened_submenu: HTMLElement | null = null;
@@ -149,6 +204,38 @@ const buttons = [
 		const target = e.target as HTMLElement;
 		if (opened_submenu && !opened_submenu.contains(target))
 			close_menu(opened_submenu.querySelector('a[data-menu]')!);
+	});
+
+	const mobile_toggle = document.getElementById('mobile-menu-toggle') as HTMLButtonElement;
+	const mobile_menu = document.getElementById('mobile-menu') as HTMLElement;
+	const mobile_icon = mobile_toggle.querySelector('i') as HTMLElement;
+
+	function set_mobile_menu(open: boolean) {
+		mobile_menu.classList.toggle('hidden', !open);
+		mobile_toggle.setAttribute('aria-expanded', String(open));
+		mobile_icon.classList.toggle('fa-bars', !open);
+		mobile_icon.classList.toggle('fa-xmark', open);
+		document.body.classList.toggle('overflow-hidden', open);
+	}
+
+	mobile_toggle.addEventListener('click', () => {
+		set_mobile_menu(mobile_menu.classList.contains('hidden'));
+	});
+
+	for (const submenu_toggle of document.querySelectorAll('#mobile-menu [data-mobile-menu]')) {
+		submenu_toggle.addEventListener('click', () => {
+			const submenu_list = submenu_toggle.nextElementSibling as HTMLElement;
+			const icon = submenu_toggle.querySelector('.fa-solid') as HTMLElement;
+			const opening = submenu_list.classList.contains('hidden');
+
+			submenu_list.classList.toggle('hidden', !opening);
+			submenu_list.classList.toggle('flex', opening);
+			icon.style.rotate = opening ? '180deg' : '0deg';
+		});
+	}
+
+	window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+		if (e.matches) set_mobile_menu(false);
 	});
 
 	const DIES_COLOURS = ['#ffffff', '#fde047', '#f472b6', '#60a5fa', '#fa6b20'];

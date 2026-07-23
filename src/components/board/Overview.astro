@@ -17,7 +17,7 @@ const current_board = boards[0];
 const old_boards = boards.slice(1);
 ---
 
-<main class="w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
+<main class="w-[92%] sm:w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
   <h2 class="text-3xl font-extrabold text-center my-8">Huidig bestuur</h2>
 
   <a href={`/vereniging/bestuur/${current_board.content.board_number}`} class="group block max-w-4xl mx-auto mb-12">
@@ -39,7 +39,7 @@ const old_boards = boards.slice(1);
 
   <h2 class="text-3xl font-extrabold text-center my-8">Oude besturen</h2>
 
-  <ul class="grid grid-cols-3 gap-6">
+  <ul class="grid grid-cols-1 sm:grid-cols-3 gap-6">
     {old_boards.map(board => (
       <li>
         <a href={`/vereniging/bestuur/${board.content.board_number}`} class="group block h-56">

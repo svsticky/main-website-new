@@ -5,5 +5,5 @@ const { blok } = Astro.props;
 ---
 
 <div class="border border-neutral-200 rounded p-4" {...storyblokEditable(blok)}>
-  {blok.body.map((nestedBlok) => <StoryblokComponent blok={nestedBlok} />)}
+  {blok.body.map((nestedBlok: any) => <StoryblokComponent blok={nestedBlok} />)}
 </div>
