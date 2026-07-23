@@ -1,4 +1,6 @@
 ---
+const { language, slug } = Astro.props;
+
 const menus = [
 	{
 		title: 'Vereniging',
@@ -38,6 +40,12 @@ const buttons = [
 	{ title: 'Koala', to: 'https://koala.svsticky.nl', type: 'button' },
 	{ title: 'Word lid', to: 'https://wordlid.svsticky.nl', type: 'button' },
 ];
+
+const languages = [
+  { text: "Nederlands", prefix: "" },
+  { text: "English", prefix: "/en" }
+];
+if (language !== "en") languages.reverse();
 ---
 
 <nav class="px-4 md:px-6 flex items-center h-16 justify-between bg-[var(--brand)] shadow-md relative z-50">
@@ -55,7 +63,7 @@ const buttons = [
         menus.map((menu) => (
           <li class="my-auto relative">
             {menu.to ? (
-              <a href={menu.to} class="text-white hover:text-white/80 transition">
+              <a href={`${language ? `/${language}` : ""}${menu.to}`} class="text-white hover:text-white/80 transition">
                 {menu.title}
               </a>
             ) : (
@@ -72,7 +80,7 @@ const buttons = [
                   <li class="not-last:border-b not-last:border-neutral-200">
                     <a
                       class="w-full inline-block py-2 hover:text-[var(--brand)] transition"
-                      href={submenu.to}
+                      href={`${language && !submenu.to.startsWith('http') ? `/${language}` : ""}${submenu.to}`}
                     >
                       {submenu.title}
                       {" "}
@@ -145,6 +153,23 @@ const buttons = [
         </li>
       ))
     }
+    <li class="my-auto relative">
+      <button data-menu class="text-black hover:text-(--brand) cursor-pointer bg-white rounded-lg px-4 py-2 inline-block">
+        <i class="fas fa-globe"></i>
+      </button>
+      <ul
+        class="absolute top-12 right-0 -translate-y-1 flex flex-col bg-white border border-neutral-200 shadow-lg rounded-xl text-center z-50 px-4 py-1 w-max opacity-0 pointer-events-none transition-all duration-200"
+      >
+        {languages.map(lang => (
+          <li class="not-last:border-b not-last:border-neutral-200">
+            <a
+              class="w-full inline-block py-2 hover:text-[var(--brand)] transition"
+              href={`${lang.prefix}/${slug || ""}`}
+            >{lang.text}</a>
+          </li>
+        ))}
+      </ul>
+    </li>
   </ul>
 
   <div class="flex flex-col gap-3 p-6">
@@ -165,25 +190,31 @@ const buttons = [
 	let opened_submenu: HTMLElement | null = null;
 
 	function close_menu(menu: HTMLElement) {
-		const icon = menu.querySelector('.fa-solid') as HTMLElement;
 		const submenu = menu.nextElementSibling as HTMLElement;
 
 		submenu.classList.add('opacity-0', 'pointer-events-none', '-translate-y-1');
-		icon.style.rotate = '0deg';
-		icon.style.translate = '0';
+
+		const icon = menu.querySelector('.fa-solid') as HTMLElement | undefined;
+    if (icon) {
+      icon.style.rotate = '0deg';
+      icon.style.translate = '0';
+    }
 	}
 
 	function open_menu(menu: HTMLElement) {
-		const icon = menu.querySelector('.fa-solid') as HTMLElement;
 		const submenu = menu.nextElementSibling as HTMLElement;
 
 		if (opened_submenu)
-			close_menu(opened_submenu.querySelector('a[data-menu]')!);
+			close_menu(opened_submenu.querySelector('a[data-menu], button[data-menu]')!);
 		opened_submenu = menu.parentElement;
 
 		submenu.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-1');
-		icon.style.rotate = '180deg';
-		icon.style.translate = '0 2px';
+
+		const icon = menu.querySelector('.fa-solid') as HTMLElement | undefined;
+    if (icon) {
+      icon.style.rotate = '180deg';
+      icon.style.translate = '0 2px';
+    }
 	}
 
 	function toggle_menu(menu: HTMLElement) {
@@ -192,7 +223,7 @@ const buttons = [
 	}
 
 	const menus = Array.from(
-		document.querySelectorAll('a[data-menu]'),
+		document.querySelectorAll('a[data-menu], button[data-menu]'),
 	) as HTMLElement[];
 	for (const menu of menus) {
 		menu.addEventListener('click', () => {
@@ -203,7 +234,7 @@ const buttons = [
 	document.addEventListener('click', (e) => {
 		const target = e.target as HTMLElement;
 		if (opened_submenu && !opened_submenu.contains(target))
-			close_menu(opened_submenu.querySelector('a[data-menu]')!);
+			close_menu(opened_submenu.querySelector('a[data-menu], button[data-menu]')!);
 	});
 
 	const mobile_toggle = document.getElementById('mobile-menu-toggle') as HTMLButtonElement;
