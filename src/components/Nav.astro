@@ -30,68 +30,80 @@ const menus = [
 			{ title: 'Vacatures', to: '/carriere/vacatures' },
 		],
 	},
+	{ title: 'Nieuws', to: '/nieuws' },
 	{ title: 'Links', to: '/links' },
+];
+
+const buttons = [
 	{ title: 'Koala', to: 'https://koala.svsticky.nl', type: 'button' },
 	{ title: 'Word lid', to: 'https://wordlid.svsticky.nl', type: 'button' },
 ];
 ---
 
-<nav class="px-6 flex h-16 justify-between bg-[var(--brand)] shadow-md relative z-50">
+<nav class="px-6 flex items-center h-16 justify-between bg-[var(--brand)] shadow-md relative z-50">
   <div id="dies-confetti" class="pointer-events-none absolute top-full left-0 w-full h-0 overflow-visible"></div>
-  <a href="/" class="self-start py-2 relative">
-    <img
-      class="h-12"
-      src="https://public.svsticky.nl/logos/logo_compact_outline_wit.svg"
-      alt="Logo SV Sticky"
-    />
-  </a>
-	<ul class="h-full flex flex-row gap-4">
-		{
-			menus.map((menu) => (
-				<li class="my-auto relative">
-					{menu.to ? (
-						menu.type === 'button' ? (
-							<a
-								href={menu.to}
-								class="text-[var(--brand)] bg-white rounded-lg px-4 py-2 inline-block hover:-translate-y-0.5 hover:shadow transition"
-							>
-								{menu.title}
-							</a>
-						) : (
-							<a href={menu.to} class="text-white hover:text-white/80 transition">
-								{menu.title}
-							</a>
-						)
-					) : (
-						<a data-menu class="text-white hover:text-white/80 transition cursor-pointer select-none flex flex-row gap-1">
-							{menu.title}
-							<i class="fa-solid fa-caret-down transition-transform my-auto" />
-						</a>
-					)}
-					{menu.submenu && (
-						<ul
-							class="absolute top-8 left-1/2 -translate-x-1/2 -translate-y-1 flex flex-col bg-white border border-neutral-200 shadow-lg rounded-xl text-center z-50 px-4 py-1 w-max opacity-0 pointer-events-none transition-all duration-200"
-						>
-							{menu.submenu.map((submenu) => (
-								<li class="not-last:border-b not-last:border-neutral-200">
-									<a
-										class="w-full inline-block py-2 hover:text-[var(--brand)] transition"
-										href={submenu.to}
-									>
-										{submenu.title}
-                    {" "}
-										{submenu.to.startsWith('http') && (
-											<i class="text-sm fa-solid fa-arrow-up-right-from-square" />
-										)}
-									</a>
-								</li>
-							))}
-						</ul>
-					)}
-				</li>
-			))
-		}
-	</ul>
+  <div class="flex items-center gap-10">
+    <a href="/" class="py-2 relative">
+      <img
+        class="h-12"
+        src="https://public.svsticky.nl/logos/logo_compact_outline_wit.svg"
+        alt="Logo SV Sticky"
+      />
+    </a>
+    <ul class="h-full flex flex-row items-center gap-8">
+      {
+        menus.map((menu) => (
+          <li class="my-auto relative">
+            {menu.to ? (
+              <a href={menu.to} class="text-white hover:text-white/80 transition">
+                {menu.title}
+              </a>
+            ) : (
+              <a data-menu class="text-white hover:text-white/80 transition cursor-pointer select-none flex flex-row gap-1">
+                {menu.title}
+                <i class="fa-solid fa-caret-down transition-transform my-auto" />
+              </a>
+            )}
+            {menu.submenu && (
+              <ul
+                class="absolute top-8 left-1/2 -translate-x-1/2 -translate-y-1 flex flex-col bg-white border border-neutral-200 shadow-lg rounded-xl text-center z-50 px-4 py-1 w-max opacity-0 pointer-events-none transition-all duration-200"
+              >
+                {menu.submenu.map((submenu) => (
+                  <li class="not-last:border-b not-last:border-neutral-200">
+                    <a
+                      class="w-full inline-block py-2 hover:text-[var(--brand)] transition"
+                      href={submenu.to}
+                    >
+                      {submenu.title}
+                      {" "}
+                      {submenu.to.startsWith('http') && (
+                        <i class="text-sm fa-solid fa-arrow-up-right-from-square" />
+                      )}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <ul class="h-full flex flex-row items-center gap-4">
+    {
+      buttons.map((button) => (
+        <li class="my-auto">
+          <a
+            href={button.to}
+            class="text-[var(--brand)] bg-white rounded-lg px-4 py-2 inline-block hover:-translate-y-0.5 hover:shadow transition"
+          >
+            {button.title}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
 </nav>
 
 <script>

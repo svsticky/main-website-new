@@ -1,24 +1,9 @@
 ---
-import type { GetStaticPaths } from "astro";
 import { useStoryblokApi } from '@storyblok/astro';
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 import Layout from '../layouts/Layout.astro';
 
-export const getStaticPaths = (async () => {
-  const storyblokApi = useStoryblokApi();
-
-  const response = await storyblokApi.getStories({ version: "draft" });
-  let stories = response.data.stories, remaining_count = response.total - stories.length, page = 1;
-  while (remaining_count > 0) {
-    const response = await storyblokApi.getStories({ version: "draft", page: ++page });
-    remaining_count -= response.data.stories.length;
-    stories = stories.concat(response.data.stories);
-  }
-
-  return stories.map(s => s.full_slug === "home"
-    ? ({ params: { slug: "/" }})
-    : ({ params: { slug: s.full_slug } }));
-}) satisfies GetStaticPaths;
+export const prerender = false;
 
 const { slug } = Astro.params;
 

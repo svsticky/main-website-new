@@ -32,7 +32,7 @@ export default defineConfig({
       "card": "components/basics/Card",
       "rich-text": "components/basics/RichText",
       "image": "components/basics/Image",
-      "hero": "components/Hero",
+      "hero": "components/home/Hero",
       "button": "components/basics/Button",
       "board": "components/board/Board",
       "board-overview": "components/board/Overview",
@@ -53,7 +53,14 @@ export default defineConfig({
       "links-page": "components/Links",
       "medezeggenschap-page": "components/Medezeggenschap",
       "oer-page": "components/Oer",
-      "over-ons-page": "components/OverOns"
+      "over-ons-page": "components/OverOns",
+      "stats-section": "components/home/StatsSection",
+      "featured-partner-banner": "components/home/FeaturedPartnerBanner",
+      "info-columns": "components/home/InfoColumns",
+      "activities-carousel": "components/home/ActivitiesCarousel",
+      "news-carousel": "components/home/NewsCarousel",
+      "news-item": "components/news/News",
+      "news-overview": "components/news/Overview"
     },
   }), react(), preload()],
   vite: {

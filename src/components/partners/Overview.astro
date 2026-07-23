@@ -30,7 +30,7 @@ const regular_partners = partners.filter(partner => !partner.content.is_main);
   {!!main_partners.length && <>
     <h2 class="mx-auto font-bold text-2xl">{main_partners.length > 1 ? "Hoofdpartners" : "Hoofdpartner"}</h2>
     <ul class="flex flex-col gap-4">
-      {main_partners.map(partner =>
+      {main_partners.map((partner: any) =>
         <a href={`/carriere/partners/${partner.slug}`}>
           <li class="flex flex-row border border-neutral-300 rounded-xl overflow-hidden">
             <img class="w-1/6 h-full my-auto aspect-square object-contain" src={partner.content.logo.filename} />
@@ -52,15 +52,17 @@ const regular_partners = partners.filter(partner => !partner.content.is_main);
 
   {!!main_partners.length && <h2 class="mx-auto font-bold text-2xl">Reguliere partners</h2>}
   <ul class="grid grid-cols-6 gap-4">
-    {regular_partners.map(partner =>
-      <a href={`/carriere/partners/${partner.slug}`} class="group relative block aspect-square border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
-        <li class="h-full">
-          <img class="w-full h-full object-contain p-4" src={partner.content.logo.filename} />
-          <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition">
-            <span class="text-white font-bold text-center px-2 hyphens-auto" lang="nl">{partner.content.name}</span>
+    {regular_partners.map((partner: any) =>
+      <li>
+        <a href={`/carriere/partners/${partner.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-[var(--brand)] transition">
+          <div class="aspect-square p-4 border-b border-neutral-200 flex items-center justify-center">
+            <img class="max-w-full max-h-full object-contain" src={partner.content.logo.filename} alt={partner.content.name} />
           </div>
-        </li>
-      </a>
+          <div class="p-3 text-center">
+            <span class="font-bold text-sm group-hover:text-[var(--brand)] transition hyphens-auto" lang="nl">{partner.content.name}</span>
+          </div>
+        </a>
+      </li>
     )}
   </ul>
 </main>

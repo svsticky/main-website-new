@@ -47,48 +47,65 @@ const brandDark = darken(brand, 0.9);
 			}
 		</script>
 	</head>
-	<body>
+	<body class="flex flex-col min-h-screen">
 		<div id="snow-container" class="pointer-events-none fixed inset-0 z-40 overflow-hidden"></div>
 		<Nav />
-		<slot />
-	</body>
-	<footer class="w-full bg-[#404040] flex justify-between items-center px-8 py-4">
-		<img
-			id="footer-logo"
-			src="https://public.svsticky.nl/logos/hoofd_outline_wit.svg"
-			alt="Sticky Logo"
-      class="h-16 cursor-pointer"
-		/>
-
-		<div class="flex gap-8 text-white text-[2rem]">
-			<a
-				href="https://svsticky.nl/instagram"
-				target="_blank"
-				aria-label="Instagram"
-        class="transition hover:opacity-70"
-			>
-				<i class="fa-brands fa-instagram"></i>
-			</a>
-			<a
-				href="https://svsticky.nl/linkedin"
-				target="_blank"
-				aria-label="LinkedIn"
-        class="transition hover:opacity-70"
-			>
-				<i class="fa-brands fa-linkedin"></i>
-			</a>
-			<a href="https://svsticky.nl/github" class="transition hover:opacity-70" target="_blank" aria-label="GitHub">
-				<i class="fa-brands fa-github"></i>
-			</a>
+		<div class="flex-1">
+			<slot />
 		</div>
-	</footer>
+		<footer class="w-full bg-[#404040] flex justify-between items-center px-8 py-4">
+			<img
+				id="footer-logo"
+				src="https://public.svsticky.nl/logos/hoofd_outline_wit.svg"
+				alt="Sticky Logo"
+	      class="h-16 cursor-pointer"
+			/>
+
+			<div class="flex items-center gap-8">
+				<a href="/vereniging/contact" class="text-white font-semibold transition hover:opacity-70">
+					Contact
+				</a>
+
+				<div class="flex gap-8 text-white text-[2rem]">
+					<a
+						href="https://svsticky.nl/instagram"
+						target="_blank"
+						aria-label="Instagram"
+		        class="transition hover:opacity-70"
+					>
+						<i class="fa-brands fa-instagram"></i>
+					</a>
+					<a
+						href="https://svsticky.nl/linkedin"
+						target="_blank"
+						aria-label="LinkedIn"
+		        class="transition hover:opacity-70"
+					>
+						<i class="fa-brands fa-linkedin"></i>
+					</a>
+					<a href="https://svsticky.nl/github" class="transition hover:opacity-70" target="_blank" aria-label="GitHub">
+						<i class="fa-brands fa-github"></i>
+					</a>
+				</div>
+			</div>
+		</footer>
+	</body>
 </html>
 
 <script is:inline define:vars={{ brand, brandDark }}>
 	const logo = document.getElementById('footer-logo');
 	const root = document.documentElement;
+	let click_count = 0;
+	let last_click = 0;
 
 	logo?.addEventListener('click', () => {
+		const now = Date.now();
+		click_count = now - last_click < 600 ? click_count + 1 : 1;
+		last_click = now;
+
+		if (click_count < 20) return;
+		click_count = 0;
+
 		const active = sessionStorage.getItem('sticky-easter-egg') === '1';
 		const next = !active;
 

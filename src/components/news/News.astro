@@ -1,0 +1,27 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+import { Image } from 'astro-preload/components';
+import RichText from '../basics/RichText.astro';
+const { blok } = Astro.props;
+
+const date_formatter = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+function format_date(date: string) {
+  return date_formatter.format(new Date(date.replace(' ', 'T')));
+}
+---
+
+<main class="w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
+  <a href="/nieuws" class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
+    <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+    <span class="group-hover:underline">Terug naar nieuws</span>
+  </a>
+
+  <div class="border border-neutral-200 rounded-xl overflow-hidden">
+    {blok.image?.filename && <Image url={blok.image.filename} class="w-full h-auto max-h-96 object-cover" alt="" />}
+    <div class="p-8">
+      <span class="text-sm text-neutral-500">{format_date(blok.date)}</span>
+      <h1 class="text-3xl font-bold mt-1 mb-4">{blok.title}</h1>
+      <RichText content={blok.content} />
+    </div>
+  </div>
+</main>

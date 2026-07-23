@@ -1,0 +1,75 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import RichText from '../basics/RichText.astro';
+const { blok } = Astro.props;
+---
+
+<header class="relative w-screen ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]" {...storyblokEditable(blok)}>
+  <div class="hidden md:block absolute inset-x-0 top-0 h-[40vh] bg-[var(--brand)]"></div>
+  <div class="hidden md:block absolute inset-x-0 top-[calc(40vh-1px)] h-16 bg-[var(--brand)] [clip-path:ellipse(70%_100%_at_50%_0%)]"></div>
+
+  <div class="relative w-full md:w-4/5 mx-auto pt-0 md:pt-8 pb-16">
+    <div class="relative w-full h-[70vh] md:h-[60vh] rounded-none md:rounded-2xl overflow-hidden md:shadow-xl">
+      {blok.images.map((image: any, idx: number) => (
+        <img
+          src={image.filename}
+          alt={image.title}
+          data-title={image.title}
+          class="hero-carousel-item absolute inset-0 w-full h-full object-cover brightness-75"
+          style={`transform: translateX(${idx === 0 ? "0" : "100%"});`}
+        />
+      ))}
+
+      <p class="absolute bottom-4 right-6 text-white text-xs z-10">
+        <strong>Foto:</strong> <span id="hero-caption-text">{blok.images[0]?.title}</span>
+      </p>
+
+      <RichText
+        class="absolute top-0 left-0 p-6 md:p-10 md:w-1/2 text-white text-lg [text-shadow:1.25px_1.25px_#82807d]"
+        content={blok.body}
+      />
+
+      {!!blok.buttons?.length &&
+        <ul class="absolute bottom-6 left-6 md:bottom-10 md:left-10 flex flex-row flex-wrap gap-4">
+          {blok.buttons.map((button: any) => (
+            <li><StoryblokComponent blok={button} /></li>
+          ))}
+        </ul>
+      }
+    </div>
+  </div>
+</header>
+
+<script>
+  const items = Array.from(document.querySelectorAll<HTMLImageElement>('.hero-carousel-item'));
+  const caption = document.getElementById('hero-caption-text');
+  const SLIDE_DURATION = 1000;
+  let current = 0;
+
+  items.forEach((item) => {
+    item.style.transition = `transform ${SLIDE_DURATION}ms ease-in-out`;
+  });
+
+  function show(nextIndex: number) {
+    const outgoing = items[current];
+    const incoming = items[nextIndex];
+
+    outgoing.style.transform = 'translateX(-100%)';
+    incoming.style.transform = 'translateX(0)';
+
+    setTimeout(() => {
+      outgoing.style.transition = 'none';
+      outgoing.style.transform = 'translateX(100%)';
+      void outgoing.offsetWidth;
+      outgoing.style.transition = `transform ${SLIDE_DURATION}ms ease-in-out`;
+    }, SLIDE_DURATION);
+
+    current = nextIndex;
+    if (caption) caption.textContent = incoming.dataset.title || '';
+  }
+
+  if (items.length > 1) {
+    setInterval(() => show((current + 1) % items.length), 4000);
+  }
+</script>

@@ -5,7 +5,7 @@ const {blok} = Astro.props;
 ---
 
 <a href={blok.link.url} {...storyblokEditable(blok)}>
-  <button class="flex flex-row gap-2 px-2 py-1 bg-[var(--brand)] text-white font-semibold rounded hover:bg-[var(--brand-dark)] cursor-pointer">
+  <button class="flex flex-row gap-2 px-2 py-1 bg-[var(--brand)] text-white font-semibold rounded hover:bg-[var(--brand-dark)] hover:-translate-y-0.5 transition cursor-pointer">
     {blok.icon_location === "left" ? <i class={`my-auto fas fa-${blok.icon}`}></i> : undefined}
     {blok.title}
     {blok.icon_location === "right" ? <i class={`my-auto fas fa-${blok.icon}`}></i> : undefined}

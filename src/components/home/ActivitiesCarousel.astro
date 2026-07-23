@@ -1,0 +1,80 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+
+const KOALA_API = "https://koala.svsticky.nl/api/activities";
+const KOALA_ACTIVITY_URL = "https://koala.svsticky.nl/activities";
+---
+
+<section class="my-12" {...storyblokEditable(blok)}>
+  <h2 class="text-2xl font-bold mb-4">Aankomende activiteiten</h2>
+
+  <div class="relative">
+    <button id="activities-carousel-left" aria-label="Vorige" class="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 shadow hover:bg-neutral-50 transition">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button id="activities-carousel-right" aria-label="Volgende" class="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 shadow hover:bg-neutral-50 transition">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+
+    <ul id="activities-carousel-track" class="flex gap-6 overflow-x-auto scroll-smooth pt-2 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"></ul>
+    <p id="activities-carousel-empty" class="hidden text-neutral-600">Er zijn momenteel geen activiteiten gepland.</p>
+  </div>
+
+  <a href="/vereniging/activiteiten" class="inline-block mt-4 text-[var(--brand)] font-semibold hover:underline">Bekijk alle activiteiten</a>
+</section>
+
+<script is:inline define:vars={{ KOALA_API, KOALA_ACTIVITY_URL }}>
+  function build_card(activity) {
+    const link = document.createElement('a');
+    link.href = `${KOALA_ACTIVITY_URL}/${activity.id}`;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'shrink-0 w-48 block rounded-xl overflow-hidden border border-neutral-200 hover:-translate-y-1 hover:shadow transition';
+
+    const img = document.createElement('img');
+    img.src = activity.poster;
+    img.alt = activity.name;
+    img.className = 'w-full h-auto aspect-[210/297] object-cover';
+
+    link.appendChild(img);
+
+    const item = document.createElement('li');
+    item.appendChild(link);
+    return item;
+  }
+
+  async function load_activities() {
+    const track = document.getElementById('activities-carousel-track');
+    const empty_message = document.getElementById('activities-carousel-empty');
+    if (!track || !empty_message) return;
+
+    try {
+      const response = await fetch(KOALA_API);
+      const activities = await response.json();
+
+      const upcoming = activities
+        .filter((activity) => activity.poster)
+        .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime());
+
+      if (upcoming.length === 0) {
+        empty_message.classList.remove('hidden');
+        return;
+      }
+
+      track.append(...upcoming.map(build_card));
+
+      const left_btn = document.getElementById('activities-carousel-left');
+      const right_btn = document.getElementById('activities-carousel-right');
+      const scroll_amount = () => track.clientWidth * 0.6;
+
+      left_btn?.addEventListener('click', () => track.scrollBy({ left: -scroll_amount(), behavior: 'smooth' }));
+      right_btn?.addEventListener('click', () => track.scrollBy({ left: scroll_amount(), behavior: 'smooth' }));
+    } catch {
+      empty_message.textContent = 'Activiteiten konden niet worden geladen.';
+      empty_message.classList.remove('hidden');
+    }
+  }
+
+  load_activities();
+</script>

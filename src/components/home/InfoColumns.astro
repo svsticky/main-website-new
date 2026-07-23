@@ -1,0 +1,66 @@
+---
+import { storyblokEditable, useStoryblokApi } from '@storyblok/astro';
+import { Image } from 'astro-preload/components';
+import RichText from '../basics/RichText.astro';
+const { blok } = Astro.props;
+
+const storyblokApi = useStoryblokApi();
+const vacancies = await storyblokApi.getAll('cdn/stories', {
+  version: 'draft',
+  starts_with: 'carriere/vacatures',
+  content_type: 'vacancy',
+  resolve_relations: 'vacancy.partner',
+});
+const featured_vacancies = vacancies.filter((v: any) => v.content.is_featured);
+---
+
+<div class="grid grid-cols-2 gap-8 my-12 items-start" {...storyblokEditable(blok)}>
+  <div class="flex flex-col gap-4">
+    <h2 class="text-2xl font-bold">Wekelijkse borrel</h2>
+    <div id="drinks-card" class="bg-white border border-neutral-200 rounded-2xl p-6 overflow-y-auto">
+      <p>
+        Elke week is er een borrel om <strong>{blok.drinks_time}</strong> in
+        {" "}<strong>{blok.drinks_location}</strong> waar je even kunt socialisen met je mede-leden.
+        De borrels zijn iedere <strong>{blok.drinks_day}</strong>!
+      </p>
+      {!!blok.drinks_description?.content?.length && <RichText class="mt-4" content={blok.drinks_description} />}
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-4">
+    <h2 class="text-2xl font-bold">Uitgelichte vacature{featured_vacancies.length > 1 && "s"}</h2>
+    {featured_vacancies.length ? (
+      <div class="flex flex-col gap-4 flex-1">
+        {featured_vacancies.map((vacancy: any) => (
+          <a href={`/carriere/vacatures/${vacancy.slug}`} class="vacancy-card group bg-white border border-neutral-200 rounded-2xl p-6 flex-1 flex gap-4 hover:-translate-y-1 hover:shadow transition">
+            {vacancy.content.partner?.[0]?.content?.logo?.filename &&
+              <Image url={vacancy.content.partner[0].content.logo.filename} class="w-24 h-24 shrink-0 object-contain" />
+            }
+            <div class="flex flex-col gap-1">
+              <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">{vacancy.content.name}</h3>
+              <p class="text-neutral-700">{vacancy.content.short_text}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="vacancy-card bg-white border border-neutral-200 rounded-2xl p-6 flex-1 text-neutral-500">
+        Er is op dit moment geen vacature uitgelicht.
+      </div>
+    )}
+  </div>
+</div>
+
+<script>
+  function match_drinks_card_height() {
+    const drinks_card = document.getElementById('drinks-card');
+    const first_vacancy_card = document.querySelector<HTMLElement>('.vacancy-card');
+    if (!drinks_card || !first_vacancy_card) return;
+
+    drinks_card.style.height = 'auto';
+    drinks_card.style.height = `${first_vacancy_card.getBoundingClientRect().height}px`;
+  }
+
+  match_drinks_card_height();
+  window.addEventListener('resize', match_drinks_card_height);
+</script>

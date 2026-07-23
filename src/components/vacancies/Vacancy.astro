@@ -1,12 +1,11 @@
 ---
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
-import { renderRichText, storyblokEditable } from '@storyblok/astro';
+import { storyblokEditable } from '@storyblok/astro';
 import { Image } from "astro-preload/components";
 import RichText from '../basics/RichText.astro';
 const { blok } = Astro.props;
 
 const partner = blok.partner[0].content;
-console.log(blok, partner)
 ---
 
 <main class="w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
@@ -15,24 +14,24 @@ console.log(blok, partner)
     <span class="group-hover:underline">Terug naar de vacatures</span>
   </a>
 
-  <div class="rounded border border-neutral-200 overflow-hidden mt-4">
-    <div class="flex flex-row gap-4 border-b border-neutral-200 pr-4">
-      <Image class="h-30 w-auto aspect-square border-r object-contain border-neutral-300" url={partner.logo.filename} />
-      <div class="flex flex-col my-auto">
-        <h1 class="font-semibold text-3xl">{blok.name}</h1>
-        <h2 class="text-gray-500">
+  <div class="rounded-xl border border-neutral-200 overflow-hidden mt-4">
+    <div class="flex flex-row items-center gap-4 border-b border-neutral-200 p-4">
+      <Image class="h-24 w-24 aspect-square border border-neutral-200 rounded-lg object-contain p-2" url={partner.logo.filename} />
+      <div class="flex flex-col gap-1">
+        <h1 class="font-bold text-3xl">{blok.name}</h1>
+        <h2 class="text-neutral-500">
           Vacature van{" "}
-          <a class="text-blue-500 underline" href={`/carriere/partners/${blok.partner[0].slug}`}>
-            {}{partner.name}
+          <a class="text-[var(--brand)] hover:underline" href={`/carriere/partners/${blok.partner[0].slug}`}>
+            {partner.name}
           </a>
         </h2>
-        <ul class="flex flex-row gap-2 mt-4">
-          {blok.studies.slice(0, 3).map(study =>
-            <li class="border border-neutral-400 bg-neutral-200 px-2 py-1 text-xs rounded-full">
+        <ul class="flex flex-row flex-wrap gap-2 mt-2">
+          {blok.studies.slice(0, 3).map((study: string) =>
+            <li class="border border-neutral-300 bg-neutral-100 px-2 py-1 text-xs rounded-full">
               {study}
             </li>)}
           {blok.studies.length > 3
-            ? <li class="border border-neutral-400 bg-neutral-200 px-2 py-1 text-xs rounded-full relative group">
+            ? <li class="border border-neutral-300 bg-neutral-100 px-2 py-1 text-xs rounded-full relative group">
                 + {blok.studies.length - 3}
                 <div class="hidden group-hover:block absolute bottom-8 w-50 left-1/2 -translate-x-1/2 bg-neutral-600 text-white rounded px-2 py-1 border border-neutral-800">
                   {blok.studies.slice(3).join(", ")}
@@ -41,10 +40,10 @@ console.log(blok, partner)
             : undefined}
         </ul>
       </div>
-      <div class="flex flex-row gap-4 h-min my-auto ml-auto">
-        {blok.buttons?.map(button => <StoryblokComponent blok={button} />)}
+      <div class="flex flex-row gap-4 ml-auto">
+        {blok.buttons?.map((button: any) => <StoryblokComponent blok={button} />)}
       </div>
     </div>
-    <RichText class="p-4" content={blok.long_text} />
+    <RichText class="p-6" content={blok.long_text} />
   </div>
 </main>

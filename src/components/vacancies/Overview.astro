@@ -20,15 +20,15 @@ const { data: { datasource_entries: studies } } = await storyblokApi.get('cdn/da
   dimension: "type"
 });
 const options = [
-  { label: "Bachelor programmes", values: studies.filter(study => study.dimension_value === "bsc").map(study => ({ key: study.name, value: study.value })) },
-  { label: "Master programmes", values: studies.filter(study => study.dimension_value === "msc").map(study => ({ key: study.name, value: study.value })) }
+  { label: "Bachelor programmes", values: studies.filter((study: any) => study.dimension_value === "bsc").map((study: any) => ({ key: study.name, value: study.value })) },
+  { label: "Master programmes", values: studies.filter((study: any) => study.dimension_value === "msc").map((study: any) => ({ key: study.name, value: study.value })) }
 ];
 
 const { data: { datasource_entries: types } } = await storyblokApi.get('cdn/datasource_entries', {
   datasource: "vacancy-types",
   dimension: "translation"
 });
-const type_options = types.map(type => ({ key: type.name, value: type.value }));
+const type_options = types.map((type: any) => ({ key: type.name, value: type.value }));
 ---
 
 <main class="w-3/4 mx-auto py-12 flex flex-col min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
@@ -55,13 +55,17 @@ const type_options = types.map(type => ({ key: type.name, value: type.value }));
   </div>
 
   <div class="mt-8">
-    <ul class="grid grid-cols-4 gap-4" id="vacatures">
-      {vacancies.map(vacancy =>
+    <ul class="grid grid-cols-4 gap-6" id="vacatures">
+      {vacancies.map((vacancy: any) =>
         <a class="group" href={`/carriere/vacatures/${vacancy.slug}`} data-types={vacancy.content.types} data-studies={vacancy.content.studies}>
-          <li class="flex flex-col w-full h-full border border-neutral-300 rounded-xl group-hover:-translate-y-1 group-hover:shadow transition">
-            <Image class="w-full h-auto border-b border-neutral-300 object-contain aspect-square" url={vacancy.content.partner[0].content.logo.filename} />
-            <span class="font-bold text-lg mx-auto group-hover:text-[var(--brand)] my-2">{vacancy.content.name}</span>
-            <p class="mx-auto mb-2">{vacancy.content.short_text}</p>
+          <li class="flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden group-hover:-translate-y-1 group-hover:shadow-lg group-hover:border-[var(--brand)] transition">
+            <div class="aspect-square p-6 border-b border-neutral-200 flex items-center justify-center">
+              <Image class="max-w-full max-h-full object-contain" url={vacancy.content.partner[0].content.logo.filename} />
+            </div>
+            <div class="p-4 flex flex-col gap-1 text-center flex-1">
+              <span class="font-bold text-lg group-hover:text-[var(--brand)] transition">{vacancy.content.name}</span>
+              <p class="text-sm text-neutral-600">{vacancy.content.short_text}</p>
+            </div>
           </li>
         </a>
       )}

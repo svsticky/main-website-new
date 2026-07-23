@@ -1,0 +1,58 @@
+---
+import { storyblokEditable, useStoryblokApi } from '@storyblok/astro';
+const { blok } = Astro.props;
+
+const storyblokApi = useStoryblokApi();
+const news_items = await storyblokApi.getAll('cdn/stories', {
+  version: 'draft',
+  starts_with: 'nieuws',
+  content_type: 'news-item',
+  sort_by: 'content.date:desc',
+  per_page: 8,
+});
+
+const date_formatter = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+function format_date(date: string) {
+  return date_formatter.format(new Date(date.replace(' ', 'T')));
+}
+---
+
+<section class="my-12" {...storyblokEditable(blok)}>
+  <h2 class="text-2xl font-bold mb-4">Laatste nieuws</h2>
+
+  {!!news_items.length ? (
+    <div class="relative">
+      <button id="news-carousel-left" aria-label="Vorige" class="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 shadow hover:bg-neutral-50 transition">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button id="news-carousel-right" aria-label="Volgende" class="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 shadow hover:bg-neutral-50 transition">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+
+      <ul id="news-carousel-track" class="flex gap-6 overflow-x-auto scroll-smooth pt-2 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {news_items.map((item: any) => (
+          <li class="shrink-0 w-72">
+            <a href={`/nieuws/${item.slug}`} class="group block h-full border border-neutral-200 rounded-xl p-6 hover:-translate-y-1 hover:shadow transition">
+              <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">{item.content.title}</h3>
+              <span class="text-xs text-neutral-500">{format_date(item.content.date)}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ) : (
+    <p class="text-neutral-600">Er is momenteel geen nieuws.</p>
+  )}
+</section>
+
+<script>
+  const track = document.getElementById('news-carousel-track');
+  const left_btn = document.getElementById('news-carousel-left');
+  const right_btn = document.getElementById('news-carousel-right');
+
+  if (track) {
+    const scroll_amount = () => track.clientWidth * 0.6;
+    left_btn?.addEventListener('click', () => track.scrollBy({ left: -scroll_amount(), behavior: 'smooth' }));
+    right_btn?.addEventListener('click', () => track.scrollBy({ left: scroll_amount(), behavior: 'smooth' }));
+  }
+</script>

@@ -1,0 +1,39 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+
+const link = blok.link?.cached_url || blok.link?.url || blok.link;
+---
+
+{!!blok.images?.length &&
+  <section class="w-full my-12" {...storyblokEditable(blok)}>
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="relative block w-full h-32 md:h-40 rounded-2xl overflow-hidden border border-neutral-200"
+    >
+      {blok.images.map((image: any, idx: number) => (
+        <img
+          src={image.filename}
+          alt={blok.partner_name || ''}
+          class="featured-banner-item absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
+          style={`opacity: ${idx === 0 ? 1 : 0};`}
+        />
+      ))}
+    </a>
+  </section>
+}
+
+<script>
+  const items = Array.from(document.querySelectorAll<HTMLImageElement>('.featured-banner-item'));
+  let current = 0;
+
+  if (items.length > 1) {
+    setInterval(() => {
+      items[current].style.opacity = '0';
+      current = (current + 1) % items.length;
+      items[current].style.opacity = '1';
+    }, 5000);
+  }
+</script>
