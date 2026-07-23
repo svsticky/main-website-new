@@ -1,0 +1,48 @@
+---
+import type { GetStaticPaths } from "astro";
+import { useStoryblokApi } from '@storyblok/astro';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import Layout from '../layouts/Layout.astro';
+
+export const getStaticPaths = (async () => {
+  const storyblokApi = useStoryblokApi();
+
+  // undefined is the default language
+  const languages = [undefined, "en"];
+
+  const pages_per_language = await Promise.all(languages.map(async language => {
+    const response = await storyblokApi.getStories({ version: "draft", language: language });
+    let stories = response.data.stories, remaining_count = response.total - stories.length, page = 1;
+    while (remaining_count > 0) {
+      const response = await storyblokApi.getStories({ version: "draft", page: ++page });
+      remaining_count -= response.data.stories.length;
+      stories = stories.concat(response.data.stories);
+    }
+
+    return stories.map(s => s.full_slug === "home"
+      ? ({ params: { path: `/${language ?? ""}` }, props: { slug: "", language }})
+      : ({ params: { path: `/${language ? `${language}/` : ""}${s.full_slug}` }, props: { slug: s.full_slug, language }}));
+  }));
+
+  console.log(JSON.stringify(pages_per_language.flat()))
+  return pages_per_language.flat();
+}) satisfies GetStaticPaths;
+
+const { slug, language } = Astro.props;
+
+const storyblokApi = useStoryblokApi();
+const { data } = await storyblokApi.get(
+  `cdn/stories/${slug || 'home'}`,
+  {
+    version: 'draft',
+    resolve_relations: ['vacancy.partner', 'vcp-page.people'],
+    language
+  }
+);
+
+const story = data.story;
+---
+
+<Layout language={language} slug={slug}>
+	<StoryblokComponent blok={story.content} uuid={story.uuid} language={language} />
+</Layout>

@@ -3,6 +3,8 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import { useStoryblokApi } from '@storyblok/astro';
 
+const { language, slug } = Astro.props;
+
 function darken(hex: string, factor: number) {
   const clean = hex.replace('#', '');
   const channel = (offset: number) => Math.round(parseInt(clean.slice(offset, offset + 2), 16) * factor);
@@ -49,7 +51,7 @@ const brandDark = darken(brand, 0.9);
 	</head>
 	<body class="flex flex-col min-h-screen">
 		<div id="snow-container" class="pointer-events-none fixed inset-0 z-40 overflow-hidden"></div>
-		<Nav />
+		<Nav language={language} slug={slug} />
 		<div class="flex-1">
 			<slot />
 		</div>
