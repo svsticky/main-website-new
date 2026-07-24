@@ -47,7 +47,7 @@ const { blok, language } = Astro.props;
       <textarea class="border border-neutral-300 rounded-xl px-2 py-1" required name="message" id="message"></textarea>
     </div>
 
-    <button type="submit" class="flex cursor-pointer w-full bg-[var(--brand)] text-white text-center text-lg px-4 py-2 font-bold rounded-xl hover:bg-[var(--brand-dark)] group transition">
+    <button type="submit" class="flex disabled:cursor-not-allowed cursor-pointer w-full bg-[var(--brand)] text-white text-center text-lg px-4 py-2 font-bold rounded-xl hover:bg-[var(--brand-dark)] group transition">
       <div class="mx-auto">
         {language === undefined ? "Versturen" : "Submit"}
         <i class="ml-2 fas fa-paper-plane my-auto group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"></i>
@@ -55,3 +55,65 @@ const { blok, language } = Astro.props;
     </button>
   </form>
 </div>
+
+<script>
+  import { actions } from "astro:actions";
+import { experimental_getFontFileURL } from "astro:assets";
+
+  const form = document.querySelector("form")!;
+  const submit_button = form.querySelector("button[type='submit']")! as HTMLButtonElement;
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    const form_data = new FormData(form);
+
+    // TODO: Loading spinner
+    const spinner = document.createElement("i");
+    spinner.classList.add("fas", "fa-spinner", "fa-spin-pulse", "mx-auto", "text-xl", "my-1");
+    submit_button.replaceChildren(spinner);
+    submit_button.disabled = true;
+
+    const { error } = await actions.mail(form_data);
+
+    const container = document.createElement("div");
+    container.classList.add("mx-auto");
+
+    if (error) {
+      const text = document.createTextNode(
+        document.documentElement.lang === "nl" ? "Niet gelukt" : "Could not send!"
+      );
+      container.appendChild(text);
+
+      const check = document.createElement("i");
+      check.classList.add("fas", "fa-exclamation", "fa-shake", "ml-2", "my-auto");
+      check.style.setProperty("--fa-animation-iteration-count", "1");
+      check.style.setProperty("--fa-animation-duration", "3s");
+      container.appendChild(check);
+
+      const explanation = document.createElement("p");
+      explanation.appendChild(document.createTextNode(
+        document.documentElement.lang === "nl"
+          ? "Het versturen van uw antwoord is niet gelukt. Herlaad de pagina en probeer het opnieuw, of stuur een mail naar "
+          : "Sending your answers failed. Reload the page and try again, or send a mail to "
+      ));
+      const mail_link = document.createElement("a");
+      mail_link.href = "mailto:extern@svsticky.nl";
+      mail_link.innerText = "extern@svsticky.nl";
+      mail_link.classList.add("text-blue-500", "hover:underline");
+      explanation.appendChild(mail_link);
+      explanation.appendChild(document.createTextNode("."));
+      form.appendChild(explanation);
+    } else {
+      const text = document.createTextNode(
+        document.documentElement.lang === "nl" ? "Verstuurd!" : "Sent!"
+      );
+      container.appendChild(text);
+
+      const check = document.createElement("i");
+      check.classList.add("fas", "fa-check", "fa-beat", "ml-2", "my-auto");
+      check.style.setProperty("--fa-animation-iteration-count", "1");
+      container.appendChild(check);
+    }
+
+    submit_button.replaceChildren(container);
+  });
+</script>
