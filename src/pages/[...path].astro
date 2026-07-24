@@ -1,34 +1,13 @@
 ---
-import type { GetStaticPaths } from "astro";
 import { useStoryblokApi } from '@storyblok/astro';
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 import Layout from '../layouts/Layout.astro';
 
-export const getStaticPaths = (async () => {
-  const storyblokApi = useStoryblokApi();
+export const prerender = false;
 
-  // undefined is the default language
-  const languages = [undefined, "en"];
-
-  const pages_per_language = await Promise.all(languages.map(async language => {
-    const response = await storyblokApi.getStories({ version: "draft", language });
-    let stories = response.data.stories, remaining_count = response.total - stories.length, page = 1;
-    while (remaining_count > 0) {
-      const response = await storyblokApi.getStories({ version: "draft", page: ++page, language });
-      remaining_count -= response.data.stories.length;
-      stories = stories.concat(response.data.stories);
-    }
-
-    return stories.map(s => {
-      return s.full_slug === `${language ? `${language}/` : ""}home`
-        ? ({ params: { path: `/${language ?? ""}` }, props: { slug: "", language }})
-        : ({ params: { path: `/${s.full_slug}` }, props: { slug: s.full_slug.slice(language ? language.length + 1 : 0), language }})
-    });
-  }));
-  return pages_per_language.flat();
-}) satisfies GetStaticPaths;
-
-const { slug, language } = Astro.props;
+const raw_path = Astro.params.path || "";
+const language = raw_path === "en" || raw_path.startsWith("en/") ? "en" : undefined;
+const slug = language ? raw_path.slice(3) : raw_path;
 
 const storyblokApi = useStoryblokApi();
 const { data } = await storyblokApi.get(

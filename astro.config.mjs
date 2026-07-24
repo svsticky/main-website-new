@@ -73,8 +73,5 @@ export default defineConfig({
   }), react(), preload()],
   vite: {
     plugins: [mkcert(), tailwindcss()],
-    ssr: {
-      noExternal: true
-    }
   },
 });
