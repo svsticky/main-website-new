@@ -13,6 +13,7 @@ const news_items = await storyblokApi.getAll('cdn/stories', {
 
 const date_formatter = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
 function format_date(date: string) {
+  if (!date) return '';
   return date_formatter.format(new Date(date.replace(' ', 'T')));
 }
 

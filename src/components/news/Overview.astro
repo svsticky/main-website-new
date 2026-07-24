@@ -13,6 +13,7 @@ const news_items = await storyblokApi.getAll('cdn/stories', {
 
 const date_formatter = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
 function format_date(date: string) {
+  if (!date) return '';
   return date_formatter.format(new Date(date.replace(' ', 'T')));
 }
 
@@ -32,11 +33,11 @@ function get_excerpt(richtext: any, max_length = 180) {
     <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
   </div>
 
-  <ul class="grid grid-cols-1 gap-6">
+  <ul class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
     {news_items.map((item: any) => (
       <li>
         <a href={`/nieuws/${item.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
-          {item.content.image?.filename && <Image url={item.content.image.filename} class="w-full h-56 object-cover" />}
+          {item.content.image?.filename && <Image url={item.content.image.filename} class="w-full h-44 object-cover" />}
           <div class="p-4 flex flex-col gap-1">
             <span class="text-xs text-neutral-500">{format_date(item.content.date)}</span>
             <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">{item.content.title}</h3>

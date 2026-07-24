@@ -72,7 +72,7 @@ const type_options = types.map((type: any) => ({ key: type.name, value: type.val
         <a class="group" href={`${language === undefined ? "" : `/${language}`}/carriere/vacatures/${vacancy.slug}`} data-types={vacancy.content.types} data-studies={vacancy.content.studies}>
           <li class="flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden group-hover:-translate-y-1 group-hover:shadow-lg group-hover:border-[var(--brand)] transition">
             <div class="aspect-square p-6 border-b border-neutral-200 flex items-center justify-center">
-              <Image class="max-w-full max-h-full object-contain" url={vacancy.content.partner[0].content.logo.filename} />
+              {!!vacancy.content.partner?.[0]?.content?.logo?.filename && <Image class="max-w-full max-h-full object-contain" url={vacancy.content.partner[0].content.logo.filename} />}
             </div>
             <div class="p-4 flex flex-col gap-1 text-center flex-1">
               <span class="font-bold text-lg group-hover:text-[var(--brand)] transition">{vacancy.content.name}</span>

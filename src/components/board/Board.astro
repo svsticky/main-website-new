@@ -4,6 +4,7 @@ import { Image } from 'astro-preload/components';
 const { blok, language } = Astro.props;
 import { useStoryblokApi } from '@storyblok/astro';
 import PhotoCarousel from '../basics/PhotoCarousel.astro';
+import RichText from '../basics/RichText.astro';
 
 const storyblokApi = useStoryblokApi();
 const current_board = await storyblokApi.getAll('cdn/stories', {
@@ -71,7 +72,7 @@ blok.board_number = Number(blok.board_number);
                 <h4 class="font-extrabold text-lg" style={{ color: blok.colour }}>
                   {member.name}{!!member.function && ` - ${member.function}`}
                 </h4>
-                <p class="mt-1 text-neutral-700">{member.bio}</p>
+                <RichText class="mt-1 text-neutral-700" content={member.bio} />
               </div>
             </div>
           </a>
