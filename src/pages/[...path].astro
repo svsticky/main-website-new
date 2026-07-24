@@ -20,9 +20,9 @@ export const getStaticPaths = (async () => {
     }
 
     return stories.map(s => {
-      return s.full_slug === "home"
+      return s.full_slug === `${language ? `${language}/` : ""}home`
         ? ({ params: { path: `/${language ?? ""}` }, props: { slug: "", language }})
-        : ({ params: { path: `/${s.full_slug}` }, props: { slug: s.full_slug, language }})
+        : ({ params: { path: `/${s.full_slug}` }, props: { slug: s.full_slug.slice(language ? language.length + 1 : 0), language }})
     });
   }));
   return pages_per_language.flat();
@@ -32,7 +32,7 @@ const { slug, language } = Astro.props;
 
 const storyblokApi = useStoryblokApi();
 const { data } = await storyblokApi.get(
-  `cdn/stories/${language ? slug.slice(language.length + 1) : slug || 'home'}`,
+  `cdn/stories/${slug || 'home'}`,
   {
     version: 'draft',
     resolve_relations: ['vacancy.partner', 'vcp-page.people'],
