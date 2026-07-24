@@ -77,4 +77,7 @@ export default defineConfig({
       noExternal: true
     }
   },
+  security: {
+    allowedDomains: [{}]
+  }
 });
