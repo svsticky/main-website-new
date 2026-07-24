@@ -1,0 +1,10 @@
+---
+import { storyblokEditable } from "@storyblok/astro";
+const { blok } = Astro.props;
+---
+
+<div class="border-neutral-300 flex flex-row my-8" {...storyblokEditable(blok)}>
+  <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+  <img src="/exclamation.svg" class="w-7" />
+  <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
+</div>

@@ -1,37 +1,33 @@
 ---
 import { renderRichText, storyblokEditable } from '@storyblok/astro';
-const { blok } = Astro.props;
+const { blok, language } = Astro.props;
 
 import { useStoryblokApi } from '@storyblok/astro';
+import Separator from '../basics/Separator.astro';
 
 const storyblokApi = useStoryblokApi();
 const partners = await storyblokApi.getAll('cdn/stories', {
   version: 'draft',
   starts_with: 'carriere/partners',
   content_type: 'partner',
-  sort_by: "name"
+  sort_by: "name",
+  language
 });
 
 const main_partners = partners.filter(partner => partner.content.is_main);
 const regular_partners = partners.filter(partner => !partner.content.is_main);
 ---
 
-<main class="w-[92%] sm:w-3/4 mx-auto py-16 flex flex-col gap-8" {...storyblokEditable(blok)}>
-  <h1 class="text-4xl font-bold text-center">Onze partners</h1>
-
-  <p class="mx-auto w-full sm:w-3/4 text-center">Studievereniging Sticky heeft als een van de primaire doelen om studenten te helpen met het orienteren op de arbeidsmarkt zowel tijdens hun studie als wanneer ze afstuderen. Daarom gaan wij graag de samenwerking aan met zowel lokale bedrijven als andere IT-gerelateerde bedrijven in Nederland. Klik op een van de bedrijven om te zijn wat ze te bieden te hebben voor jou!</p>
-
-  <div class="border-neutral-300 flex flex-row">
-    <div class="bg-neutral-300 h-px w-full my-auto"></div>
-    <img src="/exclamation.svg" class="w-7" />
-    <div class="bg-neutral-300 h-px w-full my-auto"></div>
-  </div>
-
+<div {...storyblokEditable(blok)}>
   {!!main_partners.length && <>
-    <h2 class="font-bold text-2xl text-center">{main_partners.length > 1 ? "Hoofdpartners" : "Hoofdpartner"}</h2>
+    <h2 class="font-bold text-2xl text-center">
+      {main_partners.length > 1
+        ? (language === undefined ? "Hoofdpartners" : "Main partners")
+        : (language === undefined ? "Hoofdpartner" : "Main partner")}
+    </h2>
     <ul class="flex flex-col gap-4">
       {main_partners.map((partner: any) =>
-        <a href={`/carriere/partners/${partner.slug}`}>
+        <a href={`/${language === undefined ? "" : `${language}/`}carriere/partners/${partner.slug}`}>
           <li class="flex flex-col sm:flex-row border border-neutral-300 rounded-xl overflow-hidden">
             <img class="w-full sm:w-1/6 h-32 sm:h-auto aspect-square object-contain" src={partner.content.logo.filename} />
             <div class="flex flex-col gap-4 p-4 border-t sm:border-t-0 sm:border-l border-neutral-300">
@@ -43,18 +39,16 @@ const regular_partners = partners.filter(partner => !partner.content.is_main);
       )}
     </ul>
 
-    <div class="border-neutral-300 flex flex-row">
-      <div class="bg-neutral-300 h-px w-full my-auto"></div>
-      <img src="/exclamation.svg" class="w-7" />
-      <div class="bg-neutral-300 h-px w-full my-auto"></div>
-    </div>
+    <Separator />
   </>}
 
-  {!!main_partners.length && <h2 class="font-bold text-2xl text-center">Reguliere partners</h2>}
-  <ul class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+  {!!main_partners.length && <h2 class="font-bold text-2xl text-center">
+      {language === undefined ? "Reguliere partners" : "Regular partners"}
+    </h2>}
+  <ul class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
     {regular_partners.map((partner: any) =>
       <li>
-        <a href={`/carriere/partners/${partner.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-[var(--brand)] transition">
+        <a href={`/${language === undefined ? "" : `${language}/`}carriere/partners/${partner.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-[var(--brand)] transition">
           <div class="aspect-square p-4 border-b border-neutral-200 flex items-center justify-center">
             <img class="max-w-full max-h-full object-contain" src={partner.content.logo.filename} alt={partner.content.name} />
           </div>
@@ -65,4 +59,4 @@ const regular_partners = partners.filter(partner => !partner.content.is_main);
       </li>
     )}
   </ul>
-</main>
+</div>

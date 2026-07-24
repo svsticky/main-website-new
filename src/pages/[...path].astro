@@ -11,20 +11,20 @@ export const getStaticPaths = (async () => {
   const languages = [undefined, "en"];
 
   const pages_per_language = await Promise.all(languages.map(async language => {
-    const response = await storyblokApi.getStories({ version: "draft", language: language });
+    const response = await storyblokApi.getStories({ version: "draft", language });
     let stories = response.data.stories, remaining_count = response.total - stories.length, page = 1;
     while (remaining_count > 0) {
-      const response = await storyblokApi.getStories({ version: "draft", page: ++page });
+      const response = await storyblokApi.getStories({ version: "draft", page: ++page, language });
       remaining_count -= response.data.stories.length;
       stories = stories.concat(response.data.stories);
     }
 
-    return stories.map(s => s.full_slug === "home"
-      ? ({ params: { path: `/${language ?? ""}` }, props: { slug: "", language }})
-      : ({ params: { path: `/${language ? `${language}/` : ""}${s.full_slug}` }, props: { slug: s.full_slug, language }}));
+    return stories.map(s => {
+      return s.full_slug === "home"
+        ? ({ params: { path: `/${language ?? ""}` }, props: { slug: "", language }})
+        : ({ params: { path: `/${s.full_slug}` }, props: { slug: s.full_slug, language }})
+    });
   }));
-
-  console.log(JSON.stringify(pages_per_language.flat()))
   return pages_per_language.flat();
 }) satisfies GetStaticPaths;
 
@@ -32,7 +32,7 @@ const { slug, language } = Astro.props;
 
 const storyblokApi = useStoryblokApi();
 const { data } = await storyblokApi.get(
-  `cdn/stories/${slug || 'home'}`,
+  `cdn/stories/${language ? slug.slice(language.length + 1) : slug || 'home'}`,
   {
     version: 'draft',
     resolve_relations: ['vacancy.partner', 'vcp-page.people'],

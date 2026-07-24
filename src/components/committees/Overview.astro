@@ -11,56 +11,17 @@ const stories = await storyblokApi.getAll('cdn/stories', {
   content_type: 'committee',
   sort_by: "name"
 });
-
-const committees = stories.filter(story => story.content.type === "com");
-const groups = stories.filter(story => story.content.type === "wer");
 ---
 
-<main class="w-[92%] sm:w-3/4 mx-auto py-16 flex flex-col" {...storyblokEditable(blok)}>
-  <h1 class="text-4xl font-bold text-center mb-8">Commissies, werkgroepen & raden</h1>
-  <p class="w-full sm:w-3/4 mx-auto text-center mb-8">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos natus sint ullam, commodi aperiam laborum nobis nostrum hic nisi inventore quibusdam vitae saepe deserunt, laudantium qui placeat.</p>
-
-  <h2 class="text-2xl font-bold text-center">Commissies</h2>
-  <p class="w-full sm:w-3/4 mx-auto text-center mb-8">Een commissie is een groepje leden, die samen activiteiten organiseren voor alle leden van de vereniging. Vanuit de vereniging is er budget voor leuke ideeen zoals paintballen, een barbecue of een heuse internationale reis!</p>
-
-  <div class="border-neutral-300 flex flex-row mb-8">
-    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-    <img src="/exclamation.svg" class="w-7" />
-    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-  </div>
-
-  <ul class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-16">
-    {committees.map(committee =>
-      <a href={`/vereniging/commissies/${committee.slug}`} class="group relative block aspect-square border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
-        <li class="h-full">
-          <Image class="w-full h-full object-contain" url={committee.content.logo.filename} />
-          <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition">
-            <span class="text-white font-bold text-center px-2 hyphens-auto" lang="nl">{committee.content.name}</span>
-          </div>
-        </li>
-      </a>
-    )}
-  </ul>
-
-  <h2 class="text-2xl font-bold text-center">Werkgroepen en Raden</h2>
-  <p class="w-full sm:w-3/4 mx-auto text-center mb-8">Een werkgroep of raad is net als een commissie, maar hoeft geen activiteiten te organiseren. Daarom dienen de meeste werkgroepen en raden ter ondersteuning of advisering van de vereniging, en hebben ze regelmatige gezellige werkmomenten.</p>
-
-  <div class="border-neutral-300 flex flex-row mb-8">
-    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-    <img src="/exclamation.svg" class="w-7" />
-    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-  </div>
-
-  <ul class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-    {groups.map(group =>
-      <a href={`/vereniging/commissies/${group.slug}`} class="group relative block aspect-square border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
-        <li class="h-full">
-          <Image class="w-full h-full object-contain" url={group.content.logo.filename} />
-          <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition">
-            <span class="text-white font-bold text-center px-2 hyphens-auto" lang="nl">{group.content.name}</span>
-          </div>
-        </li>
-      </a>
-    )}
-  </ul>
-</main>
+<ul class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8" {...storyblokEditable(blok)}>
+  {stories.filter(story => blok.type ? story.content.type === blok.type : true).map(committee =>
+    <a href={`/vereniging/commissies/${committee.slug}`} class="group relative block aspect-square border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
+      <li class="h-full">
+        <Image class="w-full h-full object-contain" url={committee.content.logo.filename} />
+        <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition">
+          <span class="text-white font-bold text-center px-2 hyphens-auto" lang="nl">{committee.content.name}</span>
+        </div>
+      </li>
+    </a>
+  )}
+</ul>

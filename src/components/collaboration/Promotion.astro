@@ -1,0 +1,47 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+import RichText from '../basics/RichText.astro';
+import { Image } from "astro-preload/components";
+const { blok, language } = Astro.props;
+---
+
+<div class="flex flex-col gap-4" {...storyblokEditable(blok)}>
+  <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    {blok.possibilities.map(possibility => (
+      <li class="border border-neutral-300 rounded-xl" {...storyblokEditable(possibility)}>
+        <div class="flex flex-row gap-2 border-b border-neutral-300 p-4">
+          <div class="flex bg-[var(--brand)]/20 h-8 w-8 rounded text-[var(--brand)]">
+            <i class={`m-auto fas fa-${possibility.icon}`}></i>
+          </div>
+          <h3 class="my-auto font-semibold">{possibility.title}</h3>
+        </div>
+        <p class="p-4">{possibility.description}</p>
+      </li>
+    ))}
+  </ul>
+
+  <div class="border border-neutral-300 rounded-xl">
+    <div class="flex flex-row gap-2 border-b border-neutral-300 p-4">
+      <div class="flex bg-[var(--brand)]/20 h-8 w-8 rounded text-[var(--brand)]">
+        <i class="m-auto fas fa-people-group"></i>
+      </div>
+      <h3 class="my-auto font-semibold">
+        {language === undefined ? "Sponsoractiviteiten" : "Sponsored activities"}
+      </h3>
+    </div>
+    <div class="p-4 flex flex-col sm:flex-row gap-4">
+      <RichText content={blok.sponsor_description} />
+      <ul class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {blok.sponsored_activities.map(act => (
+          <li class="border border-neutral-300 rounded-xl overflow-hidden" {...storyblokEditable(act)}>
+            <Image url={act.photo.filename} class="w-full h-25 object-cover" />
+            <div class="p-4">
+              <h4 class="font-semibold mb-2">{act.title}</h4>
+              <p class="text-sm">{act.description}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</div>

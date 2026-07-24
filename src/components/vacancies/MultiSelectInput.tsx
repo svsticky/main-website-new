@@ -3,13 +3,14 @@ import { useStore } from "@nanostores/react";
 import * as store from "./store";
 
 type Option = { key: string, value: string };
-type OptionsWithLabel = { label: string, values: Option[] };
+type OptionsWithLabel = { label: { nl: string, en: string }, values: Option[] };
 
 interface Props {
   placeholder: string;
   options: (OptionsWithLabel | Option)[];
   max_visible?: number;
   atom_name: "type_filter" | "programme_filter";
+  language: undefined | "en";
 }
 
 function has_label(thing: any): thing is OptionsWithLabel {
@@ -29,7 +30,7 @@ function find_option(options: (OptionsWithLabel | Option)[], key: string) {
   return undefined;
 }
 
-export function MultiSelectInput({ placeholder, options, max_visible, atom_name }: Props) {
+export function MultiSelectInput({ placeholder, options, max_visible, atom_name, language }: Props) {
   const max_visible_ = max_visible ?? 3;
   const [selected_items, set_selected_items] = useState<Option[]>([]);
   const [opened, set_opened] = useState(false);
@@ -90,10 +91,10 @@ export function MultiSelectInput({ placeholder, options, max_visible, atom_name 
 
       {/* Menu when not collapsed */}
       <ul className={`${opened ? "block" : "hidden"} absolute top-10 w-max bg-white z-10 rounded border border-neutral-300 px-2 py-1`}>
-        {options.map(option => (
+        {options.map((option, index) => (
           has_label(option)
-            ? (<Fragment key={option.label}>
-                <strong key={option.label}>{option.label}</strong>
+            ? (<Fragment key={index}>
+                <strong>{option.label[language ?? "nl"]}</strong>
                 {option.values.map(suboption => (
                   <li className="ml-2 flex flex-row gap-2" key={suboption.key}>
                     <input

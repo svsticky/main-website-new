@@ -2,11 +2,13 @@
 import { Image } from "astro-preload/components";
 import RichText from "./basics/RichText.astro";
 
-const { blok } = Astro.props;
+const { blok, language } = Astro.props;
 ---
 
 <main class="w-[92%] sm:w-3/4 mx-auto py-12">
-  <h1 class="text-4xl font-bold text-center mb-8">Sociale veiligheid bij Sticky</h1>
+  <h1 class="text-4xl font-bold text-center mb-8">
+    {language === undefined ? "Sociale veiligheid bij Sticky" : "Social safety at Sticky"}
+  </h1>
 
   <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
   <div class="flex flex-col md:col-span-3">
@@ -17,21 +19,27 @@ const { blok } = Astro.props;
     </div>
     <div class="flex flex-col md:flex-row gap-8 py-8 px-4">
       <div class="w-full md:w-1/3 my-auto text-center">
-        Deel je verhaal anoniem via ons anoniem meldpunt:
+        {language === undefined
+          ? "Deel je verhaal anoniem via ons anoniem meldpunt:"
+          : "Share your story anonymously via our anonymous hotline:"}
         <a class="text-blue-500 hover:underline inline-block" href="https://voeljeveilig.svsticky.nl">voeljeveilig.svsticky.nl</a>.
       </div>
       <div class="flex md:hidden items-center gap-4">
         <div class="bg-neutral-300 h-px w-full my-auto"></div>
-        <i class="text-lg text-neutral-600">Of</i>
+        <i class="text-lg text-neutral-600">{language === undefined ? "Of" : "Or"}</i>
         <div class="bg-neutral-300 h-px w-full my-auto"></div>
       </div>
       <div class="hidden md:flex flex-col py-4">
         <div class="bg-neutral-300 w-px h-full mx-auto"></div>
-        <i class="my-auto py-2 text-xl text-neutral-600">Of</i>
+        <i class="my-auto py-2 text-xl text-neutral-600">{language === undefined ? "Of" : "Or"}</i>
         <div class="bg-neutral-300 w-px h-full mx-auto"></div>
       </div>
       <div class="flex flex-col gap-4 w-full md:w-min md:grow">
-        <p lang="nl" class="hyphens-auto text-center">Neem zelf contact op met een van onze vertrouwenscontactpersonen:</p>
+        <p lang="nl" class="hyphens-auto text-center">
+          {language === undefined
+            ? "Neem zelf contact op met een van onze vertrouwenscontactpersonen:"
+            : "Contact one of our confidential contact persons yourself:"}
+        </p>
         <ul class="flex flex-col gap-4 mx-auto">
           {blok.people.map((person: any) => (
             <li class="grid grid-cols-[6rem_auto] gap-4 border border-neutral-200 rounded-xl p-4">

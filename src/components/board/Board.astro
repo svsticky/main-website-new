@@ -1,8 +1,9 @@
 ---
 import { renderRichText, storyblokEditable } from '@storyblok/astro';
 import { Image } from 'astro-preload/components';
-const { blok } = Astro.props;
+const { blok, language } = Astro.props;
 import { useStoryblokApi } from '@storyblok/astro';
+import PhotoCarousel from '../basics/PhotoCarousel.astro';
 
 const storyblokApi = useStoryblokApi();
 const current_board = await storyblokApi.getAll('cdn/stories', {
@@ -18,29 +19,38 @@ blok.board_number = Number(blok.board_number);
 ---
 
 <main class="w-[92%] sm:w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
-  <a href="/vereniging/bestuur" class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
+  <a href={`/${language === undefined ? "" : `${language}/`}vereniging/bestuur`} class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
     <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-    <span class="group-hover:underline">Terug naar het overzicht</span>
+    <span class="group-hover:underline">
+      {language === undefined ? "Terug naar het overzicht" : "Back to the board overview"}
+    </span>
   </a>
 
   <div class="bg-white shadow rounded-2xl p-8 mb-8 border border-neutral-100">
     <div class="mb-6">
       <h1 class="text-3xl font-extrabold" style={{ color: blok.colour }}>
-        {is_last ? "Huidig bestuur" : "Bestuur"} {blok.board_number}
+        {is_last
+          ? (language === undefined ? "Huidig bestuur" : "Current board")
+          : (language === undefined ? "Bestuur" : "Board")} {blok.board_number}
       </h1>
       {!!blok.year && <p class="text-neutral-500">{blok.year}</p>}
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-      <Image url={blok.photo.filename} class="w-full rounded-xl object-cover aspect-video" alt="Bestuursfoto" />
+      <figure class="my-auto">
+        <Image url={blok.photo.filename} class="w-full rounded-xl object-cover aspect-video" alt="Bestuursfoto" />
+        {!!blok.photo.title && <figcaption class="text-center text-neutral-600 mt-1">{blok.photo.title}</figcaption>}
+      </figure>
 
       <div class="flex flex-col gap-6">
         <div>
-          <h3 class="text-xl font-extrabold mb-1" style={{ color: blok.colour }}>O.d.z.</h3>
+          <h3 class="text-xl font-extrabold mb-1" style={{ color: blok.colour }}>{language === undefined ? "O.d.z." : "Motto"}</h3>
           <p class="italic">"{blok.zinspreuk}"</p>
         </div>
         <div>
-          <h3 class="text-xl font-extrabold mb-1" style={{ color: blok.colour }}>Bestuursleden</h3>
+          <h3 class="text-xl font-extrabold mb-1" style={{ color: blok.colour }}>
+            {language === undefined ? "Bestuursleden" : "Board members"}
+          </h3>
           <div set:html={renderRichText(blok.board_members)}></div>
         </div>
       </div>
@@ -49,7 +59,7 @@ blok.board_number = Number(blok.board_number);
     {!!blok.members?.length &&
       <div class="mt-10 flex flex-col gap-6">
         {blok.members.map((member: any, idx: number) => (
-          <a href={member.linkedin_url.cached_url} target="_blank" rel="noopener noreferrer" class="group block">
+          <a href={member.linkedin_url.cached_url} target="_blank" rel="noopener noreferrer" class="group block" {...storyblokEditable(member)}>
             <div class={`flex flex-col ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-6 rounded-xl border border-neutral-200 p-4`}>
               <img
                 src={member.photo.filename}

@@ -1,7 +1,7 @@
 ---
 import { storyblokEditable } from '@storyblok/astro';
 import { Image } from "astro-preload/components";
-const { blok } = Astro.props;
+const { blok, language } = Astro.props;
 
 import { MultiSelectInput } from "./MultiSelectInput";
 
@@ -12,7 +12,8 @@ const vacancies = await storyblokApi.getAll('cdn/stories', {
   version: 'draft',
   starts_with: 'carriere/vacatures',
   content_type: 'vacancy',
-  resolve_relations: 'vacancy.partner'
+  resolve_relations: 'vacancy.partner',
+  language
 });
 
 const { data: { datasource_entries: studies } } = await storyblokApi.get('cdn/datasource_entries', {
@@ -20,8 +21,14 @@ const { data: { datasource_entries: studies } } = await storyblokApi.get('cdn/da
   dimension: "type"
 });
 const options = [
-  { label: "Bachelor programmes", values: studies.filter((study: any) => study.dimension_value === "bsc").map((study: any) => ({ key: study.name, value: study.value })) },
-  { label: "Master programmes", values: studies.filter((study: any) => study.dimension_value === "msc").map((study: any) => ({ key: study.name, value: study.value })) }
+  {
+    label: { nl: "Bachelor opleidingen", en: "Bachelor programmes" },
+    values: studies.filter((study: any) => study.dimension_value === "bsc").map((study: any) => ({ key: study.name, value: study.value }))
+  },
+  {
+    label: { nl: "Master opleidingen", en: "Master programmes" },
+    values: studies.filter((study: any) => study.dimension_value === "msc").map((study: any) => ({ key: study.name, value: study.value }))
+  }
 ];
 
 const { data: { datasource_entries: types } } = await storyblokApi.get('cdn/datasource_entries', {
@@ -31,33 +38,38 @@ const { data: { datasource_entries: types } } = await storyblokApi.get('cdn/data
 const type_options = types.map((type: any) => ({ key: type.name, value: type.value }));
 ---
 
-<main class="w-[92%] sm:w-3/4 mx-auto py-12 flex flex-col min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
-  <h1 class="text-4xl font-bold text-center mb-8">Vacatures</h1>
-  <p class="w-full sm:w-3/4 mx-auto text-center">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed pariatur nisi exercitationem quas reprehenderit neque rem blanditiis reiciendis nam rerum ipsam totam quidem, aspernatur necessitatibus fuga accusamus, est optio. Rerum!
-  </p>
-
-  <div class="border-neutral-300 flex flex-row mb-8">
-    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-    <img src="/exclamation.svg" class="w-7" />
-    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-  </div>
-  
+<div {...storyblokEditable(blok)}>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div>
-      <span class="text-sm text-neutral-600">Sort by programme:</span>
-      <MultiSelectInput client:load placeholder="Select a programme to filter" options={options} atom_name="programme_filter" />
+      <span class="text-sm text-neutral-600">
+        {language === undefined ? "Filter op opleiding:" : "Filter on programme:"}
+      </span>
+      <MultiSelectInput
+        client:load
+        placeholder={language === undefined ? "Selecteer een opleiding om te filteren" : "Select a programme to filter"}
+        options={options}
+        atom_name="programme_filter"
+        language={language}
+      />
     </div>
     <div>
-      <span class="text-sm text-neutral-600">Sort by vacancy type:</span>
-      <MultiSelectInput client:load placeholder="Select a type to filter" options={type_options} atom_name="type_filter" />
+      <span class="text-sm text-neutral-600">
+        {language === undefined ? "Filter op type:" : "Filter on vacancy type:"}
+      </span>
+      <MultiSelectInput
+        client:load
+        placeholder={language === undefined ? "Selecteer een type om te filteren" : "Select a type to filter"}
+        options={type_options}
+        atom_name="type_filter"
+        language={language}
+      />
     </div>
   </div>
 
   <div class="mt-8">
     <ul class="grid grid-cols-2 sm:grid-cols-4 gap-6" id="vacatures">
       {vacancies.map((vacancy: any) =>
-        <a class="group" href={`/carriere/vacatures/${vacancy.slug}`} data-types={vacancy.content.types} data-studies={vacancy.content.studies}>
+        <a class="group" href={`${language === undefined ? "" : `/${language}`}/carriere/vacatures/${vacancy.slug}`} data-types={vacancy.content.types} data-studies={vacancy.content.studies}>
           <li class="flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden group-hover:-translate-y-1 group-hover:shadow-lg group-hover:border-[var(--brand)] transition">
             <div class="aspect-square p-6 border-b border-neutral-200 flex items-center justify-center">
               <Image class="max-w-full max-h-full object-contain" url={vacancy.content.partner[0].content.logo.filename} />
@@ -71,7 +83,7 @@ const type_options = types.map((type: any) => ({ key: type.name, value: type.val
       )}
     </ul>
   </div>
-</main>
+</div>
 
 <script>
   import { programme_filter, type_filter } from "./store";

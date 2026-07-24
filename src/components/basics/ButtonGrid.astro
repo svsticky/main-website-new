@@ -1,0 +1,22 @@
+---
+import { storyblokEditable } from "@storyblok/astro";
+const {blok} = Astro.props;
+---
+
+<ul class={`grid grid-cols-1 sm:grid-cols-2 gap-6 text-${blok.text_size}`} {...storyblokEditable(blok)}>
+  {blok.buttons.map(button => (
+    <li {...storyblokEditable(button)}>
+      <a href={button.link.url} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 border border-neutral-200 rounded-xl p-6 hover:-translate-y-1 hover:shadow transition">
+        {!!button.icon &&
+          <div class="w-12 h-12 shrink-0 rounded-lg bg-[var(--brand)]/20 flex items-center justify-center text-[var(--brand)]">
+            <i class={`fas fa-${button.icon} text-xl`}></i>
+          </div>}
+        <div>
+          <strong class="font-bold group-hover:text-[var(--brand)] transition">{button.title}</strong>
+          {!!button.subtitle &&
+            <p class="text-sm text-neutral-600">{button.subtitle}</p>}
+        </div>
+      </a>
+    </li>
+  ))}
+</ul>

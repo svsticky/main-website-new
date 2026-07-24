@@ -1,13 +1,13 @@
 ---
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 import { storyblokEditable } from '@storyblok/astro';
-const { blok } = Astro.props;
+const { blok, language } = Astro.props;
 ---
 
-<main class="w-[92%] sm:w-3/4 mx-auto" {...storyblokEditable(blok)}>
+<main class="w-[92%] sm:w-3/4 mx-auto my-16" {...storyblokEditable(blok)}>
 	{
 		blok.body?.map((nestedBlok: any) => {
-			return <StoryblokComponent blok={nestedBlok} />;
+			return <StoryblokComponent blok={nestedBlok} language={language} />;
 		})
 	}
 </main>

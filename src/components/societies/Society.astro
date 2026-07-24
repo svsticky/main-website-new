@@ -3,14 +3,17 @@ import { storyblokEditable } from '@storyblok/astro';
 import { Image } from "astro-preload/components";
 import RichText from '../basics/RichText.astro';
 import PhotoCarousel from '../basics/PhotoCarousel.astro';
+import Separator from '../basics/Separator.astro';
 
-const { blok } = Astro.props;
+const { blok, language } = Astro.props;
 ---
 
 <main class="w-[92%] sm:w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
-  <a href="/vereniging/disputen" class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
+  <a href={`/${language === undefined ? "" : `${language}/`}vereniging/disputen`} class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
     <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-    <span class="group-hover:underline">Terug naar de disputen</span>
+    <span class="group-hover:underline">
+      {language === undefined ? "Terug naar de disputen" : "Back to the society overview"}
+    </span>
   </a>
 
   <div class="rounded-xl border border-neutral-200 overflow-hidden">
@@ -22,11 +25,7 @@ const { blok } = Astro.props;
       {blok.name}
     </h1>
 
-    <div class="border-neutral-300 flex flex-row px-6 py-6">
-      <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-      <img src="/exclamation.svg" class="w-7" />
-      <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-    </div>
+    <Separator />
 
     <div class="p-6 flex flex-col sm:block">
       <PhotoCarousel class="order-2 sm:order-none" photos={blok.photos} name={blok.name} />

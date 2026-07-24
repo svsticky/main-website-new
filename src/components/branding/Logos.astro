@@ -1,0 +1,45 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+import RichText from '../basics/RichText.astro';
+const { blok } = Astro.props;
+---
+
+<div class="flex flex-col gap-6" {...storyblokEditable(blok)}>
+  {blok.logo_types.map((logo) => (
+    <div class="border border-neutral-200 rounded-xl p-3 sm:p-6 flex flex-col gap-4 sm:gap-6" {...storyblokEditable(logo)}>
+      <div>
+        <h3 class="font-bold text-xl">{logo.name}</h3>
+        <RichText content={logo.description} class="text-sm text-neutral-600 mt-1" />
+      </div>
+      <div class="grid grid-cols-3 gap-2 sm:gap-6">
+        <div class="flex flex-col items-center gap-1 sm:gap-2">
+          <div class="w-full aspect-square rounded-lg border border-neutral-200 bg-white flex items-center justify-center p-2 sm:p-8">
+            <img src={`${logo.colour_link}.svg`} class="max-w-full max-h-full huisstijl-logo" alt={`${logo.name} - kleur`} />
+          </div>
+          <div class="flex gap-1 sm:gap-2 w-full">
+            <a href={`${logo.colour_link}.png`} download target="_blank" rel="noopener noreferrer" class="flex-1 text-center text-[0.65rem] sm:text-xs px-1.5 sm:px-2 py-1 rounded border border-neutral-300 hover:bg-neutral-100 transition">PNG</a>
+            <a href={`${logo.colour_link}.svg`} download target="_blank" rel="noopener noreferrer" class="flex-1 text-center text-[0.65rem] sm:text-xs px-1.5 sm:px-2 py-1 rounded border border-neutral-300 hover:bg-neutral-100 transition">SVG</a>
+          </div>
+        </div>
+        <div class="flex flex-col items-center gap-1 sm:gap-2">
+          <div class="w-full aspect-square rounded-lg border border-neutral-200 bg-white flex items-center justify-center p-2 sm:p-8">
+            <img src={`${logo.black_link}.svg`} class="max-w-full max-h-full huisstijl-logo" alt={`${logo.name} - zwart`} />
+          </div>
+          <div class="flex gap-1 sm:gap-2 w-full">
+            <a href={`${logo.black_link}.png`} download target="_blank" rel="noopener noreferrer" class="flex-1 text-center text-[0.65rem] sm:text-xs px-1.5 sm:px-2 py-1 rounded border border-neutral-300 hover:bg-neutral-100 transition">PNG</a>
+            <a href={`${logo.black_link}.svg`} download target="_blank" rel="noopener noreferrer" class="flex-1 text-center text-[0.65rem] sm:text-xs px-1.5 sm:px-2 py-1 rounded border border-neutral-300 hover:bg-neutral-100 transition">SVG</a>
+          </div>
+        </div>
+        <div class="flex flex-col items-center gap-1 sm:gap-2">
+          <div class="w-full aspect-square rounded-lg border border-neutral-200 bg-neutral-800 flex items-center justify-center p-2 sm:p-8">
+            <img src={`${logo.white_link}.svg`} class="max-w-full max-h-full huisstijl-logo" alt={`${logo.name} - wit`} />
+          </div>
+          <div class="flex gap-1 sm:gap-2 w-full">
+            <a href={`${logo.white_link}.png`} download target="_blank" rel="noopener noreferrer" class="flex-1 text-center text-[0.65rem] sm:text-xs px-1.5 sm:px-2 py-1 rounded border border-neutral-300 hover:bg-neutral-100 transition">PNG</a>
+            <a href={`${logo.white_link}.svg`} download target="_blank" rel="noopener noreferrer" class="flex-1 text-center text-[0.65rem] sm:text-xs px-1.5 sm:px-2 py-1 rounded border border-neutral-300 hover:bg-neutral-100 transition">SVG</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,38 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+const { blok, language } = Astro.props;
+
+function hexToRgb(hex: string) {
+  const clean = (hex || '#000000').replace('#', '');
+  const bigint = parseInt(clean, 16);
+  return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+}
+
+function rgbToCmyk(r: number, g: number, b: number) {
+  if (r === 0 && g === 0 && b === 0) return { c: 0, m: 0, y: 0, k: 100 };
+  const rp = r / 255, gp = g / 255, bp = b / 255;
+  const k = 1 - Math.max(rp, gp, bp);
+  const c = Math.round(((1 - rp - k) / (1 - k)) * 100);
+  const m = Math.round(((1 - gp - k) / (1 - k)) * 100);
+  const y = Math.round(((1 - bp - k) / (1 - k)) * 100);
+  return { c, m, y, k: Math.round(k * 100) };
+}
+
+const rgb = hexToRgb(blok.colour);
+const cmyk = rgbToCmyk(rgb.r, rgb.g, rgb.b);
+---
+
+<div
+  class="flex flex-col sm:flex-row gap-4 items-center border border-neutral-200 rounded-xl overflow-hidden sm:h-40"
+  {...storyblokEditable(blok)}
+>
+  <div class="w-full sm:w-40 h-24 sm:h-full shrink-0" style={{ background: blok.colour }}></div>
+  <div class="flex flex-col gap-1 pb-4 sm:pb-0 my-auto">
+    <span class="font-bold text-lg mb-1">
+      {language === undefined ? "Bestuurskleur" : "Board colour"}
+    </span>
+    <span>HEX: {blok.colour.toUpperCase()}</span>
+    <span>RGB: {rgb.r}, {rgb.g}, {rgb.b}</span>
+    <span>CMYK: {cmyk.c}, {cmyk.m}, {cmyk.y}, {cmyk.k}</span>
+  </div>
+</div>

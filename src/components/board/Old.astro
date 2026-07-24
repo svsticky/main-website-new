@@ -1,0 +1,31 @@
+---
+import { storyblokEditable, useStoryblokApi } from "@storyblok/astro";
+import { Image } from "astro-preload/components";
+const { blok, language } = Astro.props;
+
+const storyblokApi = useStoryblokApi();
+const old_boards = (await storyblokApi.getAll('cdn/stories', {
+  version: 'draft',
+  starts_with: 'vereniging/bestuur',
+  content_type: 'board',
+  sort_by: "content.board_number:desc:int",
+  per_page: 50,
+  language
+})).slice(1);
+---
+
+<ul class="grid grid-cols-1 sm:grid-cols-3 gap-6" {...storyblokEditable(blok)}>
+  {old_boards.map(board => (
+    <li>
+      <a href={`/${language === undefined ? "" : `${language}/`}vereniging/bestuur/${board.content.board_number}`} class="group block h-56">
+        <div class="relative flex h-full rounded-xl overflow-hidden border-4 group-hover:-translate-y-1 group-hover:shadow transition" style={{ "border-color": board.content.colour }}>
+          <Image url={board.content.photo.filename} class="absolute w-full h-full object-cover object-top" />
+          <span class="relative mt-auto ml-auto m-2 px-2 py-1 rounded bg-black/25 text-white font-bold">
+            {language === undefined ? "Bestuur " : "Board "}
+            {board.content.board_number} | {board.content.year}
+          </span>
+        </div>
+      </a>
+    </li>
+  ))}
+</ul>

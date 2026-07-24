@@ -3,42 +3,42 @@ const { language, slug } = Astro.props;
 
 const menus = [
 	{
-		title: 'Vereniging',
+		title: { nl: 'Vereniging', en: 'Association' },
 		submenu: [
-			{ title: 'Activiteiten', to: '/vereniging/activiteiten' },
-			{ title: 'Bestuur', to: '/vereniging/bestuur' },
-			{ title: 'Commissies', to: '/vereniging/commissies' },
-			{ title: 'Contact', to: '/vereniging/contact' },
-			{ title: 'Disputen', to: '/vereniging/disputen' },
-			{ title: 'Huisstijl', to: '/vereniging/huisstijl' },
-      { title: "Leden van Verdienste", to: "/vereniging/leden-van-verdienste" },
-			{ title: 'Over ons', to: '/vereniging/over-ons' },
-      { title: "Sociale veiligheid", to: "/vereniging/vcp" },
+			{ title: { nl: 'Activiteiten', en: 'Activities' }, to: '/vereniging/activiteiten' },
+			{ title: { nl: 'Bestuur', en: 'Board' }, to: '/vereniging/bestuur' },
+			{ title: { nl: 'Commissies', en: 'Committees' }, to: '/vereniging/commissies' },
+			{ title: { nl: 'Contact', en: 'Contact' }, to: '/vereniging/contact' },
+			{ title: { nl: 'Disputen', en: 'Societies' }, to: '/vereniging/disputen' },
+			{ title: { nl: 'Huisstijl', en: 'Branding' }, to: '/vereniging/huisstijl' },
+      { title: { nl: "Leden van Verdienste", en: "Honary members" }, to: "/vereniging/leden-van-verdienste" },
+			{ title: { nl: 'Over ons', en: 'About us' }, to: '/vereniging/over-ons' },
+      { title: { nl: "Sociale veiligheid", en: "Social safety" }, to: "/vereniging/vcp" },
 		],
 	},
 	{
-		title: 'Studie',
+		title: { nl: 'Studie', en: "Study" },
 		submenu: [
-			{ title: 'Medezeggenschap', to: '/studie/medezeggenschap' },
-			{ title: 'OER', to: '/studie/oer' },
-			{ title: 'Boekverkoop', to: 'https://svsticky.nl/boeken' },
+			{ title: { nl: 'Medezeggenschap', en: "Representatives" }, to: '/studie/medezeggenschap' },
+			{ title: { nl: 'OER', en: "EER" }, to: '/studie/oer' },
+			{ title: { nl: 'Boekverkoop', en: "Books" }, to: 'https://svsticky.nl/boeken' },
 		],
 	},
 	{
-		title: 'Carriere',
+		title: { nl: 'Carriere', en: "Career" },
 		submenu: [
-			{ title: 'Partners', to: '/carriere/partners' },
-			{ title: 'Samenwerking', to: '/carriere/samenwerking' },
-			{ title: 'Vacatures', to: '/carriere/vacatures' },
+			{ title: { nl: 'Partners', en: "Partners" }, to: '/carriere/partners' },
+			{ title: { nl: 'Samenwerking', en: "Collaboration" }, to: '/carriere/samenwerking' },
+			{ title: { nl: 'Vacatures', en: "Vacancies" }, to: '/carriere/vacatures' },
 		],
 	},
-	{ title: 'Nieuws', to: '/nieuws' },
-	{ title: 'Links', to: '/links' },
+	{ title: { nl: 'Nieuws', en: 'News' }, to: '/nieuws' },
+	{ title: { nl: 'Links', en: "Links" }, to: '/links' },
 ];
 
 const buttons = [
-	{ title: 'Koala', to: 'https://koala.svsticky.nl', type: 'button' },
-	{ title: 'Word lid', to: 'https://wordlid.svsticky.nl', type: 'button' },
+	{ title: { nl: 'Koala', en: 'Koala' }, to: 'https://koala.svsticky.nl', type: 'button' },
+	{ title: { nl: 'Word lid', en: 'Join Sticky' }, to: 'https://wordlid.svsticky.nl', type: 'button' },
 ];
 
 const languages = [
@@ -64,11 +64,11 @@ if (language !== "en") languages.reverse();
           <li class="my-auto relative">
             {menu.to ? (
               <a href={`${language ? `/${language}` : ""}${menu.to}`} class="text-white hover:text-white/80 transition">
-                {menu.title}
+                {menu.title[language === undefined ? "nl" : "en"]}
               </a>
             ) : (
               <a data-menu class="text-white hover:text-white/80 transition cursor-pointer select-none flex flex-row gap-1">
-                {menu.title}
+                {menu.title[language === undefined ? "nl" : "en"]}
                 <i class="fa-solid fa-caret-down transition-transform my-auto" />
               </a>
             )}
@@ -82,7 +82,7 @@ if (language !== "en") languages.reverse();
                       class="w-full inline-block py-2 hover:text-[var(--brand)] transition"
                       href={`${language && !submenu.to.startsWith('http') ? `/${language}` : ""}${submenu.to}`}
                     >
-                      {submenu.title}
+                      {submenu.title[language === undefined ? "nl" : "en"]}
                       {" "}
                       {submenu.to.startsWith('http') && (
                         <i class="text-sm fa-solid fa-arrow-up-right-from-square" />
@@ -107,7 +107,7 @@ if (language !== "en") languages.reverse();
               href={button.to}
               class="text-[var(--brand)] bg-white rounded-lg px-4 py-2 inline-block hover:-translate-y-0.5 hover:shadow transition"
             >
-              {button.title}
+              {button.title[language === undefined ? "nl" : "en"]}
             </a>
           </li>
         ))

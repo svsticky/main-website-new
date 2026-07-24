@@ -3,7 +3,8 @@ import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 import { storyblokEditable, useStoryblokApi } from '@storyblok/astro';
 import { Image } from "astro-preload/components";
 import RichText from '../basics/RichText.astro';
-const { blok, uuid } = Astro.props;
+import Separator from '../basics/Separator.astro';
+const { blok, uuid, language } = Astro.props;
 
 const storyblok_api = useStoryblokApi();
 
@@ -15,14 +16,17 @@ const vacancies = await storyblok_api.getAll("cdn/stories", {
     partner: {
       any_in_array: uuid
     }
-  }
+  },
+  language
 })
 ---
 
 <main class="w-[92%] sm:w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
-  <a href="/carriere/partners" class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
+  <a href={`/${language === undefined ? "" : `${language}/`}carriere/partners`} class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
     <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-    <span class="group-hover:underline">Terug naar het partneroverzicht</span>
+    <span class="group-hover:underline">
+      {language === undefined ? "Terug naar het partneroverzicht" : "Back to the partner overview"}
+    </span>
   </a>
 
   <div class="rounded-xl border border-neutral-200 overflow-hidden mt-4">
@@ -37,12 +41,10 @@ const vacancies = await storyblok_api.getAll("cdn/stories", {
   </div>
 
   {!!vacancies.length && <>
-    <div class="border-neutral-300 flex flex-row mb-8">
-      <div class="bg-neutral-300 h-px w-full my-auto"></div>
-      <img src="/exclamation.svg" class="w-7" />
-      <div class="bg-neutral-300 h-px w-full my-auto"></div>
-    </div>
-    <h2 class="text-2xl font-bold mb-4">Vacatures bij {blok.name}</h2>
+    <Separator />
+    <h2 class="text-2xl font-bold mb-4">
+      {language === undefined ? "Vacatures bij" : "Vacancies at"} {blok.name}
+    </h2>
     <ul class="grid grid-cols-2 sm:grid-cols-4 gap-6">
       {vacancies.map((vacancy: any) => (
         <li>

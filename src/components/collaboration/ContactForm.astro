@@ -1,0 +1,57 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+import RichText from '../basics/RichText.astro';
+const { blok, language } = Astro.props;
+---
+
+<div class="border border-neutral-300 rounded-xl p-8 flex flex-col gap-4" {...storyblokEditable(blok)}>
+  <RichText content={blok.header} />
+  <form action="/api/mail" method="post" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <label class="text-sm" for="company">
+        {language === undefined ? "Bedrijfsnaam " : "Company name "}
+        <span class="text-red-500">*</span>
+      </label>
+      <input class="border border-neutral-300 rounded-xl px-2 py-1" type="text" required name="company" id="company">
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label class="text-sm" for="name">
+        {language === undefined ? "Naam contactpersoon " : "Name contact person "}
+        <span class="text-red-500">*</span>
+      </label>
+      <input class="border border-neutral-300 rounded-xl px-2 py-1" type="text" required name="name" id="name">
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-1">
+        <label class="text-sm" for="email">
+          {language === undefined ? "Emailadres " : "Email address "}
+          <span class="text-red-500">*</span>
+        </label>
+        <input class="border border-neutral-300 rounded-xl px-2 py-1" type="email" required name="email" id="email">
+      </div>
+      <div class="flex flex-col gap-1">
+        <label class="text-sm" for="tel">
+          {language === undefined ? "Telefoonnummer" : "Phone number"}
+        </label>
+        <input class="border border-neutral-300 rounded-xl px-2 py-1" type="tel" name="tel" id="tel">
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label class="text-sm" for="message">
+        {language === undefined ? "Bericht / vraag " : "Message / question "}
+        <span class="text-red-500">*</span>
+      </label>
+      <textarea class="border border-neutral-300 rounded-xl px-2 py-1" required name="message" id="message"></textarea>
+    </div>
+
+    <button type="submit" class="flex cursor-pointer w-full bg-[var(--brand)] text-white text-center text-lg px-4 py-2 font-bold rounded-xl hover:bg-[var(--brand-dark)] group transition">
+      <div class="mx-auto">
+        {language === undefined ? "Versturen" : "Submit"}
+        <i class="ml-2 fas fa-paper-plane my-auto group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"></i>
+      </div>
+    </button>
+  </form>
+</div>

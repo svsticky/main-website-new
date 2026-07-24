@@ -1,0 +1,13 @@
+---
+import { storyblokEditable } from "@storyblok/astro";
+const { blok } = Astro.props;
+---
+
+{
+  blok.level === "1" ? <h1 class="text-center font-bold text-4xl my-8" {...storyblokEditable(blok)}>{blok.title}</h1> :
+  blok.level === "2" ? <h2 class="text-center font-bold text-3xl my-4" {...storyblokEditable(blok)}>{blok.title}</h2> :
+  blok.level === "3" ? <h3 class="text-center font-bold text-2xl my-2" {...storyblokEditable(blok)}>{blok.title}</h3> :
+  blok.level === "4" ? <h4 class="text-center font-bold text-xl my-2" {...storyblokEditable(blok)}>{blok.title}</h4> :
+  blok.level === "5" ? <h5 class="text-center font-bold text-lg" {...storyblokEditable(blok)}>{blok.title}</h5> :
+  <h6 class="text-center font-bold text-md" {...storyblokEditable(blok)}>{blok.title}</h6>
+}

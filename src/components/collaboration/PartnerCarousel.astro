@@ -1,0 +1,53 @@
+---
+import { storyblokEditable, useStoryblokApi } from '@storyblok/astro';
+import { Image } from "astro-preload/components";
+
+const { blok, language } = Astro.props;
+
+const storyblokApi = useStoryblokApi();
+const partners = await storyblokApi.getAll('cdn/stories', {
+  version: 'draft',
+  starts_with: 'carriere/partners',
+  content_type: 'partner',
+});
+
+const main_partners = partners.filter(partner => partner.content.is_main);
+const regular_partners = partners.filter(partner => !partner.content.is_main);
+const displayed_partners = main_partners.concat(regular_partners);
+---
+
+<div class="overflow-x-hidden overflow-y-visible w-full py-4" {...storyblokEditable(blok)}>
+  <ul class="overflow-y-visible" id="conveyor" style={{ "animation-duration": `${displayed_partners.length * 2}s` }}>
+    {[...displayed_partners, ...displayed_partners].map(partner => (
+      <a href={"/" + (language === undefined ? "" : `${language}/`) + partner.full_slug} class="hover:-translate-y-2 transition">
+        <li>
+          <Image width={150} height={150} url={partner.content.logo.filename} class="object-contain" />
+        </li>
+      </a>
+    ))}
+  </ul>
+</div>
+
+<style>
+#conveyor {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  animation-name: scroll;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+#conveyor:hover {
+  animation-play-state: paused;
+}
+
+#conveyor img {
+  height: 150px;
+  width: 150px;
+}
+
+@keyframes scroll {
+  to { transform: translateX(calc(-50% - 1rem)); }
+}
+</style>

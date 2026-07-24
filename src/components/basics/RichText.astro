@@ -1,9 +1,15 @@
 ---
-import { renderRichText } from '@storyblok/astro';
-const { content } = Astro.props;
+import { renderRichText, storyblokEditable } from '@storyblok/astro';
+const { content, blok } = Astro.props;
+const subtitle_classes = "w-full sm:w-3/4 mx-auto";
+const editable_tags = blok ? storyblokEditable(blok) : {};
 ---
 
-<div class={`${Astro.props["class"]} rich-text`} set:html={renderRichText(content)}></div>
+<div
+  {...editable_tags}
+  class={`${Astro.props["class"] ?? ""} rich-text ${blok && blok.type === "subtitle" ? subtitle_classes : ""}`}
+  set:html={renderRichText(content || blok.body)}
+></div>
 
 <style is:global>
   .rich-text p {

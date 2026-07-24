@@ -1,0 +1,13 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+const { blok } = Astro.props;
+---
+
+<ul class="grid gap-4 mb-8 grid-cols-[repeat(auto-fit,minmax(140px,1fr))]" {...storyblokEditable(blok)}>
+  {blok.specs.map(spec => (
+    <li class="border border-neutral-200 rounded-xl p-4 text-center" {...storyblokEditable(spec)}>
+      <span class="block text-xs text-neutral-500">{spec.label}</span>
+      <span class="font-bold">{spec.value}</span>
+    </li>
+  ))}
+</ul>
