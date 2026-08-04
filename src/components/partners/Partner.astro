@@ -1,14 +1,13 @@
 ---
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
-import { storyblokEditable, useStoryblokApi } from '@storyblok/astro';
+import { storyblokEditable } from '@storyblok/astro';
 import { Image } from "astro-preload/components";
 import RichText from '../basics/RichText.astro';
 import Separator from '../basics/Separator.astro';
+import { getAll } from '../../storyblok';
 const { blok, uuid, language } = Astro.props;
 
-const storyblok_api = useStoryblokApi();
-
-const vacancies = await storyblok_api.getAll("cdn/stories", {
+const vacancies = await getAll("cdn/stories", {
   version: 'draft',
   starts_with: 'carriere/vacatures',
   content_type: 'vacancy',

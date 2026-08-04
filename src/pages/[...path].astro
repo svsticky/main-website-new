@@ -1,20 +1,18 @@
 ---
 import type { GetStaticPaths } from "astro";
-import { useStoryblokApi } from '@storyblok/astro';
+import { getStories, get } from '../storyblok';
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 import Layout from '../layouts/Layout.astro';
 
 export const getStaticPaths = (async () => {
-  const storyblokApi = useStoryblokApi();
-
   // undefined is the default language
   const languages = [undefined, "en"];
 
   const pages_per_language = await Promise.all(languages.map(async language => {
-    const response = await storyblokApi.getStories({ version: "draft", language });
+    const response = await getStories({ version: "draft", language, per_page: 100 });
     let stories = response.data.stories, remaining_count = response.total - stories.length, page = 1;
     while (remaining_count > 0) {
-      const response = await storyblokApi.getStories({ version: "draft", page: ++page, language });
+      const response = await getStories({ version: "draft", page: ++page, per_page: 100, language });
       remaining_count -= response.data.stories.length;
       stories = stories.concat(response.data.stories);
     }
@@ -30,8 +28,7 @@ export const getStaticPaths = (async () => {
 
 const { slug, language } = Astro.props;
 
-const storyblokApi = useStoryblokApi();
-const { data } = await storyblokApi.get(
+const { data } = await get(
   `cdn/stories/${slug || 'home'}`,
   {
     version: 'draft',

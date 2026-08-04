@@ -1,11 +1,11 @@
 ---
-import { storyblokEditable, useStoryblokApi } from "@storyblok/astro";
+import { storyblokEditable } from "@storyblok/astro";
 import { Image } from "astro-preload/components";
+import { getAll } from "../../storyblok";
 
 const { blok } = Astro.props;
 
-const storyblokApi = useStoryblokApi();
-const stories = await storyblokApi.getAll('cdn/stories', {
+const stories = await getAll('cdn/stories', {
   version: 'draft',
   starts_with: 'vereniging/commissies',
   content_type: 'committee',

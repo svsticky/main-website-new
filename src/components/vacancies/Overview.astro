@@ -4,11 +4,9 @@ import { Image } from "astro-preload/components";
 const { blok, language } = Astro.props;
 
 import { MultiSelectInput } from "./MultiSelectInput";
+import { getAll, get } from '../../storyblok';
 
-import { useStoryblokApi } from '@storyblok/astro';
-
-const storyblokApi = useStoryblokApi();
-const vacancies = await storyblokApi.getAll('cdn/stories', {
+const vacancies = await getAll('cdn/stories', {
   version: 'draft',
   starts_with: 'carriere/vacatures',
   content_type: 'vacancy',
@@ -16,7 +14,7 @@ const vacancies = await storyblokApi.getAll('cdn/stories', {
   language
 });
 
-const { data: { datasource_entries: studies } } = await storyblokApi.get('cdn/datasource_entries', {
+const { data: { datasource_entries: studies } } = await get('cdn/datasource_entries', {
   datasource: "vacancy-studies",
   dimension: "type"
 });
@@ -31,7 +29,7 @@ const options = [
   }
 ];
 
-const { data: { datasource_entries: types } } = await storyblokApi.get('cdn/datasource_entries', {
+const { data: { datasource_entries: types } } = await get('cdn/datasource_entries', {
   datasource: "vacancy-types",
   dimension: "translation"
 });

@@ -2,11 +2,10 @@
 import { renderRichText, storyblokEditable } from '@storyblok/astro';
 const { blok, language } = Astro.props;
 
-import { useStoryblokApi } from '@storyblok/astro';
 import Separator from '../basics/Separator.astro';
+import { getAll } from '../../storyblok';
 
-const storyblokApi = useStoryblokApi();
-const partners = await storyblokApi.getAll('cdn/stories', {
+const partners = await getAll('cdn/stories', {
   version: 'draft',
   starts_with: 'carriere/partners',
   content_type: 'partner',
