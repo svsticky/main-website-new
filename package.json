@@ -13,6 +13,7 @@
 		"@astrojs/node": "^11.0.2",
 		"@astrojs/react": "^6.0.0",
 		"@nanostores/react": "^1.1.0",
+		"@playform/compress": "^0.2.3",
 		"@storyblok/astro": "^10.0.1",
 		"@tailwindcss/vite": "^4.3.1",
 		"@types/react": "^19.2.17",

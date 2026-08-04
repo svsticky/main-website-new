@@ -7,6 +7,8 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import preload from "astro-preload";
 
+import playformCompress from "@playform/compress";
+
 const env = loadEnv(import.meta.env.MODE, process.cwd(), '');
 const {
   STORYBLOK_DELIVERY_API_TOKEN,
@@ -70,7 +72,7 @@ export default defineConfig({
       "partnering_reasons": "components/collaboration/PartneringReasons",
       "collaboration-form": "components/collaboration/ContactForm"
     },
-  }), react(), preload()],
+  }), react(), playformCompress({ CSS: false })],
   vite: {
     plugins: [mkcert(), tailwindcss()],
     ssr: import.meta.env.MODE === "development" ? {} : {
