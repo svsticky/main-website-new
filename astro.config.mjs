@@ -73,7 +73,7 @@ export default defineConfig({
       "partnering_reasons": "components/collaboration/PartneringReasons",
       "collaboration-form": "components/collaboration/ContactForm"
     },
-  }), react(), preload(), playformCompress({ CSS: false })],
+  }), react(), preload(), playformCompress({ CSS: false, Path: ["./dist/client", "./dist/assets"] })],
   vite: {
     plugins: [mkcert(), tailwindcss()],
     ssr: import.meta.env.MODE === "development" ? {} : {
