@@ -57,9 +57,9 @@ switch (story.content.component) {
     image = preloaded_url(story.content.photo.filename);
     break;
   case "vacancy":
-    title = `${story.content.name} ${language === "en" ? "at" : "bij"} ${story.content.partner[0].name} - Studievereniging Sticky`;
+    title = `${story.content.name} ${language === "en" ? "at" : "bij"} ${story.content.partner[0].content.name} - Studievereniging Sticky`;
     description = story.content.short_text;
-    image = preloaded_url(story.content.partner[0].logo.filename);
+    image = preloaded_url(story.content.partner[0].content.logo.filename);
     break;
   case "partner":
     title = `${story.content.name} - Studievereniging Sticky`;
@@ -89,6 +89,24 @@ switch (story.content.component) {
       tags: story.content.keywords?.length ? story.content.keywords.split("\n") : []
     };
     image = preloaded_url(story.content.image.filename);
+    break;
+  case "vcp-page":
+    title = language === "en" ? "Social Safety - Study Association Sticky" : "Social veiligheid - Studievereniging Sticky";
+    description = language === "en"
+      ? "If there is something you want to talk about, you can come to the confidential contact persons with your story. This is how we try to make sure Sticky is and remains a safe environment for everyone."
+      : "Als er iets is waar je over wilt praten, kun je bij de vertrouwenscontactpersonen terecht met je verhaal. Zo proberen we ervoor te zorgen dat Sticky voor iedereen een veilige omgeving is en blijft.";
+    break;
+  case "links-page":
+    title = language === "en" ? "External links - Study Association Sticky" : "Externe links - Studievereniging Sticky";
+    description = language === "en"
+      ? "This page lists all external links to relevant services and document associated with Sticky."
+      : "Deze pagina bevat allerlei externe links naar relevante services en documenten geassocieerd met Sticky.";
+    break;
+  case "news-overview":
+    title = language === "en" ? "News - Study Association Sticky" : "Nieuws - Studievereniging Sticky";
+    description = language === "en"
+      ? "The latest news about important events in the association can be found here."
+      : "De laatste nieuwtjes over belangrijke dingen in de vereniging kan je hier vinden.";
     break;
 }
 ---
