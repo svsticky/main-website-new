@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@astrojs/node": "^11.0.3",
 		"@astrojs/react": "^6.0.2",
+		"@astrojs/sitemap": "^3.7.3",
 		"@nanostores/react": "^1.1.0",
 		"@playform/compress": "^0.2.3",
 		"@storyblok/astro": "^10.0.1",
