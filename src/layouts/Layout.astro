@@ -39,14 +39,16 @@ const brandDark = darken(brand, 0.9);
         },
         optional: {
           locale: language === "en" ? "en_GB" : "nl_NL",
-          localeAlternate: language === "en" ? ["nl_NL"] : ["en_GB"]
+          localeAlternate: language === "en" ? ["nl_NL"] : ["en_GB"],
+          description
         },
         article
       }}
       charset='UTF-8'
       extend={{
         meta: [
-          { name: "generator", content: Astro.generator }
+          { name: "generator", content: Astro.generator },
+          { name: "viewport", content: "width=device-width, initial-scale=1.0" }
         ]
       }}
     />

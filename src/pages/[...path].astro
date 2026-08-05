@@ -50,40 +50,41 @@ switch (story.content.component) {
     description = story.content.description || "";
     break;
   case "board":
-    title = `${language === "en" ? "Board" : "Bestuur"} ${story.content.board_number} - Studievereniging Sticky`;
+    title = `${language === "en" ? "Board" : "Bestuur"} ${story.content.board_number} - ${language === "en" ? "Study Association Sticky" : "Studievereniging Sticky"}`;
     description = language === "en"
       ? `Information page about board ${story.content.board_number}.`
       : `Informatiepagina over bestuur ${story.content.board_number}`;
     image = preloaded_url(story.content.photo.filename);
     break;
   case "vacancy":
-    title = `${story.content.name} ${language === "en" ? "at" : "bij"} ${story.content.partner[0].content.name} - Studievereniging Sticky`;
+    title = `${story.content.name} ${language === "en" ? "at" : "bij"} ${story.content.partner[0].content.name} - ${language === "en" ? "Study Association Sticky" : "Studievereniging Sticky"}`;
     description = story.content.short_text;
     image = preloaded_url(story.content.partner[0].content.logo.filename);
     break;
   case "partner":
-    title = `${story.content.name} - Studievereniging Sticky`;
+    title = `${story.content.name} - ${language === "en" ? "Study Association Sticky" : "Studievereniging Sticky"}`;
     description = language === "en"
       ? `Information page about Sticky's partner ${story.content.name}.`
       : `Informatiepagina over Sticky's partner ${story.content.name}.`;
     image = preloaded_url(story.content.logo.filename);
     break;
   case "committee":
-    title = `${story.content.name} - Studievereniging Sticky`;
+    title = `${story.content.name} - ${language === "en" ? "Study Association Sticky" : "Studievereniging Sticky"}`;
     description = language === "en"
       ? story.content.description || `Information page about ${story.content.name}.`
       : story.content.description || `Informatiepagina over ${story.content.name}.`;
     image = preloaded_url(story.content.logo.filename);
     break;
   case "society":
-    title = `${story.content.name} - Studievereniging Sticky`;
+    title = `${story.content.name} - ${language === "en" ? "Study Association Sticky" : "Studievereniging Sticky"}`;
     description = language === "en"
       ? story.content.short_text || `Information page about ${story.content.name}.`
       : story.content.short_text || `Informatiepagina over ${story.content.name}.`;
     image = preloaded_url(story.content.logo.filename);
     break;
   case "news-item":
-    title = story.content.title;
+    title = `${story.content.title} - ${language === "en" ? "Study Association Sticky" : "Studievereniging Sticky"}`;
+    description = story.content.description ?? undefined;
     article = {
       publishedTime: new Date(story.content.date).toISOString(),
       tags: story.content.keywords?.length ? story.content.keywords.split("\n") : []
