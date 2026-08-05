@@ -5,7 +5,6 @@ import node from "@astrojs/node";
 import mkcert from 'vite-plugin-mkcert';
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
-import preload from "astro-preload";
 
 import playformCompress from "@playform/compress";
 
@@ -16,6 +15,7 @@ const {
 } = env;
 
 export default defineConfig({
+  site: env.WEBSITE_ROOT,
   output: "static",
   adapter: node({
     mode: "standalone"

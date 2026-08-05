@@ -2,8 +2,9 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import { getAll } from '../storyblok';
+import { SEO } from "astro-seo";
 
-const { language, slug } = Astro.props;
+const { language, slug, title, description, article, image } = Astro.props;
 
 function darken(hex: string, factor: number) {
   const clean = hex.replace('#', '');
@@ -27,16 +28,34 @@ const brandDark = darken(brand, 0.9);
 <!doctype html>
 <html lang={language ?? "nl"} style={`--brand: ${brand}; --brand-dark: ${brandDark};`}>
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<title>Storyblok & Astro</title>
+    <SEO
+      title={title}
+      description={description}
+      openGraph={{
+        basic: {
+          title: title,
+          type: !!article ? "article" : "website",
+          image,
+        },
+        optional: {
+          locale: language === "en" ? "en_GB" : "nl_NL",
+          localeAlternate: language === "en" ? ["nl_NL"] : ["en_GB"]
+        },
+        article
+      }}
+      charset='UTF-8'
+      extend={{
+        meta: [
+          { name: "generator", content: Astro.generator }
+        ]
+      }}
+    />
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 		/>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
 		<script is:inline>
 			const nav_entry = performance.getEntriesByType('navigation')[0];
 			if (nav_entry && nav_entry.type === 'reload') {
