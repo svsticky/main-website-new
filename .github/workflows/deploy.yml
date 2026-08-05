@@ -55,7 +55,9 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: website-build-static-files
-          path: ./dist/client
+          path: |
+            ./dist/client
+            ./dist/assets
           retention-days: 45
 
       - name: Log in to the Container registry

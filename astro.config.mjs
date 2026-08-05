@@ -5,6 +5,7 @@ import node from "@astrojs/node";
 import mkcert from 'vite-plugin-mkcert';
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
+import preload from "astro-preload";
 
 import playformCompress from "@playform/compress";
 
@@ -72,7 +73,7 @@ export default defineConfig({
       "partnering_reasons": "components/collaboration/PartneringReasons",
       "collaboration-form": "components/collaboration/ContactForm"
     },
-  }), react(), playformCompress({ CSS: false })],
+  }), react(), preload(), playformCompress({ CSS: false })],
   vite: {
     plugins: [mkcert(), tailwindcss()],
     ssr: import.meta.env.MODE === "development" ? {} : {
