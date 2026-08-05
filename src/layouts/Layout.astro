@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import { getAll } from '../storyblok';
 import { SEO } from "astro-seo";
+import { localizedHTML as favicons } from 'astro-favicons/middleware';
 
 const { language, slug, title, description, article, image } = Astro.props;
 
@@ -52,12 +53,11 @@ const brandDark = darken(brand, 0.9);
         ]
       }}
     />
+    <Fragment set:html={favicons(language)} />
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 		/>
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<script is:inline>
 			const nav_entry = performance.getEntriesByType('navigation')[0];
 			if (nav_entry && nav_entry.type === 'reload') {
