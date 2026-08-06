@@ -1,9 +1,11 @@
 ---
-import { renderRichText, storyblokEditable } from '@storyblok/astro';
+import { storyblokEditable } from '@storyblok/astro';
 const { blok, language } = Astro.props;
 
+import { Image } from "astro-preload/components";
 import Separator from '../basics/Separator.astro';
 import { getAll } from '../../storyblok';
+import RichText from "../basics/RichText.astro";
 
 const partners = await getAll('cdn/stories', {
   version: 'draft',
@@ -28,10 +30,10 @@ const regular_partners = partners.filter(partner => !partner.content.is_main);
       {main_partners.map((partner: any) =>
         <a href={`/${language === undefined ? "" : `${language}/`}carriere/partners/${partner.slug}`}>
           <li class="flex flex-col sm:flex-row border border-neutral-300 rounded-xl overflow-hidden">
-            <img class="w-full sm:w-1/6 h-32 sm:h-auto aspect-square object-contain" src={partner.content.logo.filename} />
+            <Image class="w-full sm:w-1/6 h-32 sm:h-auto aspect-square object-contain" url={partner.content.logo.filename} />
             <div class="flex flex-col gap-4 p-4 border-t sm:border-t-0 sm:border-l border-neutral-300">
               <h3 class="font-bold text-xl">{partner.content.name}</h3>
-              <div set:html={renderRichText(partner.content.main_text)}></div>
+              <RichText content={partner.content.main_text} />
             </div>
           </li>
         </a>
@@ -49,7 +51,7 @@ const regular_partners = partners.filter(partner => !partner.content.is_main);
       <li>
         <a href={`/${language === undefined ? "" : `${language}/`}carriere/partners/${partner.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:border-[var(--brand)] transition">
           <div class="aspect-square p-4 border-b border-neutral-200 flex items-center justify-center">
-            <img class="max-w-full max-h-full object-contain" src={partner.content.logo.filename} alt={partner.content.name} />
+            <Image class="max-w-full max-h-full object-contain" url={partner.content.logo.filename} alt={partner.content.name} />
           </div>
           <div class="p-3 text-center">
             <span class="font-bold text-sm group-hover:text-[var(--brand)] transition hyphens-auto" lang="nl">{partner.content.name}</span>
