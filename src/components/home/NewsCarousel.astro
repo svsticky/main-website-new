@@ -10,6 +10,7 @@ const news_items = (await getStories({
   content_type: 'news-item',
   sort_by: 'content.date:desc',
   per_page: 5,
+  language
 })).data.stories;
 
 const date_formatter = new Intl.DateTimeFormat(language === undefined ? 'nl-NL' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });

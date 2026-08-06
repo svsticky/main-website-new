@@ -2,16 +2,20 @@
 import { renderRichText, storyblokEditable } from '@storyblok/astro';
 import { Image } from 'astro-preload/components';
 import { getAll } from '../../storyblok';
-const { blok } = Astro.props;
+const { blok, language } = Astro.props;
 
 const news_items = await getAll('cdn/stories', {
   version: 'draft',
   starts_with: 'nieuws',
   content_type: 'news-item',
   sort_by: 'content.date:desc',
+  language
 });
 
-const date_formatter = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+const date_formatter = new Intl.DateTimeFormat(
+  language === undefined ? 'nl-NL' : 'en-GB',
+  { day: 'numeric', month: 'long', year: 'numeric' }
+);
 function format_date(date: string) {
   if (!date) return '';
   return date_formatter.format(new Date(date.replace(' ', 'T')));

@@ -2,9 +2,9 @@
 import { storyblokEditable } from '@storyblok/astro';
 import { Image } from 'astro-preload/components';
 import RichText from '../basics/RichText.astro';
-const { blok } = Astro.props;
+const { blok, language } = Astro.props;
 
-const date_formatter = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+const date_formatter = new Intl.DateTimeFormat(language === undefined ? 'nl-NL' : "en-GB", { day: 'numeric', month: 'long', year: 'numeric' });
 function format_date(date: string) {
   if (!date) return '';
   return date_formatter.format(new Date(date.replace(' ', 'T')));
@@ -12,9 +12,11 @@ function format_date(date: string) {
 ---
 
 <main class="w-[92%] sm:w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)]" {...storyblokEditable(blok)}>
-  <a href="/nieuws" class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
+  <a href={`${language === undefined ? "" : `/${language}`}/nieuws`} class="text-[var(--brand-dark)] flex flex-row gap-2 group w-max mb-4">
     <i class="my-auto fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-    <span class="group-hover:underline">Terug naar nieuws</span>
+    <span class="group-hover:underline">
+      {language === undefined ? "Terug naar nieuws" : "Back to the news overview"}
+    </span>
   </a>
 
   <div class="border border-neutral-200 rounded-xl overflow-hidden">
