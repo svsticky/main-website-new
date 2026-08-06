@@ -6,7 +6,7 @@ const link = blok.link?.cached_url || blok.link?.url || blok.link;
 ---
 
 {!!blok.images?.length &&
-  <section class="w-full my-12" {...storyblokEditable(blok)}>
+  <section class="w-full" {...storyblokEditable(blok)}>
     <a
       href={link}
       target="_blank"

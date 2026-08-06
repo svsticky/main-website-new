@@ -1,14 +1,12 @@
 ---
 import { storyblokEditable } from '@storyblok/astro';
-const { blok } = Astro.props;
+const { blok, language } = Astro.props;
 
 const KOALA_API = "https://koala.svsticky.nl/api/activities";
 const KOALA_ACTIVITY_URL = "https://koala.svsticky.nl/activities";
 ---
 
-<section class="my-12" {...storyblokEditable(blok)}>
-  <h2 class="text-2xl font-bold mb-4">Aankomende activiteiten</h2>
-
+<section {...storyblokEditable(blok)}>
   <div class="relative">
     <button id="activities-carousel-left" aria-label="Vorige" class="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 shadow hover:bg-neutral-50 transition">
       <i class="fas fa-chevron-left"></i>
@@ -18,10 +16,14 @@ const KOALA_ACTIVITY_URL = "https://koala.svsticky.nl/activities";
     </button>
 
     <ul id="activities-carousel-track" class="flex gap-6 overflow-x-auto scroll-smooth pt-2 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"></ul>
-    <p id="activities-carousel-empty" class="hidden text-neutral-600">Er zijn momenteel geen activiteiten gepland.</p>
+    <p id="activities-carousel-empty" class="hidden text-neutral-600">
+      {language === undefined
+        ? "Er zijn momenteel geen activiteiten gepland."
+        : "There are currently no planned activities."}
+    </p>
   </div>
 
-  <a href="/vereniging/activiteiten" class="inline-block mt-4 text-[var(--brand)] font-semibold hover:underline">Bekijk alle activiteiten</a>
+  <a href={`${language === undefined ? "" : `/${language}`}/vereniging/activiteiten`} class="inline-block mt-4 text-[var(--brand)] font-semibold hover:underline">Bekijk alle activiteiten</a>
 </section>
 
 <script is:inline define:vars={{ KOALA_API, KOALA_ACTIVITY_URL }}>

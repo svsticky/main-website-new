@@ -1,17 +1,17 @@
 ---
 import { renderRichText, storyblokEditable } from '@storyblok/astro';
-import { getAll } from '../../storyblok';
-const { blok } = Astro.props;
+import { getStories } from '../../storyblok';
+const { blok, language } = Astro.props;
 
-const news_items = await getAll('cdn/stories', {
+const news_items = (await getStories({
   version: 'draft',
   starts_with: 'nieuws',
   content_type: 'news-item',
   sort_by: 'content.date:desc',
   per_page: 5,
-});
+})).data.stories;
 
-const date_formatter = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+const date_formatter = new Intl.DateTimeFormat(language === undefined ? 'nl-NL' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 function format_date(date: string) {
   if (!date) return '';
   return date_formatter.format(new Date(date.replace(' ', 'T')));
@@ -24,9 +24,7 @@ function get_excerpt(richtext: any, max_length = 90) {
 }
 ---
 
-<section class="my-12" {...storyblokEditable(blok)}>
-  <h2 class="text-2xl font-bold mb-4">Laatste nieuws</h2>
-
+<section class="" {...storyblokEditable(blok)}>
   {!!news_items.length ? (
     <div class="relative">
       <button id="news-carousel-left" aria-label="Vorige" class="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 shadow hover:bg-neutral-50 transition">
@@ -39,21 +37,39 @@ function get_excerpt(richtext: any, max_length = 90) {
       <ul id="news-carousel-track" class="flex gap-6 overflow-x-auto scroll-smooth pt-2 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {news_items.map((item: any) => (
           <li class="shrink-0 w-72">
-            <a href={`/nieuws/${item.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl p-6 hover:-translate-y-1 hover:shadow transition">
+            <a href={`${language === undefined ? "" : `/${language}`}/nieuws/${item.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl p-6 hover:-translate-y-1 hover:shadow transition">
               <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">{item.content.title}</h3>
               <span class="text-xs text-neutral-500">{format_date(item.content.date)}</span>
               <p class="text-sm text-neutral-600 mt-2">{get_excerpt(item.content.content)}</p>
-              <span class="text-sm font-semibold text-[var(--brand)] mt-2">Lees verder</span>
+              <span class="text-sm font-semibold text-[var(--brand)] mt-2">
+                {language === undefined
+                  ? "Lees verder"
+                  : "Learn more"}
+              </span>
             </a>
           </li>
         ))}
+        <li class="shrink-0 w-72">
+          <a href={`${language === undefined ? "" : `/${language}`}/nieuws/`} class="group flex flex-col h-full border border-neutral-200 rounded-xl p-6 hover:-translate-y-1 hover:shadow transition">
+            <div class="m-auto text-(--brand) flex flex-row gap-2 group">
+              <h3 class="font-semibold text-lg">
+                {language === undefined
+                  ? "Meer nieuws"
+                  : "More news"}
+              </h3>
+              <i class="fas fa-arrow-right my-auto group-hover:translate-x-1 transition"></i>
+            </div>
+          </a>
+        </li>
       </ul>
     </div>
   ) : (
-    <p class="text-neutral-600">Er is momenteel geen nieuws.</p>
+    <p class="text-neutral-600">
+      {language === undefined
+        ? "Er is momenteel geen nieuws."
+        : "There is currently no news."}
+    </p>
   )}
-
-  <a href="/nieuws" class="inline-block mt-4 text-[var(--brand)] font-semibold hover:underline">Lees hier meer nieuws</a>
 </section>
 
 <script>
