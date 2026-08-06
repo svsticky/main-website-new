@@ -12,17 +12,10 @@ const editable_tags = blok ? storyblokEditable(blok) : {};
 ></div>
 
 <style is:global>
-  .rich-text p {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .rich-text p:first-of-type {
-    margin-top: 0;
-  }
-
-  .rich-text p:last-of-type {
-    margin-bottom: 0;
+  .rich-text {
+    display: flex;
+    flex-direction: column;
+    row-gap: .5rem;
   }
 
   .rich-text h1 {

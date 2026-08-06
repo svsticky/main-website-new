@@ -28,30 +28,20 @@ function get_excerpt(richtext: any, max_length = 180) {
 }
 ---
 
-<main class="w-[92%] sm:w-3/4 mx-auto py-16 flex flex-col" {...storyblokEditable(blok)}>
-  <h1 class="text-4xl font-bold text-center mb-8">Nieuws</h1>
-
-  <div class="border-neutral-300 flex flex-row mb-8">
-    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-    <img src="/exclamation.svg" class="w-7" />
-    <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-  </div>
-
-  <ul class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
-    {news_items.map((item: any) => (
-      <li>
-        <a href={`/nieuws/${item.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
-          {item.content.image?.filename && <Image url={item.content.image.filename} class="w-full h-44 object-cover" />}
-          <div class="p-4 flex flex-col gap-1">
-            <span class="text-xs text-neutral-500">{format_date(item.content.date)}</span>
-            <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">{item.content.title}</h3>
-            <p class="text-sm text-neutral-600 mt-1">{get_excerpt(item.content.content)}</p>
-            <span class="text-sm font-semibold text-[var(--brand)] mt-2">Lees verder</span>
-          </div>
-        </a>
-      </li>
-    ))}
-  </ul>
-
-  <p class="text-center text-neutral-500 italic mt-8">Meer nieuws is er helaas niet... maar hou deze pagina in de gaten, er komt vast snel weer wat bij!</p>
-</main>
+<ul class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start" {...storyblokEditable(blok)}>
+  {news_items.map((item: any) => (
+    <li class="h-full">
+      <a href={`${language === undefined ? "" : `/${language}`}/nieuws/${item.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
+        {item.content.image?.filename && <Image url={item.content.image.filename} class="w-full h-44 object-cover" />}
+        <div class="p-4 flex flex-col gap-1">
+          <span class="text-xs text-neutral-500">{format_date(item.content.date)}</span>
+          <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">{item.content.title}</h3>
+          <p class="text-sm text-neutral-600 mt-1">{get_excerpt(item.content.content)}</p>
+          <span class="text-sm font-semibold text-[var(--brand)] mt-2">
+            {language === undefined ? "Lees verder" : "Learn more"}
+          </span>
+        </div>
+      </a>
+    </li>
+  ))}
+</ul>
