@@ -12,7 +12,7 @@ const current_board = await getAll('cdn/stories', {
   sort_by: "content.board_number:desc:int",
   per_page: 1
 });
-const is_last = current_board[0].content.board_number === blok.board_number;
+const is_last = Number(current_board[0].content.board_number) === Number(blok.board_number);
 
 blok.board_number = Number(blok.board_number);
 ---

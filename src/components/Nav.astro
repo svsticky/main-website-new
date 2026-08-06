@@ -114,8 +114,9 @@ if (language !== "en") languages.reverse();
       }
 
       <li class="my-auto relative">
-        <button data-menu class="text-black hover:text-(--brand) cursor-pointer bg-white rounded-lg px-4 py-2 inline-block">
-          <i class="fas fa-globe"></i>
+        <button data-menu class="text-(--brand) hover:text-(--brand-dark) transition cursor-pointer bg-white rounded-lg px-4 py-2 flex flex-row gap-2 h-10">
+          <i class="fas fa-globe my-auto"></i>
+          <i class="fa-solid fa-caret-down transition-transform my-auto" />
         </button>
         <ul
           class="absolute top-12 right-0 -translate-y-1 flex flex-col bg-white border border-neutral-200 shadow-lg rounded-xl text-center z-50 px-4 py-1 w-max opacity-0 pointer-events-none transition-all duration-200"
