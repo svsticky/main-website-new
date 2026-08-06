@@ -51,7 +51,7 @@ if (language !== "en") languages.reverse();
 <nav class="px-4 md:px-6 flex items-center h-16 justify-between bg-[var(--brand)] relative z-50">
   <div id="dies-confetti" class="pointer-events-none absolute top-full left-0 w-full h-0 overflow-visible"></div>
   <div class="flex items-center gap-10">
-    <a href={`/${language ?? ""}`} class="py-2 relative">
+    <a href={language ? `/${language}` : "/"} class="py-2 relative">
       <img
         class="h-10 md:h-12"
         src="https://public.svsticky.nl/logos/logo_compact_outline_wit.svg"
@@ -132,11 +132,27 @@ if (language !== "en") languages.reverse();
       </li>
     </ul>
 
-    <button id="mobile-menu-toggle" type="button" class="lg:hidden text-white text-2xl w-8 h-8 flex items-center justify-center" aria-label="Menu" aria-expanded="false">
+    <button id="mobile-lang-toggle" type="button" class="lg:hidden cursor-pointer text-white text-2xl w-8 h-8 flex items-center justify-center" aria-label="Menu" aria-expanded="false">
+      <i class="fa-solid fa-globe"></i>
+    </button>
+    <button id="mobile-menu-toggle" type="button" class="lg:hidden cursor-pointer text-white text-2xl w-8 h-8 flex items-center justify-center" aria-label="Menu" aria-expanded="false">
       <i class="fa-solid fa-bars"></i>
     </button>
   </div>
 </nav>
+
+<div id="mobile-lang-menu" class="hidden lg:hidden fixed inset-x-0 top-16 bg-white z-40 max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain shadow-lg">
+  <ul class="flex flex-col divide-y divide-neutral-200 border-b border-neutral-200">
+    {languages.map(lang => (
+      <li>
+        <a
+          class="block px-6 py-4 font-semibold text-neutral-800"
+          href={`${lang.prefix}/${slug || ""}`}
+        >{lang.text}</a>
+      </li>
+    ))}
+  </ul>
+</div>
 
 <div id="mobile-menu" class="hidden lg:hidden fixed inset-x-0 top-16 bg-white z-40 max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain shadow-lg">
   <ul class="flex flex-col divide-y divide-neutral-200 border-b border-neutral-200">
@@ -144,20 +160,20 @@ if (language !== "en") languages.reverse();
       menus.map((menu) => (
         <li>
           {menu.to ? (
-            <a href={menu.to} class="block px-6 py-4 font-semibold text-neutral-800">
-              {menu.title}
+            <a href={`${language ? `/${language}` : ""}${menu.to}`} class="block px-6 py-4 font-semibold text-neutral-800">
+              {menu.title[language === undefined ? "nl" : "en"]}
             </a>
           ) : (
             <div>
-              <button type="button" data-mobile-menu class="w-full flex justify-between items-center px-6 py-4 font-semibold text-neutral-800">
-                {menu.title}
+              <button type="button" data-mobile-menu class="cursor-pointer w-full flex justify-between items-center px-6 py-4 font-semibold text-neutral-800">
+                {menu.title[language === undefined ? "nl" : "en"]}
                 <i class="fa-solid fa-caret-down transition-transform" />
               </button>
               <ul class="hidden flex-col bg-neutral-50">
                 {menu.submenu?.map((submenu) => (
                   <li class="not-last:border-b not-last:border-neutral-200">
-                    <a href={submenu.to} class="block px-10 py-3 text-neutral-600">
-                      {submenu.title}
+                    <a href={`${language ? `/${language}` : ""}${submenu.to}`} class="block px-10 py-3 text-neutral-600">
+                      {submenu.title[language === undefined ? "nl" : "en"]}
                       {" "}
                       {submenu.to.startsWith('http') && (
                         <i class="text-xs fa-solid fa-arrow-up-right-from-square" />
@@ -180,7 +196,7 @@ if (language !== "en") languages.reverse();
           href={button.to}
           class="text-center text-[var(--brand)] bg-neutral-100 border border-[var(--brand)] rounded-lg px-4 py-3 font-semibold"
         >
-          {button.title}
+          {button.title[language === undefined ? "nl" : "en"]}
         </a>
       ))
     }
@@ -251,7 +267,25 @@ if (language !== "en") languages.reverse();
 	}
 
 	mobile_toggle.addEventListener('click', () => {
+    set_lang_menu(false);
 		set_mobile_menu(mobile_menu.classList.contains('hidden'));
+	});
+
+	const lang_toggle = document.getElementById('mobile-lang-toggle') as HTMLButtonElement;
+	const lang_menu = document.getElementById('mobile-lang-menu') as HTMLElement;
+	const lang_icon = lang_toggle.querySelector('i') as HTMLElement;
+
+	function set_lang_menu(open: boolean) {
+		lang_menu.classList.toggle('hidden', !open);
+		lang_toggle.setAttribute('aria-expanded', String(open));
+		lang_icon.classList.toggle('fa-globe', !open);
+		lang_icon.classList.toggle('fa-xmark', open);
+		document.body.classList.toggle('overflow-hidden', open);
+	}
+
+	lang_toggle.addEventListener('click', () => {
+    set_mobile_menu(false);
+    set_lang_menu(lang_menu.classList.contains('hidden'));
 	});
 
 	for (const submenu_toggle of document.querySelectorAll('#mobile-menu [data-mobile-menu]')) {

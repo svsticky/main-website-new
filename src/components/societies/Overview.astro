@@ -19,10 +19,10 @@ const societies = await getAll('cdn/stories', {
     <li>
       <a href={`/${language === undefined ? "" : `${language}/`}vereniging/disputen/${society.slug}`} class="group block">
         <div
-          class="flex flex-col sm:flex-row items-center gap-6 rounded-xl overflow-hidden text-white p-6 group-hover:-translate-y-1 group-hover:shadow transition"
+          class="flex flex-col sm:flex-row items-center gap-4 rounded-xl overflow-hidden text-white p-4 group-hover:-translate-y-1 group-hover:shadow transition"
           style={{ background: society.content.colour }}
         >
-          <Image class="w-1/2 sm:w-1/4 shrink-0 aspect-square rounded-lg bg-white object-contain p-4" url={society.content.logo.filename} />
+          {!!society.content.logo?.filename && <Image class="w-28 sm:w-1/5 shrink-0 aspect-square object-contain" url={society.content.logo.filename} />}
           <div class="w-full sm:w-3/4 text-center sm:text-left">
             <h3 class="font-bold text-xl">{society.content.name}</h3>
             <p class="mt-1">{society.content.short_text}</p>

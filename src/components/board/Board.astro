@@ -3,6 +3,7 @@ import { renderRichText, storyblokEditable } from '@storyblok/astro';
 import { Image } from 'astro-preload/components';
 import { getAll } from '../../storyblok';
 const { blok, language } = Astro.props;
+import RichText from '../basics/RichText.astro';
 
 const current_board = await getAll('cdn/stories', {
   version: 'draft',
@@ -49,7 +50,7 @@ blok.board_number = Number(blok.board_number);
           <h3 class="text-xl font-extrabold mb-1" style={{ color: blok.colour }}>
             {language === undefined ? "Bestuursleden" : "Board members"}
           </h3>
-          <div set:html={renderRichText(blok.board_members)}></div>
+          <RichText content={blok.board_members} />
         </div>
       </div>
     </div>
@@ -69,7 +70,7 @@ blok.board_number = Number(blok.board_number);
                 <h4 class="font-extrabold text-lg" style={{ color: blok.colour }}>
                   {member.name}{!!member.function && ` - ${member.function}`}
                 </h4>
-                <p class="mt-1 text-neutral-700">{member.bio}</p>
+                <RichText class="mt-1 text-neutral-700" content={member.bio} />
               </div>
             </div>
           </a>

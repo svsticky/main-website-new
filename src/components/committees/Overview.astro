@@ -17,7 +17,7 @@ const stories = await getAll('cdn/stories', {
   {stories.filter(story => blok.type ? story.content.type === blok.type : true).map(committee =>
     <a href={`/vereniging/commissies/${committee.slug}`} class="group relative block aspect-square border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
       <li class="h-full">
-        <Image class="w-full h-full object-contain" url={committee.content.logo.filename} />
+        {!!committee.content.logo?.filename && <Image class="w-full h-full object-contain" url={committee.content.logo.filename} />}
         <div class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition">
           <span class="text-white font-bold text-center px-2 hyphens-auto" lang="nl">{committee.content.name}</span>
         </div>
