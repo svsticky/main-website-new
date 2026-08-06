@@ -1,6 +1,7 @@
 ---
 import { renderRichText, storyblokEditable } from '@storyblok/astro';
 import { getStories } from '../../storyblok';
+import { Image } from "astro-preload/components";
 const { blok, language } = Astro.props;
 
 const news_items = (await getStories({
@@ -37,22 +38,25 @@ function get_excerpt(richtext: any, max_length = 90) {
       <ul id="news-carousel-track" class="flex gap-6 overflow-x-auto scroll-smooth pt-2 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {news_items.map((item: any) => (
           <li class="shrink-0 w-72">
-            <a href={`${language === undefined ? "" : `/${language}`}/nieuws/${item.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl p-6 hover:-translate-y-1 hover:shadow transition">
-              <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">{item.content.title}</h3>
-              <span class="text-xs text-neutral-500">{format_date(item.content.date)}</span>
-              <p class="text-sm text-neutral-600 mt-2">{get_excerpt(item.content.content)}</p>
-              <span class="text-sm font-semibold text-[var(--brand)] mt-2">
-                {language === undefined
-                  ? "Lees verder"
-                  : "Learn more"}
-              </span>
+            <a href={`${language === undefined ? "" : `/${language}`}/nieuws/${item.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl hover:-translate-y-1 hover:shadow transition overflow-hidden">
+              <Image url={item.content.image.filename} class="aspect-video w-full object-cover" />
+              <div class="p-6">
+                <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">{item.content.title}</h3>
+                <span class="text-xs text-neutral-500">{format_date(item.content.date)}</span>
+                <p class="text-sm text-neutral-600 mt-2">{get_excerpt(item.content.content)}</p>
+                <span class="text-sm font-semibold text-[var(--brand)] mt-2">
+                  {language === undefined
+                    ? "Lees verder"
+                    : "Learn more"}
+                </span>
+              </div>
             </a>
           </li>
         ))}
         <li class="shrink-0 w-72">
           <a href={`${language === undefined ? "" : `/${language}`}/nieuws/`} class="group flex flex-col h-full border border-neutral-200 rounded-xl p-6 hover:-translate-y-1 hover:shadow transition">
             <div class="m-auto text-(--brand) flex flex-row gap-2 group">
-              <h3 class="font-semibold text-lg">
+              <h3 class="font-semibold text-xl">
                 {language === undefined
                   ? "Meer nieuws"
                   : "More news"}
