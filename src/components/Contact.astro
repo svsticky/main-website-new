@@ -5,7 +5,7 @@ import RichText from './basics/RichText.astro';
 const { blok } = Astro.props;
 ---
 
-<ul class="grid grid-cols-1 sm:grid-cols-3 gap-8" {...storyblokEditable(blok)}>
+<ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" {...storyblokEditable(blok)}>
   {blok.people.map((person: any) => (
     <li class="border border-neutral-200 rounded-xl flex flex-col gap-4" {...storyblokEditable(person.content)}>
       <div class="flex flex-row w-full gap-2 border-b border-neutral-200 p-4">
@@ -17,14 +17,18 @@ const { blok } = Astro.props;
       </div>
 
       <div class="flex flex-col gap-1 mb-4">
-        <a href={`tel:${person.phone}`} class="m-auto flex flex-row gap-2 hover:underline">
+        <div class="m-auto flex flex-row gap-2 ">
           <i class="fa-phone-alt fas my-auto"></i>
-          {person.phone}
-        </a>
-        <a href={`mailto:${person.email}`} class="m-auto flex flex-row gap-2 hover:underline">
+          <a href={`tel:${person.phone}`} class="text-blue-500 hover:underline">
+            {person.phone}
+          </a>
+        </div>
+        <div class="m-auto flex flex-row gap-2">
           <i class="fa-envelope fas my-auto"></i>
-          {person.email}
-        </a>
+          <a href={`mailto:${person.email}`} class="text-blue-500 hover:underline">
+            {person.email}
+          </a>
+        </div>
       </div>
     </li>
   ))}

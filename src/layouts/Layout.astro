@@ -85,7 +85,7 @@ const brandDark = darken(brand, 0.9);
 			/>
 
 			<div class="flex items-center gap-4 sm:gap-6 md:gap-8">
-				<a href="/vereniging/contact" class="text-white font-semibold text-sm sm:text-base transition hover:opacity-70">
+				<a href={`${language === undefined ? "" : `/${language}`}/vereniging/contact`} class="text-white font-semibold text-sm sm:text-base transition hover:opacity-70">
 					Contact
 				</a>
 
