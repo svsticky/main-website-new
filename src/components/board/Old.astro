@@ -14,7 +14,7 @@ const old_boards = (await getAll('cdn/stories', {
 })).slice(1);
 ---
 
-<ul class="grid grid-cols-1 sm:grid-cols-3 gap-6" {...storyblokEditable(blok)}>
+<ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" {...storyblokEditable(blok)}>
   {old_boards.map(board => (
     <li>
       <a href={`/${language === undefined ? "" : `${language}/`}vereniging/bestuur/${board.content.board_number}`} class="group block h-56">
