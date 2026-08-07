@@ -8,7 +8,6 @@ import react from "@astrojs/react";
 import preload from "astro-preload";
 import playformCompress from "@playform/compress";
 import favicons from "astro-favicons";
-
 import sitemap from "@astrojs/sitemap";
 
 const env = loadEnv(import.meta.env.MODE, process.cwd(), '');
@@ -33,10 +32,7 @@ export default defineConfig({
     },
     components: {
       "page": 'components/Page',
-      "grid": 'components/basics/Grid',
-      "card": "components/basics/Card",
       "rich-text": "components/basics/RichText",
-      "image": "components/basics/Image",
       "hero": "components/home/Hero",
       "button": "components/basics/Button",
       "board": "components/board/Board",
@@ -65,7 +61,6 @@ export default defineConfig({
       "title": "components/basics/Title",
       "current-board": "components/board/Current",
       "old-boards": "components/board/Old",
-      "button-grid": "components/basics/ButtonGrid",
       "branding-colour": "components/branding/Colour",
       "branding-logos": "components/branding/Logos",
       "branding-poster": "components/branding/PosterSpecs",

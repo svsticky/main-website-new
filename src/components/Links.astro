@@ -6,15 +6,17 @@ const { blok } = Astro.props;
 
 <ul class="grid grid-cols-2 lg:grid-cols-3 gap-4" {...storyblokEditable(blok)}>
   {blok.links.map(link => (
-    <a href={link.url.url} target="_blank" rel="noopener noreferrer" class="group block">
+    <a href={link.url.url} target="_blank" rel="noopener noreferrer" class="group block" {...storyblokEditable(link)}>
       <li class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 h-full border border-neutral-200 rounded-xl p-4 group-hover:-translate-y-1 group-hover:shadow transition">
-        <div
-          class="w-12 h-12 shrink-0 rounded-lg flex items-center justify-center"
-          style={{ background: `${link.icon_colour}33`, color: link.icon_colour }}
-        >
-          <i class={`${link.icon} text-xl`}></i>
-        </div>
-        <div>
+        {!!link.icon &&
+          <div
+            class="w-12 h-12 shrink-0 rounded-lg flex items-center justify-center my-auto"
+            style={{ background: `${link.icon_colour}33`, color: link.icon_colour }}
+          >
+            <i class={`${link.icon} text-xl`}></i>
+          </div>
+        }
+        <div class="my-auto">
           <h3 class="font-bold text-lg flex items-center justify-center sm:justify-start gap-1.5 hyphens-auto">
             {link.name}
             <i class="fa-solid fa-arrow-up-right-from-square text-xs text-neutral-400"></i>
