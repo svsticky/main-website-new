@@ -180,66 +180,6 @@ const brandDark = darken(brand, 0.9);
 	}
 </script>
 
-<script is:inline>
-	const exclamation_clicks = new WeakMap();
-
-	function spawn_exclamation_confetti(x, y) {
-		const container = document.createElement('div');
-		container.style.position = 'fixed';
-		container.style.left = `${x}px`;
-		container.style.top = `${y}px`;
-		container.style.width = '0';
-		container.style.height = '0';
-		container.style.pointerEvents = 'none';
-		container.style.zIndex = '9999';
-		document.body.appendChild(container);
-
-		const colours = ['#ffffff', '#fde047', '#f472b6', '#60a5fa', 'var(--brand)'];
-		for (let i = 0; i < 30; i++) {
-			const piece = document.createElement('span');
-			const angle = Math.random() * 360;
-			const distance = 40 + Math.random() * 60;
-			const dx = Math.cos((angle * Math.PI) / 180) * distance;
-			const dy = Math.sin((angle * Math.PI) / 180) * distance - 20;
-			const duration = 0.8 + Math.random() * 0.6;
-			const size = 5 + Math.random() * 5;
-			const rotation = Math.random() * 360;
-
-			piece.style.position = 'absolute';
-			piece.style.left = '0';
-			piece.style.top = '0';
-			piece.style.width = `${size}px`;
-			piece.style.height = `${size * 1.6}px`;
-			piece.style.background = colours[Math.floor(Math.random() * colours.length)];
-			piece.style.borderRadius = '1px';
-			piece.style.setProperty('--dx', `${dx}px`);
-			piece.style.setProperty('--dy', `${dy}px`);
-			piece.style.setProperty('--rotation', `${rotation}deg`);
-			piece.style.animation = `exclamation-confetti-burst ${duration}s ease-out forwards`;
-
-			container.appendChild(piece);
-		}
-
-		setTimeout(() => container.remove(), 1600);
-	}
-
-	document.addEventListener('click', (e) => {
-		const target = e.target;
-		if (!(target instanceof HTMLImageElement) || target.getAttribute('src') !== '/exclamation.svg') return;
-
-		const now = Date.now();
-		const state = exclamation_clicks.get(target) || { count: 0, last: 0 };
-		const count = now - state.last < 600 ? state.count + 1 : 1;
-		exclamation_clicks.set(target, { count, last: now });
-
-		if (count >= 3) {
-			exclamation_clicks.set(target, { count: 0, last: 0 });
-			const rect = target.getBoundingClientRect();
-			spawn_exclamation_confetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
-		}
-	});
-</script>
-
 <style is:global>
 	@keyframes snow-fall {
 		0% {
