@@ -1,10 +1,12 @@
 ---
 import { storyblokEditable } from "@storyblok/astro";
+import exclamation from "./exclamation.svg";
+import { Image } from "astro:assets";
 const { blok } = Astro.props;
 ---
 
 <div class="border-neutral-300 flex flex-row" {...storyblokEditable(blok)}>
   <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
-  <img src="/exclamation.svg" class="w-7" />
+  <Image src={exclamation} class="w-7" width={28} height={28} alt="" />
   <div class="bg-neutral-300 h-px w-full my-auto rounded-full"></div>
 </div>

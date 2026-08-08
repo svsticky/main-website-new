@@ -1,6 +1,6 @@
 ---
 import { storyblokEditable } from '@storyblok/astro';
-import { Image } from 'astro-preload/components';
+import { Image } from 'astro:assets';
 import RichText from '../basics/RichText.astro';
 const { blok, language } = Astro.props;
 
@@ -20,7 +20,8 @@ function format_date(date: string) {
   </a>
 
   <div class="border border-neutral-200 rounded-xl overflow-hidden">
-    {blok.image?.filename && <Image url={blok.image.filename} class="w-full h-auto max-h-96 object-cover" alt="" />}
+    {blok.image?.filename &&
+      <Image src={blok.image.filename} width={800} height={400} class="w-full h-auto max-h-96 object-cover" alt={blok.image.title} />}
     <div class="p-8">
       <span class="text-sm text-neutral-500">{format_date(blok.date)}</span>
       <h1 class="text-3xl font-bold mt-1 mb-4">{blok.title}</h1>

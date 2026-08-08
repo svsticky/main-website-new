@@ -1,6 +1,6 @@
 ---
 import { storyblokEditable } from '@storyblok/astro';
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 const { blok } = Astro.props;
 
 const link = blok.link?.cached_url || blok.link?.url || blok.link;
@@ -16,9 +16,11 @@ const link = blok.link?.cached_url || blok.link?.url || blok.link;
     >
       {blok.images.map((image: any, idx: number) => (
         <Image
-          url={image.filename}
+          src={image.filename}
           alt={blok.partner_name || ''}
-          class="featured-banner-item absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
+          inferSize={true}
+          fit='cover'
+          class="featured-banner-item inset-0 w-full h-full transition-opacity duration-1000"
           style={`opacity: ${idx === 0 ? 1 : 0};`}
         />
       ))}

@@ -1,7 +1,7 @@
 ---
 import { storyblokEditable } from '@storyblok/astro';
 import RichText from '../basics/RichText.astro';
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 const { blok, language } = Astro.props;
 ---
 
@@ -34,7 +34,7 @@ const { blok, language } = Astro.props;
       <ul class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {blok.sponsored_activities.map(act => (
           <li class="border border-neutral-300 rounded-xl overflow-hidden" {...storyblokEditable(act)}>
-            <Image url={act.photo.filename} class="w-full h-25 object-cover" />
+            <Image src={act.photo.filename} alt={act.title} width={200} height={100} class="w-full h-25 object-cover" />
             <div class="p-4">
               <h4 class="font-semibold mb-2">{act.title}</h4>
               <p class="text-sm">{act.description}</p>

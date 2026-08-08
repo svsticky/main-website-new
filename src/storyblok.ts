@@ -15,9 +15,11 @@ function memo<F extends (...args: any[]) => Promise<any>>(f: F): F {
     if (!cache.has(cache_key)) {
       try {
         cache.set(cache_key, await f(...params));
-        logger.info(`Retrieved non-cached result for ${f.name}(${cache_key.slice(1, cache_key.length - 1)})`);
+        if (import.meta.hot)
+          logger.info(`Retrieved non-cached result for ${f.name}(${cache_key.slice(1, cache_key.length - 1)})`);
       } catch (e: any) {
-        logger.error(`Could not fetch non-cache result for ${f.name}(${cache_key.slice(1, cache_key.length - 1)}). Reason: ${e.message}.`);
+        if (import.meta.hot)
+          logger.error(`Could not fetch non-cache result for ${f.name}(${cache_key.slice(1, cache_key.length - 1)}). Reason: ${e.message}.`);
         throw new Error(e.message);
       }
     }

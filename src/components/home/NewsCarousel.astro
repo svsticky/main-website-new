@@ -1,7 +1,7 @@
 ---
 import { renderRichText, storyblokEditable } from '@storyblok/astro';
 import { getStories } from '../../storyblok';
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 const { blok, language } = Astro.props;
 
 const news_items = (await getStories({
@@ -40,7 +40,7 @@ function get_excerpt(richtext: any, max_length = 90) {
         {news_items.map((item: any) => (
           <li class="shrink-0 w-72">
             <a href={`${language === undefined ? "" : `/${language}`}/nieuws/${item.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl hover:-translate-y-1 hover:shadow transition overflow-hidden">
-              <Image url={item.content.image.filename} class="aspect-video w-full object-cover" />
+              <Image src={item.content.image.filename} width={300} height={200} alt={item.content.image.title} class="aspect-video w-full object-cover" />
               <div class="p-6">
                 <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">{item.content.title}</h3>
                 <span class="text-xs text-neutral-500">{format_date(item.content.date)}</span>

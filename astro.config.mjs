@@ -5,8 +5,6 @@ import node from "@astrojs/node";
 import mkcert from 'vite-plugin-mkcert';
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
-import preload from "astro-preload";
-import playformCompress from "@playform/compress";
 import favicons from "astro-favicons";
 import sitemap from "@astrojs/sitemap";
 
@@ -70,7 +68,7 @@ export default defineConfig({
       "partnering_reasons": "components/collaboration/PartneringReasons",
       "collaboration-form": "components/collaboration/ContactForm"
     },
-  }), react(), preload(), playformCompress({ CSS: false, Path: ["./dist/client", "./dist/assets"] }), favicons({
+  }), react(), favicons({
     input: await fetch("https://public.svsticky.nl/logos/hoofd_outline_kleur.svg")
       .then(resp => resp.text())
       .then(Buffer.from),
@@ -90,5 +88,8 @@ export default defineConfig({
   },
   security: {
     allowedDomains: [{}]
+  },
+  image: {
+    domains: ["a.storyblok.com"]
   }
 });

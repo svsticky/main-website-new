@@ -1,6 +1,6 @@
 ---
-import { renderRichText, storyblokEditable } from '@storyblok/astro';
-import { Image } from 'astro-preload/components';
+import { storyblokEditable } from '@storyblok/astro';
+import { Image } from 'astro:assets';
 import { getAll } from '../../storyblok';
 const { blok, language } = Astro.props;
 import RichText from '../basics/RichText.astro';
@@ -37,7 +37,7 @@ blok.board_number = Number(blok.board_number);
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
       <figure class="my-auto">
-        <Image url={blok.photo.filename} class="w-full rounded-xl object-cover aspect-video" alt="Bestuursfoto" />
+        <Image src={blok.photo.filename} width={800} height={600} class="w-full rounded-xl object-cover aspect-video" alt="Bestuursfoto" />
         {!!blok.photo.title && <figcaption class="text-center text-neutral-600 mt-1">{blok.photo.title}</figcaption>}
       </figure>
 
@@ -61,7 +61,9 @@ blok.board_number = Number(blok.board_number);
           <a href={member.linkedin_url.cached_url} target="_blank" rel="noopener noreferrer" class="group block" {...storyblokEditable(member)}>
             <div class={`flex flex-col ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-6 rounded-xl border border-neutral-200 p-4`}>
               <Image
-                url={member.photo.filename}
+                src={member.photo.filename}
+                height={128}
+                width={128}
                 alt={member.name}
                 class="w-32 h-32 shrink-0 rounded-full object-cover border-4 transition group-hover:-translate-y-1 group-hover:shadow-lg"
                 style={{ "border-color": blok.colour }}

@@ -1,6 +1,6 @@
 ---
 import { storyblokEditable } from "@storyblok/astro";
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 import { getAll } from "../../storyblok";
 
 const { blok, language } = Astro.props;
@@ -22,7 +22,16 @@ const societies = await getAll('cdn/stories', {
           class="flex flex-col sm:flex-row items-center gap-4 rounded-xl overflow-hidden text-white p-4 group-hover:-translate-y-1 group-hover:shadow transition"
           style={{ background: society.content.colour }}
         >
-          {!!society.content.logo?.filename && <Image class="w-28 sm:w-1/5 shrink-0 aspect-square object-contain" url={society.content.logo.filename} />}
+          {!!society.content.logo?.filename &&
+            <Image
+              class="w-28 sm:w-1/5 shrink-0 aspect-square object-contain object-center"
+              src={society.content.logo.filename}
+              width={200}
+              height={200}
+              fit="contain"
+              position="center"
+              alt={society.content.name}
+            />}
           <div class="w-full sm:w-3/4 text-center sm:text-left">
             <h3 class="font-bold text-xl">{society.content.name}</h3>
             <p class="mt-1">{society.content.short_text}</p>

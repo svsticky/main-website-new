@@ -2,7 +2,7 @@
 import { storyblokEditable } from '@storyblok/astro';
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
 import RichText from '../basics/RichText.astro';
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 const { blok } = Astro.props;
 ---
 
@@ -14,8 +14,10 @@ const { blok } = Astro.props;
     <div class="relative w-full h-[calc(100vh-4rem)] md:h-[60vh] rounded-none md:rounded-2xl overflow-hidden md:shadow-xl">
       {blok.images.map((image: any, idx: number) => (
         <Image
-          url={image.filename}
+          src={image.filename}
           alt={image.title}
+          width={1000}
+          height={500}
           data-title={image.title}
           class="hero-carousel-item absolute inset-0 w-full h-full object-cover brightness-75"
           style={`transform: translateX(${idx === 0 ? "0" : "100%"});`}
@@ -32,7 +34,7 @@ const { blok } = Astro.props;
       />
 
       {!!blok.buttons?.length &&
-        <ul class="absolute bottom-6 left-6 md:bottom-10 md:left-10 flex flex-row flex-wrap gap-4">
+        <ul class="absolute bottom-10 left-6 md:left-10 flex flex-row flex-wrap gap-4">
           {blok.buttons.map((button: any) => (
             <li><StoryblokComponent blok={button} /></li>
           ))}

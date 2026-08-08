@@ -1,6 +1,6 @@
 ---
 import { storyblokEditable } from '@storyblok/astro';
-import { Image } from 'astro-preload/components';
+import { Image } from 'astro:assets';
 import RichText from './basics/RichText.astro';
 const { blok } = Astro.props;
 ---
@@ -9,7 +9,12 @@ const { blok } = Astro.props;
   {blok.people.map((person: any) => (
     <li class="border border-neutral-200 rounded-xl flex flex-col gap-4" {...storyblokEditable(person.content)}>
       <div class="flex flex-row w-full gap-2 border-b border-neutral-200 p-4">
-        <Image url={person.photo.filename} class="rounded-full w-24 h-24 object-cover m-auto" />
+        <Image
+          src={person.photo.filename}
+          width={100} height={100}
+          alt={person.name}
+          class="rounded-full w-24 h-24 object-cover m-auto"
+        />
         <div class="flex flex-col my-auto grow">
           <h3 class="font-bold text-2xl">{person.name}</h3>
           <p class="text-sm text-neutral-700">{person.title}</p>

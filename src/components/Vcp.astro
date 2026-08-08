@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 import RichText from "./basics/RichText.astro";
 
 const { blok, language } = Astro.props;
@@ -43,7 +43,12 @@ const { blok, language } = Astro.props;
         <ul class="flex flex-col gap-4 mx-auto">
           {blok.people.map((person: any) => (
             <li class="grid grid-cols-[6rem_auto] gap-4 border border-neutral-200 rounded-xl p-4">
-              <Image url={person.photo.filename} class="rounded-full w-full h-auto aspect-square my-auto" />
+              <Image
+                src={person.photo.filename}
+                width={100} height={100}
+                alt={person.name}
+                class="rounded-full w-full h-auto aspect-square my-auto"
+              />
               <div class="flex flex-col gap-2">
                 <span class="w-full font-bold text-lg">{person.name}</span>
                 <a href={`mailto:${person.email}`} class="flex flex-row gap-1 text-sm hover:underline">
@@ -63,7 +68,13 @@ const { blok, language } = Astro.props;
   </div>
 
   <div class="w-full md:col-span-2">
-    <Image url={blok.poster.filename} class="w-full h-auto rounded-xl" />
+    <Image
+      src={blok.poster.filename}
+      width={1000} height={2000}
+      fit="contain"
+      class="w-full h-auto rounded-xl"
+      alt={language === undefined ? "Flowchart sociale veiligheid bij Sticky" : "Flow chart social safety at Sticky"}
+    />
   </div>
   </div>
 </main>

@@ -1,6 +1,6 @@
 ---
 import { renderRichText, storyblokEditable } from '@storyblok/astro';
-import { Image } from 'astro-preload/components';
+import { Image } from 'astro:assets';
 import { getAll } from '../../storyblok';
 const { blok, language } = Astro.props;
 
@@ -32,7 +32,8 @@ function get_excerpt(richtext: any, max_length = 180) {
   {news_items.map((item: any) => (
     <li class="h-full">
       <a href={`${language === undefined ? "" : `/${language}`}/nieuws/${item.slug}`} class="group flex flex-col h-full border border-neutral-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
-        {item.content.image?.filename && <Image url={item.content.image.filename} class="w-full h-44 object-cover" />}
+        {item.content.image?.filename &&
+          <Image src={item.content.image.filename} width={500} height={200} alt={item.content.image.title} class="w-full h-44 object-cover" />}
         <div class="p-4 flex flex-col gap-1">
           <span class="text-xs text-neutral-500">{format_date(item.content.date)}</span>
           <h3 class="font-bold text-lg group-hover:text-[var(--brand)] transition">{item.content.title}</h3>

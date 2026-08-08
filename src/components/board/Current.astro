@@ -1,6 +1,6 @@
 ---
 import { storyblokEditable } from "@storyblok/astro";
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 import { getAll } from "../../storyblok";
 const { blok, language } = Astro.props;
 
@@ -16,7 +16,7 @@ const [current_board] = await getAll('cdn/stories', {
 
 <a href={`/${language === undefined ? "" : `${language}/`}vereniging/bestuur/${current_board.content.board_number}`} class="group block max-w-4xl mx-auto" {...storyblokEditable(blok)}>
   <div class="rounded-2xl overflow-hidden border border-neutral-200 group-hover:-translate-y-1 group-hover:shadow transition">
-    <Image url={current_board.content.photo.filename} class="w-full aspect-video object-cover object-center" />
+    <Image src={current_board.content.photo.filename} alt={current_board.content.photo.title} width={1000} height={800} class="w-full aspect-video object-cover object-center" />
     <div class="w-full text-white text-center py-4" style={{ background: current_board.content.colour }}>
       <h3 class="text-2xl font-extrabold">
         {language === undefined ? "Bestuur " : "Board "}

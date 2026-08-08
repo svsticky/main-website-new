@@ -1,6 +1,6 @@
 ---
 import { storyblokEditable } from "@storyblok/astro";
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 import { getAll } from "../../storyblok";
 const { blok, language } = Astro.props;
 
@@ -19,7 +19,12 @@ const old_boards = (await getAll('cdn/stories', {
     <li>
       <a href={`/${language === undefined ? "" : `${language}/`}vereniging/bestuur/${board.content.board_number}`} class="group block h-56">
         <div class="relative flex h-full rounded-xl overflow-hidden border-4 group-hover:-translate-y-1 group-hover:shadow transition" style={{ "border-color": board.content.colour }}>
-          <Image url={board.content.photo.filename} class="absolute w-full h-full object-cover object-top" />
+          <Image
+            src={board.content.photo.filename}
+            alt={board.content.photo.title}
+            width={500} height={400}
+            class="absolute w-full h-full object-cover object-top"
+          />
           <span class="relative mt-auto ml-auto m-2 px-2 py-1 rounded bg-black/25 text-white font-bold">
             {language === undefined ? "Bestuur " : "Board "}
             {board.content.board_number} | {board.content.year}

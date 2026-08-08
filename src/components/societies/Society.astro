@@ -1,6 +1,6 @@
 ---
 import { storyblokEditable } from '@storyblok/astro';
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 import RichText from '../basics/RichText.astro';
 import PhotoCarousel from '../basics/PhotoCarousel.astro';
 import Separator from '../basics/Separator.astro';
@@ -18,7 +18,13 @@ const { blok, language } = Astro.props;
 
   <div class="rounded-xl border border-neutral-200 overflow-hidden">
     <div class="flex items-center justify-center p-10" style={{ background: blok.colour }}>
-      {!!blok.logo?.filename && <Image class="w-48 h-48 shrink-0 object-contain" url={blok.logo.filename} alt="" />}
+      {!!blok.logo?.filename &&
+        <Image
+          class="w-48 h-48 shrink-0 object-contain"
+          src={blok.logo.filename}
+          alt={blok.name}
+          width={200} height={200}
+        />}
     </div>
 
     <h1 class="font-bold text-3xl text-center py-10">

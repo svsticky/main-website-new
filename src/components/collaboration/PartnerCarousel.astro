@@ -1,6 +1,6 @@
 ---
 import { storyblokEditable } from '@storyblok/astro';
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 import { getAll } from '../../storyblok';
 
 const { blok, language } = Astro.props;
@@ -21,7 +21,13 @@ const displayed_partners = main_partners.concat(regular_partners);
     {[...displayed_partners, ...displayed_partners].map(partner => (
       <a href={"/" + (language === undefined ? "" : `${language}/`) + partner.full_slug} class="hover:-translate-y-2 transition">
         <li>
-          <Image width={150} height={150} url={partner.content.logo.filename} class="object-contain" />
+          <Image
+            width={200}
+            height={200}
+            alt={partner.content.name}
+            src={partner.content.logo.filename} fit="contain"
+            class="object-contain"
+          />
         </li>
       </a>
     ))}

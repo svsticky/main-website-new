@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 import RichText from "./basics/RichText.astro";
 import { storyblokEditable } from "@storyblok/astro";
 
@@ -10,7 +10,12 @@ const people = blok.people.toSorted((p1: any, p2: any) => p1.since - p2.since);
 <ul class="flex flex-col gap-6" {...storyblokEditable(blok)}>
   {people.map((person: any, idx: number) => (
     <li class={`flex flex-col ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-6 rounded-xl border border-neutral-200 p-4`} {...storyblokEditable(person.content)}>
-      <Image url={person.photo.filename} class="w-32 h-32 shrink-0 rounded-full object-cover border-4 border-amber-400" />
+      <Image
+        src={person.photo.filename}
+        width={128} height={128}
+        alt={person.name}
+        class="w-32 h-32 shrink-0 rounded-full object-cover border-4 border-amber-400"
+      />
       <div class={`text-center ${idx % 2 === 0 ? "md:text-left" : "md:text-right"}`}>
         <h2 class="font-extrabold text-lg">{person.name}</h2>
         <span class="text-sm text-neutral-600">
