@@ -8,7 +8,7 @@ import { getAll } from '../../storyblok';
 const { blok, uuid, language } = Astro.props;
 
 const vacancies = await getAll("cdn/stories", {
-  version: 'draft',
+  version: 'published',
   starts_with: 'carriere/vacatures',
   content_type: 'vacancy',
   filter_query: {

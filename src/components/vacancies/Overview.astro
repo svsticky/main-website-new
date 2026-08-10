@@ -7,7 +7,7 @@ import { MultiSelectInput } from "./MultiSelectInput";
 import { getAll, get } from '../../storyblok';
 
 const vacancies = await getAll('cdn/stories', {
-  version: 'draft',
+  version: 'published',
   starts_with: 'carriere/vacatures',
   content_type: 'vacancy',
   resolve_relations: 'vacancy.partner',
@@ -79,7 +79,7 @@ const type_options = types.map((type: any) => ({ key: type.name, value: type.val
                   width={200} height={200}
                 />}
             </div>
-            <div class="p-4 flex flex-col gap-1 text-center flex-1">
+            <div class="p-4 flex flex-col gap-4 text-center flex-1">
               <span class="font-bold text-lg group-hover:text-[var(--brand)] transition">{vacancy.content.name}</span>
               <p class="text-sm text-neutral-600">{vacancy.content.short_text}</p>
             </div>

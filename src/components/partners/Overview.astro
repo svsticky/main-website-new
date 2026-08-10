@@ -8,7 +8,7 @@ import { getAll } from '../../storyblok';
 import RichText from "../basics/RichText.astro";
 
 const partners = await getAll('cdn/stories', {
-  version: 'draft',
+  version: "published",
   starts_with: 'carriere/partners',
   content_type: 'partner',
   sort_by: "name",

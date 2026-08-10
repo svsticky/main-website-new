@@ -5,7 +5,7 @@ import { Image } from "astro:assets";
 const { blok, language } = Astro.props;
 
 const news_items = (await getStories({
-  version: 'draft',
+  version: 'published',
   starts_with: 'nieuws',
   content_type: 'news-item',
   sort_by: 'content.date:desc',

@@ -9,10 +9,10 @@ export const getStaticPaths = (async () => {
   const languages = [undefined, "en"];
 
   const pages_per_language = await Promise.all(languages.map(async language => {
-    const response = await getStories({ version: "draft", language, per_page: 100 });
+    const response = await getStories({ version: "published", language, per_page: 100 });
     let stories = response.data.stories, remaining_count = response.total - stories.length, page = 1;
     while (remaining_count > 0) {
-      const response = await getStories({ version: "draft", page: ++page, per_page: 100, language });
+      const response = await getStories({ version: "published", page: ++page, per_page: 100, language });
       remaining_count -= response.data.stories.length;
       stories = stories.concat(response.data.stories);
     }
@@ -31,7 +31,7 @@ const { slug, language } = Astro.props;
 const { data } = await get(
   `cdn/stories/${slug || 'home'}`,
   {
-    version: 'draft',
+    version: 'published',
     resolve_relations: ['vacancy.partner', 'vcp-page.people'],
     language
   }

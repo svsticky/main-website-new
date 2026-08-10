@@ -6,7 +6,7 @@ import { getAll } from "../../storyblok";
 const { blok, language } = Astro.props;
 
 const societies = await getAll('cdn/stories', {
-  version: 'draft',
+  version: 'published',
   starts_with: 'vereniging/disputen',
   content_type: 'society',
   sort_by: "name",
