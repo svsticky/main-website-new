@@ -3,19 +3,20 @@ import { storyblokEditable } from "@storyblok/astro";
 import { Image } from "astro:assets";
 import { getAll } from "../../storyblok";
 
-const { blok } = Astro.props;
+const { blok, language } = Astro.props;
 
 const stories = await getAll('cdn/stories', {
   version: 'published',
   starts_with: 'vereniging/commissies',
   content_type: 'committee',
-  sort_by: "name"
+  sort_by: "name",
+  language
 });
 ---
 
 <ul class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8" {...storyblokEditable(blok)}>
   {stories.filter(story => blok.type ? story.content.type === blok.type : true).map(committee =>
-    <a href={`/vereniging/commissies/${committee.slug}`} class="group relative block aspect-square border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
+    <a href={`${language === undefined ? "" : `/${language}`}/vereniging/commissies/${committee.slug}`} class="group relative block aspect-square border border-neutral-300 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow transition">
       <li class="h-full">
         {!!committee.content.logo?.filename &&
           <Image

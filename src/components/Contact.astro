@@ -2,7 +2,7 @@
 import { storyblokEditable } from '@storyblok/astro';
 import { Image } from 'astro:assets';
 import RichText from './basics/RichText.astro';
-const { blok } = Astro.props;
+const { blok, language } = Astro.props;
 ---
 
 <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" {...storyblokEditable(blok)}>
@@ -42,7 +42,9 @@ const { blok } = Astro.props;
       <div class="flex bg-[var(--brand)]/20 h-8 w-8 rounded text-[var(--brand)]">
         <i class="m-auto fas fa-building"></i>
       </div>
-      <h2 class="font-bold text-lg my-auto">Bezoekadres</h2>
+      <h2 class="font-bold text-lg my-auto">
+        {language === undefined ? "Bezoekadres" : "Visitors address"}
+      </h2>
     </div>
     <RichText class="p-4" content={blok.visit_address} />
   </li>
@@ -51,7 +53,9 @@ const { blok } = Astro.props;
       <div class="flex bg-[var(--brand)]/20 h-8 w-8 rounded text-[var(--brand)]">
         <i class="m-auto fas fa-envelope"></i>
       </div>
-      <h2 class="font-bold text-lg my-auto">Postadres</h2>
+      <h2 class="font-bold text-lg my-auto">
+        {language === undefined ? "Postadres" : "Postal address"}
+      </h2>
     </div>
     <RichText class="p-4" content={blok.postal_address} />
   </li>
@@ -60,7 +64,9 @@ const { blok } = Astro.props;
       <div class="flex bg-[var(--brand)]/20 h-8 w-8 rounded text-[var(--brand)]">
         <i class="m-auto fas fa-address-card"></i>
       </div>
-      <h2 class="font-bold text-lg my-auto">Gegevens</h2>
+      <h2 class="font-bold text-lg my-auto">
+        {language === undefined ? "Gegevens" : "Data"}
+      </h2>
     </div>
     <RichText class="p-4" content={blok.data} />
   </li>
