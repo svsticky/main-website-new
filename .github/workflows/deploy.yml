@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - development
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }} # Does not distinguish PRs, for this workflow won't run on PR branches
@@ -19,7 +20,7 @@ jobs:
   build:
     name: Build artifact
     runs-on: ubuntu-latest
-    environment: 'staging' # ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
 
     defaults:
       run:
