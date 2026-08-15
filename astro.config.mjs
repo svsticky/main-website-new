@@ -15,7 +15,7 @@ const {
 } = env;
 
 export default defineConfig({
-  site: env.WEBSITE_ROOT,
+  site: env.WEBSITE_ROOT || "https://localhost:4321",
   output: "static",
   adapter: node({
     mode: "standalone"
