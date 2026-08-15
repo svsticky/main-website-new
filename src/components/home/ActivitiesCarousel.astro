@@ -23,7 +23,14 @@ const KOALA_ACTIVITY_URL = "https://koala.svsticky.nl/activities";
     </p>
   </div>
 
-  <a href={`${language === undefined ? "" : `/${language}`}/vereniging/activiteiten`} class="inline-block mt-4 text-[var(--brand)] font-semibold hover:underline">Bekijk alle activiteiten</a>
+  <a
+    href={`${language === undefined ? "" : `/${language}`}/vereniging/activiteiten`}
+    class="inline-block mt-4 text-[var(--brand)] font-semibold hover:underline"
+  >
+    {language === undefined
+      ? "Bekijk alle activiteiten"
+      : "See all activities"}
+  </a>
 </section>
 
 <script is:inline define:vars={{ KOALA_API, KOALA_ACTIVITY_URL }}>
