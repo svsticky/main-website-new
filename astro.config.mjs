@@ -82,7 +82,7 @@ export default defineConfig({
   }), sitemap()],
   vite: {
     plugins: [mkcert(), tailwindcss()],
-    ssr: import.meta.env.MODE === "development" ? {} : {
+    ssr: env.NODE_ENV === "development" ? {} : {
       noExternal: true
     }
   },
