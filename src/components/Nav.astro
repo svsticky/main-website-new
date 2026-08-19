@@ -1,6 +1,8 @@
 ---
 const { language, slug } = Astro.props;
 
+const TAVERN_FRONTEND_URL = import.meta.env.PUBLIC_TAVERN_FRONTEND_URL || "https://koala.svsticky.nl";
+
 const menus = [
 	{
 		title: { nl: 'Vereniging', en: 'Association' },
@@ -37,7 +39,7 @@ const menus = [
 ];
 
 const buttons = [
-	{ title: { nl: 'Koala', en: 'Koala' }, to: 'https://koala.svsticky.nl', type: 'button' },
+	{ title: { nl: 'Koala', en: 'Koala' }, to: TAVERN_FRONTEND_URL, type: 'button' },
 	{ title: { nl: 'Word lid', en: 'Join Sticky' }, to: 'https://wordlid.svsticky.nl', type: 'button' },
 ];
 
