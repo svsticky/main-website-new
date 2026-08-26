@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const language = Astro.url.pathname.replace(/^\//, '').startsWith('en') ? 'en' : undefined;
+---
+
+<Layout
+  language={language}
+  slug=""
+  title={language === "en" ? "Page not found - Study Association Sticky" : "Pagina niet gevonden - Studievereniging Sticky"}
+  description={language === "en" ? "This page does not (or no longer) exist." : "Deze pagina bestaat niet (meer)."}
+  image="https://public.svsticky.nl/logos/hoofd_outline_kleur.png"
+>
+  <main class="w-[92%] sm:w-3/4 mx-auto py-8 min-h-[calc(100vh-160px)] flex items-center justify-center">
+    <div class="bg-white border border-neutral-200 rounded-2xl shadow-sm p-10 flex flex-col items-center gap-4 text-center max-w-lg">
+      <span id="panda-emoji" class="text-6xl select-none cursor-pointer" title="🐼">🐼</span>
+
+      <h1 class="text-6xl font-extrabold text-[var(--brand)]">404</h1>
+
+      {language === "en" ? (
+        <div class="flex flex-col gap-1">
+          <p class="text-lg font-semibold">Oops, this page doesn't exist (anymore).</p>
+          <p class="text-neutral-600">Maybe it got eaten by a panda, or it simply moved.</p>
+        </div>
+      ) : (
+        <div class="flex flex-col gap-1">
+          <p class="text-lg font-semibold">Oeps, deze pagina bestaat niet (meer).</p>
+          <p class="text-neutral-600">Misschien is hij opgegeten door een panda, of gewoon verplaatst.</p>
+        </div>
+      )}
+
+      <a href={language === "en" ? "/en" : "/"} class="mt-2">
+        <button class="flex flex-row gap-2 px-4 py-2 bg-[var(--brand)] text-white font-semibold rounded hover:bg-[var(--brand-dark)] hover:-translate-y-0.5 transition cursor-pointer">
+          <i class="my-auto fas fa-house"></i>
+          {language === "en" ? "Back to home" : "Terug naar home"}
+        </button>
+      </a>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const panda = document.getElementById('panda-emoji');
+  let spins = 0;
+
+  panda?.addEventListener('click', () => {
+    spins += 360;
+    panda.style.transition = 'transform 0.6s ease';
+    panda.style.transform = `rotate(${spins}deg)`;
+  });
+</script>

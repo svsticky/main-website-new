@@ -7,15 +7,15 @@ const menus = [
 	{
 		title: { nl: 'Vereniging', en: 'Association' },
 		submenu: [
-			{ title: { nl: 'Activiteiten', en: 'Activities' }, to: '/vereniging/activiteiten' },
-			{ title: { nl: 'Bestuur', en: 'Board' }, to: '/vereniging/bestuur' },
-			{ title: { nl: 'Commissies', en: 'Committees' }, to: '/vereniging/commissies' },
-			{ title: { nl: 'Contact', en: 'Contact' }, to: '/vereniging/contact' },
-			{ title: { nl: 'Disputen', en: 'Societies' }, to: '/vereniging/disputen' },
-			{ title: { nl: 'Huisstijl', en: 'Branding' }, to: '/vereniging/huisstijl' },
-      { title: { nl: "Leden van Verdienste", en: "Honary members" }, to: "/vereniging/leden-van-verdienste" },
 			{ title: { nl: 'Over ons', en: 'About us' }, to: '/vereniging/over-ons' },
+			{ title: { nl: 'Bestuur', en: 'Board' }, to: '/vereniging/bestuur' },
+			{ title: { nl: 'Activiteiten', en: 'Activities' }, to: '/vereniging/activiteiten' },
+			{ title: { nl: 'Commissies', en: 'Committees' }, to: '/vereniging/commissies' },
+			{ title: { nl: 'Disputen', en: 'Societies' }, to: '/vereniging/disputen' },
+      { title: { nl: "Leden van Verdienste", en: "Honary members" }, to: "/vereniging/leden-van-verdienste" },
       { title: { nl: "Sociale veiligheid", en: "Social safety" }, to: "/vereniging/vcp" },
+			{ title: { nl: 'Huisstijl', en: 'Branding' }, to: '/vereniging/huisstijl' },
+			{ title: { nl: 'Contact', en: 'Contact' }, to: '/vereniging/contact' },
 		],
 	},
 	{
@@ -44,10 +44,9 @@ const buttons = [
 ];
 
 const languages = [
-  { text: "Nederlands", prefix: "" },
-  { text: "English", prefix: "/en" }
+  { text: "Nederlands", prefix: "", code: undefined },
+  { text: "English", prefix: "/en", code: "en" }
 ];
-if (language !== "en") languages.reverse();
 ---
 
 <nav class="px-4 md:px-6 flex items-center h-16 justify-between bg-[var(--brand)] relative z-50">
@@ -126,9 +125,13 @@ if (language !== "en") languages.reverse();
           {languages.map(lang => (
             <li class="not-last:border-b not-last:border-neutral-200">
               <a
-                class="w-full inline-block py-2 hover:text-[var(--brand)] transition"
+                class={`w-full inline-flex items-center justify-center gap-2 py-2 transition ${lang.code === language ? "font-semibold text-[var(--brand)]" : "hover:text-[var(--brand)]"}`}
+                aria-current={lang.code === language ? "true" : undefined}
                 href={`${lang.prefix}/${slug || ""}`}
-              >{lang.text}</a>
+              >
+                {lang.code === language && <i class="fa-solid fa-check text-sm" />}
+                {lang.text}
+              </a>
             </li>
           ))}
         </ul>
@@ -149,9 +152,13 @@ if (language !== "en") languages.reverse();
     {languages.map(lang => (
       <li>
         <a
-          class="block px-6 py-4 font-semibold text-neutral-800"
+          class={`flex items-center gap-2 px-6 py-4 font-semibold ${lang.code === language ? "text-[var(--brand)]" : "text-neutral-800"}`}
+          aria-current={lang.code === language ? "true" : undefined}
           href={`${lang.prefix}/${slug || ""}`}
-        >{lang.text}</a>
+        >
+          {lang.code === language && <i class="fa-solid fa-check text-sm" />}
+          {lang.text}
+        </a>
       </li>
     ))}
   </ul>
