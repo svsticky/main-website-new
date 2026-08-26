@@ -37,7 +37,7 @@ blok.board_number = Number(blok.board_number);
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
       <figure class="my-auto">
-        <Image src={blok.photo.filename} width={800} height={600} class="w-full rounded-xl object-cover aspect-video" alt="Bestuursfoto" />
+        <Image src={blok.photo.filename} width={800} height={800} fit="contain" class="w-full h-auto rounded-xl" alt="Bestuursfoto" />
         {!!blok.photo.title && <figcaption class="text-center text-neutral-600 mt-1">{blok.photo.title}</figcaption>}
       </figure>
 

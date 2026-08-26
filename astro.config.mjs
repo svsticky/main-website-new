@@ -52,6 +52,7 @@ export default defineConfig({
       "featured-partner-banner": "components/home/FeaturedPartnerBanner",
       "info-columns": "components/home/InfoColumns",
       "activities-carousel": "components/home/ActivitiesCarousel",
+      "introduction-card": "components/home/IntroductionCard",
       "news-carousel": "components/home/NewsCarousel",
       "news-item": "components/news/News",
       "news-overview": "components/news/Overview",
