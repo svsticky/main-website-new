@@ -1,0 +1,33 @@
+---
+import { storyblokEditable } from '@storyblok/astro';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import { Image } from 'astro:assets';
+import RichText from '../basics/RichText.astro';
+const { blok } = Astro.props;
+---
+
+<section
+  class="w-full bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-sm flex flex-col sm:flex-row"
+  {...storyblokEditable(blok)}
+>
+  {!!blok.image?.filename &&
+    <Image
+      src={blok.image.filename}
+      alt={blok.image.alt || blok.title || ''}
+      width={600}
+      height={600}
+      fit="cover"
+      class="w-full h-48 sm:h-auto sm:w-1/4 object-cover"
+    />
+  }
+
+  <div class="flex flex-col items-center justify-center gap-3 p-6 sm:w-3/4 text-center">
+    {!!blok.title && <h2 class="text-2xl font-bold">{blok.title}</h2>}
+    {!!blok.text?.content?.length && <RichText content={blok.text} />}
+    {!!blok.button?.length &&
+      <div class="mt-2">
+        <StoryblokComponent blok={blok.button[0]} />
+      </div>
+    }
+  </div>
+</section>

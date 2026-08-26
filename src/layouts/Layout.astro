@@ -69,6 +69,18 @@ const brandDark = darken(brand, 0.9);
 				document.documentElement.style.setProperty('--brand-dark', '#e1601d');
 			}
 		</script>
+		<script is:inline define:vars={{ brand, language }}>
+			const commitcrowd_url = `${location.origin}${language ? `/${language}` : ''}/vereniging/commissies/commitcrowd/`;
+
+			console.log(
+				'%cSTICKY',
+				`color: ${brand}; font-size: 48px; font-weight: 900; font-family: sans-serif; padding: 8px 0;`
+			);
+			console.log(
+				`%cOok vette dingen bouwen? Kom bij de CommitCrowd!\n${commitcrowd_url}\n\nNo pandas were harmed while making this website \u{1F43C}\nhttps://svsticky.nl/panda`,
+				'color: #FA6B20; font-size: 13px; line-height: 1.6;'
+			);
+		</script>
 	</head>
 	<body class="flex flex-col min-h-screen">
 		<div id="snow-container" class="pointer-events-none fixed inset-0 z-40 overflow-hidden"></div>
@@ -87,6 +99,15 @@ const brandDark = darken(brand, 0.9);
 			<div class="flex items-center gap-4 sm:gap-6 md:gap-8">
 				<a href={`${language === undefined ? "" : `/${language}`}/vereniging/contact`} class="text-white font-semibold text-sm sm:text-base transition hover:opacity-70">
 					Contact
+				</a>
+
+				<a
+					href={language === "en" ? "https://public.svsticky.nl/privacystatement_english.pdf" : "https://public.svsticky.nl/privacystatement.pdf"}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-white font-semibold text-sm sm:text-base transition hover:opacity-70"
+				>
+					{language === "en" ? "Privacy statement" : "Privacyverklaring"}
 				</a>
 
 				<div class="flex gap-4 sm:gap-6 md:gap-8 text-white text-xl sm:text-[1.75rem] md:text-[2rem]">

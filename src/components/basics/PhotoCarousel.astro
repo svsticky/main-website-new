@@ -15,15 +15,30 @@ const { photos, name, class: className = "" } = Astro.props;
       />
     ))}
     {photos.length > 1 &&
-      <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
-        {photos.map((_: any, idx: number) => (
-          <button
-            class={`carousel-dot w-2 h-2 rounded-full transition ${idx === 0 ? "bg-white" : "bg-white/50"}`}
-            data-index={idx}
-            aria-label={`Foto ${idx + 1}`}
-          />
-        ))}
-      </div>
+      <>
+        <button
+          class="carousel-prev absolute top-1/2 left-2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-white/90 border border-neutral-200 shadow hover:bg-white transition cursor-pointer"
+          aria-label="Vorige foto"
+        >
+          <i class="fas fa-chevron-left text-sm"></i>
+        </button>
+        <button
+          class="carousel-next absolute top-1/2 right-2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-white/90 border border-neutral-200 shadow hover:bg-white transition cursor-pointer"
+          aria-label="Volgende foto"
+        >
+          <i class="fas fa-chevron-right text-sm"></i>
+        </button>
+
+        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          {photos.map((_: any, idx: number) => (
+            <button
+              class={`carousel-dot w-2 h-2 rounded-full transition ${idx === 0 ? "bg-white" : "bg-white/50"}`}
+              data-index={idx}
+              aria-label={`Foto ${idx + 1}`}
+            />
+          ))}
+        </div>
+      </>
     }
   </div>
 }
@@ -32,6 +47,8 @@ const { photos, name, class: className = "" } = Astro.props;
   for (const carousel of document.querySelectorAll('[data-photo-carousel]')) {
     const items = Array.from(carousel.querySelectorAll<HTMLImageElement>('.carousel-item'));
     const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>('.carousel-dot'));
+    const prev_btn = carousel.querySelector<HTMLButtonElement>('.carousel-prev');
+    const next_btn = carousel.querySelector<HTMLButtonElement>('.carousel-next');
     let current = 0;
 
     function show(index: number) {
@@ -43,6 +60,8 @@ const { photos, name, class: className = "" } = Astro.props;
     }
 
     dots.forEach((dot, idx) => dot.addEventListener('click', () => show(idx)));
+    prev_btn?.addEventListener('click', () => show((current - 1 + items.length) % items.length));
+    next_btn?.addEventListener('click', () => show((current + 1) % items.length));
 
     if (items.length > 1) {
       setInterval(() => show((current + 1) % items.length), 4000);
