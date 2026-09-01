@@ -11,7 +11,7 @@ import sitemap from "@astrojs/sitemap";
 const env = loadEnv(import.meta.env.MODE, process.cwd(), '');
 const {
   STORYBLOK_DELIVERY_API_TOKEN,
-  STORYBLOK_REGION,
+  STORYBLOK_REGION
 } = env;
 
 export default defineConfig({

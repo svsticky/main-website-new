@@ -7,8 +7,10 @@ const { blok } = Astro.props;
 <p id="activities-empty" class="hidden text-center text-neutral-600 mt-8">Er zijn momenteel geen activiteiten gepland.</p>
 
 <script>
-  const KOALA_API = "https://koala.svsticky.nl/api/activities";
-  const KOALA_ACTIVITY_URL = "https://koala.svsticky.nl/activities";
+  const TAVERN_FRONTEND_URL = import.meta.env.PUBLIC_TAVERN_FRONTEND_URL || "https://koala.svsticky.nl";
+  const TAVERN_BACKEND_URL = import.meta.env.PUBLIC_TAVERN_BACKEND_URL || "https://api.koala.svsticky.nl";
+  const TAVERN_API = `${TAVERN_BACKEND_URL}/activities`;
+  const TAVERN_ACTIVITY_URL = `${TAVERN_FRONTEND_URL}/activities`;
 
   const date_formatter = new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -18,7 +20,7 @@ const { blok } = Astro.props;
 
   function build_card(activity) {
     const link = document.createElement('a');
-    link.href = `${KOALA_ACTIVITY_URL}/${activity.id}`;
+    link.href = `${TAVERN_ACTIVITY_URL}/${activity.id}`;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     link.className = 'group';
@@ -27,7 +29,7 @@ const { blok } = Astro.props;
     card.className = 'flex flex-col w-full h-full border border-neutral-300 rounded-xl overflow-hidden group-hover:-translate-y-1 group-hover:shadow transition';
 
     const poster = document.createElement('img');
-    poster.src = activity.poster;
+    poster.src = `${TAVERN_API}/${activity.id}/poster`;
     poster.alt = activity.name;
     poster.className = 'w-full h-auto aspect-[210/297] object-cover';
 
@@ -40,7 +42,7 @@ const { blok } = Astro.props;
 
     const date = document.createElement('span');
     date.className = 'text-sm text-neutral-600';
-    date.textContent = format_date(activity.start_date);
+    date.textContent = format_date(activity.dateTimeStart);
 
     info.append(title, date);
     card.append(poster, info);
@@ -54,12 +56,12 @@ const { blok } = Astro.props;
     if (!container || !empty_message) return;
 
     try {
-      const response = await fetch(KOALA_API);
+      const response = await fetch(TAVERN_API);
       const activities = await response.json();
 
       const upcoming = activities
-        .filter((activity) => activity.poster)
-        .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime());
+        .filter((activity) => activity.posterPath)
+        .sort((a, b) => new Date(a.dateTimeStart).getTime() - new Date(b.dateTimeStart).getTime());
 
       if (upcoming.length === 0) {
         empty_message.classList.remove('hidden');

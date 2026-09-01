@@ -2,8 +2,10 @@
 import { storyblokEditable } from '@storyblok/astro';
 const { blok, language } = Astro.props;
 
-const KOALA_API = "https://koala.svsticky.nl/api/activities";
-const KOALA_ACTIVITY_URL = "https://koala.svsticky.nl/activities";
+const TAVERN_FRONTEND_URL = import.meta.env.PUBLIC_TAVERN_FRONTEND_URL || "https://koala.svsticky.nl";
+const TAVERN_BACKEND_URL = import.meta.env.PUBLIC_TAVERN_BACKEND_URL || "https://api.koala.svsticky.nl";
+const TAVERN_API = `${TAVERN_BACKEND_URL}/activities`;
+const TAVERN_ACTIVITY_URL = `${TAVERN_FRONTEND_URL}/activities`;
 ---
 
 <section {...storyblokEditable(blok)}>
@@ -33,16 +35,16 @@ const KOALA_ACTIVITY_URL = "https://koala.svsticky.nl/activities";
   </a>
 </section>
 
-<script is:inline define:vars={{ KOALA_API, KOALA_ACTIVITY_URL }}>
+<script is:inline define:vars={{ TAVERN_API, TAVERN_ACTIVITY_URL }}>
   function build_card(activity) {
     const link = document.createElement('a');
-    link.href = `${KOALA_ACTIVITY_URL}/${activity.id}`;
+    link.href = `${TAVERN_ACTIVITY_URL}/${activity.id}`;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     link.className = 'shrink-0 w-48 block rounded-xl overflow-hidden border border-neutral-200 hover:-translate-y-1 hover:shadow transition';
 
     const img = document.createElement('img');
-    img.src = activity.poster;
+    img.src = `${TAVERN_API}/${activity.id}/poster`;
     img.alt = activity.name;
     img.className = 'w-full h-auto aspect-[210/297] object-cover';
 
@@ -59,12 +61,12 @@ const KOALA_ACTIVITY_URL = "https://koala.svsticky.nl/activities";
     if (!track || !empty_message) return;
 
     try {
-      const response = await fetch(KOALA_API);
+      const response = await fetch(TAVERN_API);
       const activities = await response.json();
 
       const upcoming = activities
-        .filter((activity) => activity.poster)
-        .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime());
+        .filter((activity) => activity.posterPath)
+        .sort((a, b) => new Date(a.dateTimeStart).getTime() - new Date(b.dateTimeStart).getTime());
 
       if (upcoming.length === 0) {
         empty_message.classList.remove('hidden');

@@ -51,6 +51,9 @@ jobs:
           STORYBLOK_DELIVERY_API_TOKEN: ${{ secrets.STORYBLOK_DELIVERY_API_TOKEN }}
           STORYBLOK_REGION:             ${{ vars.STORYBLOK_REGION }}
           WEBSITE_ROOT:                 ${{ vars.WEBSITE_ROOT }}
+          PUBLIC_TAVERN_BACKEND_URL: ${{ vars.PUBLIC_TAVERN_BACKEND_URL }}
+          PUBLIC_TAVERN_FRONTEND_URL: ${{ vars.PUBLIC_TAVERN_FRONTEND_URL }}
+
 
       # Astro will produce a build in `dist/`
       - name: Upload build artifacts
