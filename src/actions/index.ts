@@ -14,11 +14,11 @@ export const server = {
     }),
     handler: async ({ company, name, email, tel, message }) => {
       try {
-        // Beautiful HTML template in SV Sticky branding (Orange #fa6b20 & Charcoal)
+        // Beautiful HTML template in SV Sticky branding
         const emailHtml = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
             <!-- Header -->
-            <div style="background-color: #fa6b20; padding: 24px; text-align: center; color: white;">
+            <div style="background-color: #b21b21; padding: 24px; text-align: center; color: white;">
               <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Nieuwe Sponsoraanvraag!</h1>
             </div>
             <!-- Body -->
@@ -37,7 +37,7 @@ export const server = {
                 </tr>
                 <tr style="border-bottom: 1px solid #e2e8f0;">
                   <td style="padding: 10px 0; font-weight: bold;">E-mailadres:</td>
-                  <td style="padding: 10px 0;"><a href="mailto:${email}" style="color: #fa6b20; text-decoration: none; font-weight: bold;">${email}</a></td>
+                  <td style="padding: 10px 0;"><a href="mailto:${email}" style="color: #b21b21; text-decoration: none; font-weight: bold;">${email}</a></td>
                 </tr>
                 <tr style="border-bottom: 1px solid #e2e8f0;">
                   <td style="padding: 10px 0; font-weight: bold;">Telefoonnummer:</td>
@@ -53,7 +53,7 @@ export const server = {
             </div>
             <!-- Footer -->
             <div style="background-color: #f1f5f9; padding: 16px; text-align: center; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0;">
-              Dit is een automatisch gegenereerd bericht van <a href="https://svsticky.nl" style="color: #fa6b20; text-decoration: none;">svsticky.nl</a>.
+              Dit is een automatisch gegenereerd bericht van <a href="https://svsticky.nl" style="color: #b21b21; text-decoration: none;">svsticky.nl</a>.
             </div>
           </div>
         `;

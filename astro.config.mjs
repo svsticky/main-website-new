@@ -79,7 +79,7 @@ export default defineConfig({
       "nl": "Studievereniging Sticky",
       "en": "Study Association Sticky"
     },
-    themes: ["#fa6b20"]
+    themes: ["#b21b21"]
   }), sitemap()],
   vite: {
     plugins: [mkcert(), tailwindcss()],
